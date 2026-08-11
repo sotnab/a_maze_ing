@@ -1,0 +1,5 @@
+*_venv
+*.pdf
+*.swp
+__pycache__
+.mypy_cache
