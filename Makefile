@@ -63,7 +63,7 @@ install: $(VENV_NAME)
 
 run:
 	@echo "$(GREEN)[🚀 RUNNING]$(RESET) $(WHITE)$(LAUNCHING)$(RESET)"
-	@. ./$(VENV_NAME)/bin/activate && python3 $(ENTRY_POINT)
+	@. ./$(VENV_NAME)/bin/activate && python3 $(ENTRY_POINT) config.txt
 
 debug:
 	@echo "$(GREEN)[🦗 DEBUG]$(RESET) $(WHITE)$(LAUNCHING_DEBUG)$(RESET)"
