@@ -20,12 +20,6 @@ ENTRY_POINT		:=	a_maze_ing.py
 # Project paths
 SRC_PATH		:= ./src
 
-# Python and mypy cache files
-TEMP_FILES		:=	.mypy_cache \
-					*/.mypy_cache \
-					__pycache__ \
-					*/__pycache__
-
 # External libraries
 REQUIREMENTS	:=	requirements.txt
 
@@ -71,11 +65,14 @@ debug:
 
 clean:
 	@echo "$(YELLOW)[🪣 CLEANING]$(RESET) $(WHITE)$(DELETING)$(RESET)"
-	@rm -rf $(TEMP_FILES)
+	@find . -name __pycache__ -exec rm -rf {} +
+	@find . -name .mypy_cache -exec rm -rf {} +
 
 fclean:
 	@echo "$(YELLOW)[🪣 FULL CLEANING]$(RESET) $(WHITE)$(DELETING_FULL)$(RESET)"
-	@rm -rf $(TEMP_FILES) $(VENV_NAME)
+	@find . -name __pycache__ -exec rm -rf {} +
+	@find . -name .mypy_cache -exec rm -rf {} +
+	@rm -rf $(VENV_NAME)
 
 lint:
 	@echo "$(CYAN)[🐒 LINT]$(RESET) $(WHITE)$(LINTING)$(RESET)"

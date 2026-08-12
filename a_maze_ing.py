@@ -6,13 +6,15 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 00:31:04 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/12 16:47:52 by wbaran          ###   ########.fr        #
+#  Updated: 2026/08/12 18:16:11 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from src.maze_config import MazeConfig
 from pydantic import ValidationError
 from sys import stderr, argv
+
+from src.maze_config import MazeConfig
+from src.maze_visualizer import MazeVisualizer
 
 
 # Temporary config printing
@@ -25,8 +27,15 @@ def print_config(config: MazeConfig) -> None:
     print("Perfect:", config.perfect)
 
 
+def get_example_maze() -> str:
+    with open("example.txt", encoding="utf-8") as file:
+        data = file.read()
+    return data
+
+
 class AMazeIng:
     config: MazeConfig
+    visualizer: MazeVisualizer
 
     def __init__(self, filename: str) -> None:
         self.load_config(filename)
@@ -37,6 +46,11 @@ class AMazeIng:
 
     def run(self) -> None:
         print("Running")
+        # Generating maze
+        # TODO
+        # Running visualizer
+        self.visualizer = MazeVisualizer(get_example_maze())
+        self.visualizer.run()
 
 
 def main() -> None:
