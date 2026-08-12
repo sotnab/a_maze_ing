@@ -6,6 +6,10 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:37:29 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/12 17:37:29 by wbaran          ###   ########.fr        #
+#  Updated: 2026/08/12 18:57:54 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
+
+from .maze import Maze
+
+__all__ = ["Maze"]

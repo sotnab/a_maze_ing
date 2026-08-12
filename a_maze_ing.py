@@ -6,31 +6,17 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 00:31:04 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/12 18:16:11 by wbaran          ###   ########.fr        #
+#  Updated: 2026/08/12 23:32:57 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from pydantic import ValidationError
 from sys import stderr, argv
 
-from src.maze_config import MazeConfig
-from src.maze_visualizer import MazeVisualizer
+from src import MazeConfig
+from src import MazeVisualizer
 
-
-# Temporary config printing
-def print_config(config: MazeConfig) -> None:
-    print("Width:", config.width)
-    print("Height:", config.height)
-    print("Entry:", config.entry)
-    print("Exit:", config.exit)
-    print("Output file:", config.output_file)
-    print("Perfect:", config.perfect)
-
-
-def get_example_maze() -> str:
-    with open("example.txt", encoding="utf-8") as file:
-        data = file.read()
-    return data
+from example import get_example_maze
 
 
 class AMazeIng:
@@ -39,24 +25,20 @@ class AMazeIng:
 
     def __init__(self, filename: str) -> None:
         self.load_config(filename)
-        print_config(self.config)
 
     def load_config(self, filename: str) -> None:
         self.config = MazeConfig.from_file(filename)
 
     def run(self) -> None:
         print("Running")
-        # Generating maze
-        # TODO
-        # Running visualizer
-        self.visualizer = MazeVisualizer(get_example_maze())
+        maze = get_example_maze()
+        self.visualizer = MazeVisualizer(maze)
         self.visualizer.run()
 
 
 def main() -> None:
     if len(argv) != 2:
-        return print("Invalid arguments. "
-                     "Run using: ./a_maze_ing <config_file>.")
+        return print("Invalid arguments. Run: ./a_maze_ing <config_file>.")
 
     try:
         filename = argv[1]
