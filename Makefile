@@ -22,7 +22,9 @@ SRC_PATH		:= ./src
 
 # Python and mypy cache files
 TEMP_FILES		:=	.mypy_cache \
-					__pycache__
+					*/.mypy_cache \
+					__pycache__ \
+					*/__pycache__
 
 # External libraries
 REQUIREMENTS	:=	requirements.txt
