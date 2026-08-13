@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/13 12:17:41 by wbaran          ###   ########.fr        #
+#  Updated: 2026/08/13 12:51:50 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -18,10 +18,10 @@ from src.maze_generator import Maze
 from .mlx_image import MlxImage
 
 
-PLATINIUM: Final[int] = 0xFFE7ECEF
-DARK_BLUE: Final[int] = 0xFF274C77
-BLUE: Final[int] = 0xFF6096BA
-LIGHT_BLUE: Final[int] = 0xFFA3CEF1
+PLATINIUM: Final[int] = 0xFF778DA9
+DARK_BLUE: Final[int] = 0xFF0D1B2A
+BLUE: Final[int] = 0xFF1B263B
+LIGHT_BLUE: Final[int] = 0xFF415A77
 
 CELL_SIZE: Final[int] = 40
 WALL_WIDTH: Final[int] = 2
@@ -44,7 +44,7 @@ class MazeImage(MlxImage):
 
     def render_maze(self) -> None:
         buffer = numpy.frombuffer(self.addr, dtype=numpy.uint32)
-        buffer.fill(DARK_BLUE)
+        buffer.fill(BLUE)
         self.pixels = buffer.reshape((self.height, self.width))
 
         self.set_pixels()
@@ -60,6 +60,9 @@ class MazeImage(MlxImage):
     def draw_walls(self, walls: int, row: int, col: int) -> None:
         cell_x = CELL_SIZE * col
         cell_y = CELL_SIZE * row
+
+        if walls == 15:
+            return self.draw_closed_cell(cell_x, cell_y)
 
         if walls & 1 == 1:
             self.draw_top_wall(cell_x, cell_y)
@@ -77,24 +80,30 @@ class MazeImage(MlxImage):
         end_y = y + WALL_WIDTH
         end_x = x + CELL_SIZE
 
-        self.pixels[y:end_y, x:end_x] = BLUE
+        self.pixels[y:end_y, x:end_x] = LIGHT_BLUE
 
     def draw_right_wall(self, x: int, y: int) -> None:
         end_y = y + CELL_SIZE
         start_x = x + CELL_SIZE - WALL_WIDTH
         end_x = x + CELL_SIZE
 
-        self.pixels[y:end_y, start_x:end_x] = BLUE
+        self.pixels[y:end_y, start_x:end_x] = LIGHT_BLUE
 
     def draw_bottom_wall(self, x: int, y: int) -> None:
         start_y = y + CELL_SIZE - WALL_WIDTH
         end_y = y + CELL_SIZE
         end_x = x + CELL_SIZE
 
-        self.pixels[start_y:end_y, x:end_x] = BLUE
+        self.pixels[start_y:end_y, x:end_x] = LIGHT_BLUE
 
     def draw_left_wall(self, x: int, y: int) -> None:
         end_y = y + CELL_SIZE
         end_x = x + WALL_WIDTH
 
-        self.pixels[y:end_y, x:end_x] = BLUE
+        self.pixels[y:end_y, x:end_x] = LIGHT_BLUE
+
+    def draw_closed_cell(self, x: int, y: int) -> None:
+        end_y = y + CELL_SIZE
+        end_x = x + CELL_SIZE
+
+        self.pixels[y:end_y, x:end_x] = PLATINIUM

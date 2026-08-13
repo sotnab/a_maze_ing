@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/12 16:24:45 by wbaran          ###   ########.fr        #
+#  Updated: 2026/08/13 12:37:47 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -46,4 +46,4 @@ class MazeConfig(BaseModel):
                 key, value = splitted
                 config[key.lower()] = value
 
-        return cls(**config)
+        return cls.model_validate(config)
