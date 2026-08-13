@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/12 23:21:27 by wbaran          ###   ########.fr        #
+#  Updated: 2026/08/13 12:17:41 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -15,7 +15,7 @@ from typing import Any, Final
 import numpy
 
 from src.maze_generator import Maze
-from .image import Image
+from .mlx_image import MlxImage
 
 
 PLATINIUM: Final[int] = 0xFFE7ECEF
@@ -27,7 +27,7 @@ CELL_SIZE: Final[int] = 40
 WALL_WIDTH: Final[int] = 2
 
 
-class MazeImage(Image):
+class MazeImage(MlxImage):
     pixels: numpy.ndarray
 
     def __init__(

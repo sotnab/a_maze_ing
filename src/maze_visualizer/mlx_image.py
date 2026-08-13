@@ -1,12 +1,12 @@
 # ************************************************************************* #
 #                                                                           #
 #                                                      :::      ::::::::    #
-#  image.py                                          :+:      :+:    :+:    #
+#  mlx_image.py                                      :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:48:30 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/12 22:32:41 by wbaran          ###   ########.fr        #
+#  Updated: 2026/08/13 12:16:53 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,7 +14,7 @@ from mlx import Mlx
 from typing import Any
 
 
-class Image:
+class MlxImage:
     image: Any
     addr: memoryview
     bytes_per_px: int
