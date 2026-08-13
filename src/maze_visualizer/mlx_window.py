@@ -6,17 +6,18 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/13 12:32:23 by wbaran          ###   ########.fr        #
+#  Updated: 2026/08/14 00:06:47 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from mlx import Mlx
 from typing import Final, Any
-from time import sleep
+from time import sleep, time
 
 
 KEY_ESC: Final[int] = 65307
 EVENT_DESTROY: Final[int] = 33
+FRAMERATE: Final[int] = 60
 
 
 class MlxWindow:
@@ -25,6 +26,7 @@ class MlxWindow:
         self.win_width = width
         self.win_height = height
         self.name = name
+        self.time = time()
 
         self.init_mlx()
         self.init_hooks()
@@ -49,7 +51,20 @@ class MlxWindow:
         self.mlx.mlx_loop(self.mlx_ptr)
 
     def loop(self, _: Any) -> None:
-        sleep(1 / 60)
+        current_time = time()
+        time_delta = current_time - self.time
+
+        if FRAMERATE > 0:
+            s_per_frame = 1 / FRAMERATE
+        else:
+            s_per_frame = 1 / 60
+
+        if s_per_frame > time_delta:
+            sleep(s_per_frame - time_delta)
+
+        self.time = time()
+        time_delta = self.time - current_time
+        print("Since last frame:", round(time_delta, 4), "ms")
 
     def close(self) -> None:
         self.mlx.mlx_destroy_window(self.mlx_ptr, self.mlx_win)
