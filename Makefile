@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jazurek <jazurek@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/08/14 22:31:40 by jazurek           #+#    #+#              #
+#    Updated: 2026/08/14 22:43:08 by jazurek          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Escape characters
 ESC				:=	$(shell printf '\033')
 RESET			:=	$(ESC)[0m
@@ -13,75 +25,83 @@ MAGENTA			:=	$(ESC)[35m
 CYAN			:=	$(ESC)[36m
 WHITE			:=	$(ESC)[37m
 
-# Virtual environment name
-VENV_NAME		:=	amz_venv
+# Project
+PYTHON			:=	python3
+VENV			:=	amz_venv
+VENV_PYTHON		:=	$(VENV)/bin/python
+
 ENTRY_POINT		:=	a_maze_ing.py
-
-# Project paths
-SRC_PATH		:= ./src
-
-# External libraries
+CONFIG			?=	config.txt
 REQUIREMENTS	:=	requirements.txt
 
-# Mypy flags
 MYPY_FLAGS		:=	--warn-return-any \
 					--warn-unused-ignores \
 					--ignore-missing-imports \
 					--disallow-untyped-defs \
 					--check-untyped-defs
 
-MYPY_STRICT		:=	--strict
 
-# Messages
-CREATING_VENV	:=	Creating virtual environment
-LAUNCH_VENV		:=	Run venv with: source ./$(VENV_NAME)/bin/activate
-INSTALLING		:=	Installing dependencies
-LAUNCHING		:=	Launching project
-LAUNCHING_DEBUG	:=	Launching project in DEBUG mode
-DELETING		:=	Deleting temp files
-DELETING_FULL	:=	Deleting temp files and venv
-LINTING			:=	Running flake8 and mypy
-LINTING_STRICT	:= Running flake8 and mypy in STRICT mode
-
-#  Rules
 all: run
 
-$(VENV_NAME):
-	@echo "$(BLUE)[🛠️ CREATING VENV]$(RESET) $(WHITE)$(CREATING_VENV)$(RESET)"
-	@python3 -m venv $(VENV_NAME)
-	@echo "$(GREEN)[✨ SUCCESS]$(RESET) $(WHITE)$(LAUNCH_VENV)$(RESET)"
 
-install: $(VENV_NAME)
-	@echo "$(MAGENTA)[🔗 INSTALLING]$(RESET) $(WHITE)$(INSTALLING)$(RESET)"
-	@. ./$(VENV_NAME)/bin/activate && pip install -r $(REQUIREMENTS)
+# Create virtual environment
+$(VENV_PYTHON):
+	@echo "$(BLUE)[🛠️ VENV]$(RESET) Creating virtual environment"
+	@$(PYTHON) -m venv $(VENV)
 
-run:
-	@echo "$(GREEN)[🚀 RUNNING]$(RESET) $(WHITE)$(LAUNCHING)$(RESET)"
-	@. ./$(VENV_NAME)/bin/activate && python3 $(ENTRY_POINT) config.txt
 
-debug:
-	@echo "$(GREEN)[🦗 DEBUG]$(RESET) $(WHITE)$(LAUNCHING_DEBUG)$(RESET)"
-	@echo "$(BLUE) TODO $(RESET)"
+# Install dependencies
+install: $(VENV_PYTHON)
+	@echo "$(MAGENTA)[🔗 INSTALL]$(RESET) Installing dependencies"
+	@$(VENV_PYTHON) -m pip install -r $(REQUIREMENTS)
+	@$(VENV_PYTHON) -m pip install flake8 mypy
 
+
+# Run project
+run: install
+	@echo "$(GREEN)[🚀 RUNNING]$(RESET) Launching project"
+	@$(VENV_PYTHON) $(ENTRY_POINT) $(CONFIG)
+
+
+# Run with debugger
+debug: install
+	@echo "$(GREEN)[🦗 DEBUG]$(RESET) Launching debugger"
+	@$(VENV_PYTHON) -m pdb $(ENTRY_POINT) $(CONFIG)
+
+
+# Lint
+lint: install
+	@echo "$(CYAN)[🐒 LINT]$(RESET) Running flake8 and mypy"
+	@$(VENV_PYTHON) -m flake8 .
+	@$(VENV_PYTHON) -m mypy . $(MYPY_FLAGS)
+
+
+# Optional strict lint
+lint-strict: install
+	@echo "$(RED)[🦍 LINT STRICT]$(RESET) Running strict checks"
+	@$(VENV_PYTHON) -m flake8 .
+	@$(VENV_PYTHON) -m mypy . --strict
+
+
+# Remove temporary files
 clean:
-	@echo "$(YELLOW)[🪣 CLEANING]$(RESET) $(WHITE)$(DELETING)$(RESET)"
-	@find . -name __pycache__ -exec rm -rf {} +
-	@find . -name .mypy_cache -exec rm -rf {} +
+	@echo "$(YELLOW)[🪣 CLEAN]$(RESET) Removing temporary files"
+	@find . -path "./$(VENV)" -prune -o \
+		-type d \( -name "__pycache__" -o -name ".mypy_cache" -o -name ".pytest_cache" \) \
+		-prune -exec rm -rf {} +
+	@find . -path "./$(VENV)" -prune -o \
+		-type f \( -name "*.pyc" -o -name "*.pyo" \) \
+		-exec rm -f {} +
 
-fclean:
-	@echo "$(YELLOW)[🪣 FULL CLEANING]$(RESET) $(WHITE)$(DELETING_FULL)$(RESET)"
-	@find . -name __pycache__ -exec rm -rf {} +
-	@find . -name .mypy_cache -exec rm -rf {} +
-	@rm -rf $(VENV_NAME)
 
-lint:
-	@echo "$(CYAN)[🐒 LINT]$(RESET) $(WHITE)$(LINTING)$(RESET)"
-	@flake8 $(ENTRY_POINT) $(SRC_PATH)
-	@mypy $(ENTRY_POINT) $(SRC_PATH) $(MYPY_FLAGS)
+# Remove temporary files and virtual environment
+fclean: clean
+	@echo "$(YELLOW)[🪣 FCLEAN]$(RESET) Removing virtual environment"
+	@rm -rf $(VENV)
 
-lint-strict:
-	@echo "$(RED)[🦍 LINT]$(RESET) $(WHITE)$(LINTING_STRICT)$(RESET)"
-	@flake8 $(ENTRY_POINT) $(SRC_PATH)
-	@mypy $(ENTRY_POINT) $(SRC_PATH) $(MYPY_STRICT)
 
-.PHONY: all install run debug clean fclean lint lint-strict
+# Reinstall
+re: fclean install
+
+
+.PHONY: all install run debug lint lint-strict clean fclean re
