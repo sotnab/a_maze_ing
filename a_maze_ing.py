@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  a_maze_ing.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 00:31:04 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/12 23:32:57 by wbaran          ###   ########.fr        #
+#  Updated: 2026/08/22 15:48:22 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -15,8 +15,6 @@ from sys import stderr, argv
 
 from src import MazeConfig
 from src import MazeVisualizer
-
-from example import get_example_maze
 
 
 class AMazeIng:
@@ -31,8 +29,7 @@ class AMazeIng:
 
     def run(self) -> None:
         print("Running")
-        maze = get_example_maze()
-        self.visualizer = MazeVisualizer(maze)
+        self.visualizer = MazeVisualizer(self.config)
         self.visualizer.run()
 
 

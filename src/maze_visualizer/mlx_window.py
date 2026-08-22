@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  mlx_window.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/14 00:06:47 by wbaran          ###   ########.fr        #
+#  Updated: 2026/08/22 16:07:41 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -63,7 +63,7 @@ class MlxWindow:
             sleep(s_per_frame - time_delta)
 
         self.time = time()
-        time_delta = self.time - current_time
+        time_delta = (self.time - current_time) * 1000
         print("Since last frame:", round(time_delta, 4), "ms")
 
     def close(self) -> None:
