@@ -1,0 +1,80 @@
+# *************************************************************************** #
+#                                                                             #
+#                                                        :::      ::::::::    #
+#    maze_grid.py                                      :+:      :+:    :+:    #
+#                                                    +:+ +:+         +:+      #
+#    By: jazurek <jazurek@student.42.pl>           +#+  +:+       +#+         #
+#                                                +#+#+#+#+#+   +#+            #
+#    Created: 2026/08/16 20:20:25 by jazurek          #+#    #+#              #
+#    Updated: 2026/08/30 01:03:30 by jazurek         ###   ########.fr        #
+#                                                                             #
+# *************************************************************************** #
+
+NORTH = 0b0001
+EAST = 0b0010
+SOUTH = 0b0100
+WEST = 0b1000
+
+ALL_WALLS = 0b1111
+
+REMOVE_NORTH = 0b1110
+REMOVE_EAST = 0b1101
+REMOVE_SOUTH = 0b1011
+REMOVE_WEST = 0b0111
+
+
+def create_grid(width: int, height: int) -> list[list[int]]:
+    """Create a maze with all walls closed."""
+    grid = []
+
+    for y in range(height):
+        row = []
+
+        for x in range(width):
+            row.append(ALL_WALLS)
+
+        grid.append(row)
+
+    return grid
+
+
+def open_wall(
+    grid: list[list[int]], first: tuple[int, int], second: tuple[int, int]
+) -> None:
+    """Open the wall between two neighbouring cells."""
+    x1, y1 = first
+    x2, y2 = second
+
+    if x2 == x1 + 1 and y2 == y1:
+        grid[y1][x1] &= REMOVE_EAST
+        grid[y2][x2] &= REMOVE_WEST
+
+    elif x2 == x1 - 1 and y2 == y1:
+        grid[y1][x1] &= REMOVE_WEST
+        grid[y2][x2] &= REMOVE_EAST
+
+    elif y2 == y1 + 1 and x2 == x1:
+        grid[y1][x1] &= REMOVE_SOUTH
+        grid[y2][x2] &= REMOVE_NORTH
+
+    elif y2 == y1 - 1 and x2 == x1:
+        grid[y1][x1] &= REMOVE_NORTH
+        grid[y2][x2] &= REMOVE_SOUTH
+
+    else:
+        raise ValueError("Cells are not neighbours")
+
+
+def grid_to_hex(grid: list[list[int]]) -> list[str]:
+    """Convert the grid to hexadecimal rows."""
+    result = []
+
+    for row in grid:
+        hex_row = ""
+
+        for cell in row:
+            hex_row += format(cell, "X")
+
+        result.append(hex_row)
+
+    return result
