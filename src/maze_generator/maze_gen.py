@@ -121,7 +121,7 @@ def generate_dfs(
 class MazeGen:
     def __init__(self, config: MazeConfig) -> None:
         self.config = config
-        self.random = Random()
+        self.random = Random(config.seed)
 
     def generate(self) -> Maze:
         grid = create_grid(self.config.width, self.config.height)

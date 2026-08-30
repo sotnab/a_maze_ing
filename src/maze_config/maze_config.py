@@ -20,6 +20,7 @@ class MazeConfig(BaseModel):
     exit: tuple[int, int]
     output_file: str
     perfect: bool = False
+    seed: int | None = None
 
     @field_validator("entry", "exit", mode="before")
     @classmethod
