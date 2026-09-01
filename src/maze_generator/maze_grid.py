@@ -6,7 +6,7 @@
 #    By: jazurek <jazurek@student.42.pl>           +#+  +:+       +#+         #
 #                                                +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/16 20:20:25 by jazurek          #+#    #+#              #
-#    Updated: 2026/08/30 01:03:30 by jazurek         ###   ########.fr        #
+#    Updated: 2026/08/30 21:30:20 by jazurek         ###   ########.fr        #
 #                                                                             #
 # *************************************************************************** #
 
@@ -78,3 +78,37 @@ def grid_to_hex(grid: list[list[int]]) -> list[str]:
         result.append(hex_row)
 
     return result
+
+
+def get_reachable_neighbours(
+    grid: list[list[int]], cell: tuple[int, int]
+) -> list[tuple[int, int]]:
+    """Return cells reachable from the current cell."""
+    x, y = cell
+    height = len(grid)
+    width = len(grid[0])
+    walls = grid[y][x]
+
+    neighbours = []
+
+    # North
+    if y > 0:
+        if (walls & NORTH) == 0:
+            neighbours.append((x, y - 1))
+
+    # East
+    if x < width - 1:
+        if (walls & EAST) == 0:
+            neighbours.append((x + 1, y))
+
+    # South
+    if y < height - 1:
+        if (walls & SOUTH) == 0:
+            neighbours.append((x, y + 1))
+
+    # West
+    if x > 0:
+        if (walls & WEST) == 0:
+            neighbours.append((x - 1, y))
+
+    return neighbours

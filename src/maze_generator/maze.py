@@ -20,3 +20,4 @@ class Maze:
     height: int
     entry: tuple[int, int]
     exit: tuple[int, int]
+    solution: list[tuple[int, int]]

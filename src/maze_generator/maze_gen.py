@@ -14,6 +14,7 @@ from random import Random
 
 from .maze import Maze
 from .maze_grid import create_grid, grid_to_hex, open_wall
+from .maze_solver import solve_maze
 from .pattern_42 import get_42_cells
 from src.maze_config import MazeConfig
 
@@ -85,7 +86,12 @@ def generate_dfs(
     blocked: list[tuple[int, int]],
     random: Random,
 ) -> None:
-    """Generate a perfect maze using iterative DFS."""
+    """
+    Generate a perfect maze using iterative DFS.
+    Links:
+      - https://en.wikipedia.org/wiki/Maze_generation_algorithm
+      - https://www.miklix.com/mazes/maze-generators/recursive-backtracker
+    """
     height = len(grid)
     width = len(grid[0])
 
@@ -135,6 +141,8 @@ class MazeGen:
 
         generate_dfs(grid, self.config.entry, blocked, self.random)
 
+        solution = solve_maze(grid, self.config.entry, self.config.exit)
+
         data = grid_to_hex(grid)
 
         maze = Maze(
@@ -143,6 +151,13 @@ class MazeGen:
             self.config.height,
             self.config.entry,
             self.config.exit,
+            solution,
         )
+
+        # TODO: Remove when drawing will be added
+        print(maze.solution)
+        print("Entry:", maze.solution[0])
+        print("Exit:", maze.solution[-1])
+        print("Path length:", len(maze.solution))
 
         return maze
