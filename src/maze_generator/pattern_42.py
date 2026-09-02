@@ -10,6 +10,8 @@
 #                                                                             #
 # *************************************************************************** #
 
+from sys import stderr
+
 PATTERN_42 = (
     "X.X.XXX",
     "X.X...X",
@@ -27,11 +29,11 @@ def get_42_cells(
     pattern_width = len(PATTERN_42[0])
 
     if width < pattern_width + 2:
-        print("Maze is too small for the 42 pattern")
+        print("Maze is too small for the 42 pattern", file=stderr)
         return []
 
     if height < pattern_height + 2:
-        print("Maze is too small for the 42 pattern")
+        print("Maze is too small for the 42 pattern", file=stderr)
         return []
 
     pattern_start_x = (width // 2) - (pattern_width // 2)
@@ -59,5 +61,5 @@ def get_42_cells(
             if valid_position:
                 return cells
 
-    print("Cannot place the 42 pattern")
+    print("Cannot place the 42 pattern", file=stderr)
     return []
