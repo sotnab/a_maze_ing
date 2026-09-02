@@ -6,7 +6,7 @@
 #    By: jazurek <jazurek@student.42.pl>           +#+  +:+       +#+         #
 #                                                +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/28 21:23:11 by jazurek          #+#    #+#              #
-#    Updated: 2026/09/02 00:00:16 by jazurek         ###   ########.fr        #
+#    Updated: 2026/09/02 21:12:23 by jazurek         ###   ########.fr        #
 #                                                                             #
 # *************************************************************************** #
 
@@ -32,7 +32,7 @@ def solve_maze(
     grid: list[list[int]], entry: tuple[int, int], exit: tuple[int, int]
 ) -> list[tuple[int, int]]:
     """
-    BSF algorithm - find the shortest path from entry to exit
+    BSF algorithm - find the shortest path from entry to exit.
     Link: https://www.redblobgames.com/pathfinding/a-star/introduction.html
     """
     height = len(grid)
