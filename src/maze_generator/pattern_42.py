@@ -34,8 +34,11 @@ def get_42_cells(
         print("Maze is too small for the 42 pattern")
         return []
 
-    for start_y in range(1, height - pattern_height):
-        for start_x in range(1, width - pattern_width):
+    pattern_start_x = (width // 2) - (pattern_width // 2)
+    pattern_start_y = (height // 2) - (pattern_height // 2)
+
+    for start_y in range(pattern_start_y, height - pattern_height):
+        for start_x in range(pattern_start_x, width - pattern_width):
             cells = []
             valid_position = True
 

@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  mlx_window.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/22 16:07:41 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/02 21:48:34 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -20,16 +20,30 @@ EVENT_DESTROY: Final[int] = 33
 FRAMERATE: Final[int] = 60
 
 
+def sync_frame(last_frame_time: float, framerate: int) -> None:
+    time_delta = time() - last_frame_time
+
+    time_per_frame = 1 / (framerate if framerate > 0 else 60)
+
+    if time_delta < time_per_frame:
+        sleep(time_per_frame - time_delta)
+
+
 class MlxWindow:
-    def __init__(self, width: int, height: int, name: str) -> None:
+    def __init__(self, name: str) -> None:
         self.mlx = Mlx()
+        self.name = name
+
+    def create_window(self, width: int, height: int) -> None:
         self.win_width = width
         self.win_height = height
-        self.name = name
         self.time = time()
 
         self.init_mlx()
         self.init_hooks()
+
+    def run(self) -> None:
+        self.mlx.mlx_loop(self.mlx_ptr)
 
     def init_mlx(self) -> None:
         self.mlx_ptr = self.mlx.mlx_init()
@@ -47,24 +61,9 @@ class MlxWindow:
         self.mlx.mlx_key_hook(self.mlx_win, self.key_handler, None)
         self.mlx.mlx_loop_hook(self.mlx_ptr, self.loop, None)
 
-    def run(self) -> None:
-        self.mlx.mlx_loop(self.mlx_ptr)
-
     def loop(self, _: Any) -> None:
-        current_time = time()
-        time_delta = current_time - self.time
-
-        if FRAMERATE > 0:
-            s_per_frame = 1 / FRAMERATE
-        else:
-            s_per_frame = 1 / 60
-
-        if s_per_frame > time_delta:
-            sleep(s_per_frame - time_delta)
-
+        sync_frame(self.time, FRAMERATE)
         self.time = time()
-        time_delta = (self.time - current_time) * 1000
-        print("Since last frame:", round(time_delta, 4), "ms")
 
     def close(self) -> None:
         self.mlx.mlx_destroy_window(self.mlx_ptr, self.mlx_win)

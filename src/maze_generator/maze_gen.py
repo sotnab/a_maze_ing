@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_gen.py                                       :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/22 17:14:04 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/02 21:51:19 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -125,11 +125,13 @@ def generate_dfs(
 
 
 class MazeGen:
-    def __init__(self, config: MazeConfig) -> None:
-        self.config = config
-        self.random = Random(config.seed)
+    def __init__(self, config_file: str) -> None:
+        self.config_file = config_file
 
     def generate(self) -> Maze:
+        self.config = MazeConfig.from_file(self.config_file)
+        self.random = Random(self.config.seed)
+
         grid = create_grid(self.config.width, self.config.height)
 
         blocked = get_42_cells(
