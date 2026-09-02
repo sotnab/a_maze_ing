@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze.py                                           :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 18:54:32 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/22 15:42:05 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 00:03:05 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -21,3 +21,4 @@ class Maze:
     entry: tuple[int, int]
     exit: tuple[int, int]
     solution: list[tuple[int, int]]
+    steps: list[tuple[int, int, int]]

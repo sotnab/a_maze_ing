@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/14 00:49:17 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 00:10:42 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -41,20 +41,27 @@ class MazeImage(MlxImage):
     ) -> None:
         super().__init__(mlx, mlx_ptr, width, height)
         self.maze = maze
-        self.render_maze()
 
-    def render_maze(self) -> None:
+        self.init_maze()
+
+    def init_maze(self) -> None:
         buffer = numpy.frombuffer(self.addr, dtype=numpy.uint32)
         buffer.fill(BLUE)
+
         self.pixels = buffer.reshape((self.height, self.width))
 
-        self.set_pixels()
+        self.wall_drawer = WallDrawer(self.pixels, CELL_SIZE, WALL_WIDTH)
 
-    def set_pixels(self) -> None:
-        wall_drawer = WallDrawer(self.pixels, CELL_SIZE, WALL_WIDTH)
+    def render_step(self, step: tuple[int, int, int]) -> None:
+        x, y, walls = step
+
+        self.wall_drawer.clear_cell(x, y)
+        self.wall_drawer.draw_walls(walls, y, x, False)
+
+    def render_complete(self) -> None:
 
         for row in range(self.maze.height):
             for col in range(self.maze.width):
 
                 walls = int(self.maze.data[row][col], 16)
-                wall_drawer.draw_walls(walls, row, col)
+                self.wall_drawer.draw_walls(walls, row, col, True)

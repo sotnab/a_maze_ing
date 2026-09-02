@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/02 21:51:19 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 00:19:15 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -85,7 +85,7 @@ def generate_dfs(
     start: tuple[int, int],
     blocked: list[tuple[int, int]],
     random: Random,
-) -> None:
+) -> list[tuple[int, int, int]]:
     """
     Generate a perfect maze using iterative DFS.
     Links:
@@ -97,6 +97,7 @@ def generate_dfs(
 
     visited = create_visited(width, height)
     stack = []
+    steps = []
 
     start_x, start_y = start
 
@@ -118,10 +119,20 @@ def generate_dfs(
 
         open_wall(grid, current, next_cell)
 
+        x1, y1 = current
+        x2, y2 = next_cell
+
+        steps.append((x1, y1, grid[y1][x1]))
+        steps.append((x2, y2, grid[y2][x2]))
+
         next_x, next_y = next_cell
         visited[next_y][next_x] = True
 
         stack.append(next_cell)
+
+    steps.reverse()
+
+    return steps
 
 
 class MazeGen:
@@ -141,7 +152,7 @@ class MazeGen:
             self.config.exit,
         )
 
-        generate_dfs(grid, self.config.entry, blocked, self.random)
+        steps = generate_dfs(grid, self.config.entry, blocked, self.random)
 
         solution = solve_maze(grid, self.config.entry, self.config.exit)
 
@@ -154,6 +165,7 @@ class MazeGen:
             self.config.entry,
             self.config.exit,
             solution,
+            steps
         )
 
         # TODO: Remove when drawing will be added

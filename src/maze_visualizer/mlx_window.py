@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/02 21:48:34 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 00:24:25 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,7 +17,7 @@ from time import sleep, time
 
 KEY_ESC: Final[int] = 65307
 EVENT_DESTROY: Final[int] = 33
-FRAMERATE: Final[int] = 60
+FRAMERATE: Final[int] = 200
 
 
 def sync_frame(last_frame_time: float, framerate: int) -> None:
@@ -27,6 +27,9 @@ def sync_frame(last_frame_time: float, framerate: int) -> None:
 
     if time_delta < time_per_frame:
         sleep(time_per_frame - time_delta)
+
+    since_last_frame = (time() - last_frame_time) * 1000
+    print("Since last frame:", round(since_last_frame, 2), "ms")
 
 
 class MlxWindow:
@@ -58,12 +61,17 @@ class MlxWindow:
     def init_hooks(self) -> None:
         self.mlx.mlx_hook(self.mlx_win,
                           EVENT_DESTROY, 0, self.destroy_handler, None)
+
         self.mlx.mlx_key_hook(self.mlx_win, self.key_handler, None)
+
         self.mlx.mlx_loop_hook(self.mlx_ptr, self.loop, None)
 
     def loop(self, _: Any) -> None:
         sync_frame(self.time, FRAMERATE)
         self.time = time()
+
+    def clear_window(self) -> None:
+        self.mlx.mlx_clear_window(self.mlx_ptr, self.mlx_win)
 
     def close(self) -> None:
         self.mlx.mlx_destroy_window(self.mlx_ptr, self.mlx_win)

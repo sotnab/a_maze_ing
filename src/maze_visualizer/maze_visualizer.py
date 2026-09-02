@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/02 21:55:54 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 00:31:42 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -23,11 +23,13 @@ EVENT_DESTROY: Final[int] = 33
 
 class MazeVisualizer(MlxWindow):
     def __init__(self, config_file: str) -> None:
+        self.generator = MazeGen(config_file)
+        self.finished_animation = False
+
         super().__init__("A Maze Ing")
 
-        self.generator = MazeGen(config_file)
-
     def generate_maze(self) -> None:
+
         self.maze = self.generator.generate()
 
         width = self.maze.width * CELL_SIZE
@@ -35,20 +37,35 @@ class MazeVisualizer(MlxWindow):
 
         self.create_window(width, height)
         self.create_maze_image()
+
         self.run()
 
     def loop(self, _: Any) -> None:
-        self.put_maze_image()
+
+        if not self.finished_animation:
+
+            if len(self.maze.steps) > 0:
+                step = self.maze.steps.pop()
+
+                self.maze_image.render_step(step)
+            else:
+                self.maze_image.render_complete()
+
+                self.finished_animation = True
+
+            self.put_maze_image()
 
         super().loop(_)
 
     def key_handler(self, keycode: int, _: Any) -> None:
         super().key_handler(keycode, _)
+
         if keycode == KEY_R:
             self.close()
             self.generate_maze()
 
     def create_maze_image(self) -> None:
+
         self.maze_image = MazeImage(
             self.mlx,
             self.mlx_ptr,
@@ -58,6 +75,7 @@ class MazeVisualizer(MlxWindow):
         )
 
     def put_maze_image(self) -> None:
+
         self.mlx.mlx_put_image_to_window(
             self.mlx_ptr,
             self.mlx_win,
