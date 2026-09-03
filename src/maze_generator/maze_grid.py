@@ -10,17 +10,15 @@
 #                                                                             #
 # *************************************************************************** #
 
-NORTH = 0b0001
-EAST = 0b0010
-SOUTH = 0b0100
-WEST = 0b1000
-
-ALL_WALLS = 0b1111
-
-REMOVE_NORTH = 0b1110
-REMOVE_EAST = 0b1101
-REMOVE_SOUTH = 0b1011
-REMOVE_WEST = 0b0111
+from .constants import (
+    NORTH, EAST,
+    SOUTH, WEST,
+    ALL_WALLS,
+    REMOVE_NORTH,
+    REMOVE_EAST,
+    REMOVE_SOUTH,
+    REMOVE_WEST
+)
 
 
 def create_grid(width: int, height: int) -> list[list[int]]:

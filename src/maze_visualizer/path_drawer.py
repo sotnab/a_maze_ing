@@ -3,19 +3,17 @@
 #                                                      :::      ::::::::    #
 #  path_drawer.py                                    :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 10:37:47 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 13:04:45 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 14:32:04 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from numpy import ndarray
-from typing import Final
 
 from .drawer import Drawer
-
-DARK_BLUE: Final[int] = 0x88386641
+from .constants import PATH_COLOR
 
 
 class PathDrawer(Drawer):
@@ -35,7 +33,7 @@ class PathDrawer(Drawer):
         end_y = start_y + self.path_width + self.cell_size
         end_x = start_x + self.path_width
 
-        self.pixels[start_y:end_y, start_x:end_x] = DARK_BLUE
+        self.pixels[start_y:end_y, start_x:end_x] = PATH_COLOR
 
     def connect_right(self, cell: tuple[int, int]) -> None:
         x, y = self.cell_coords(cell)
@@ -48,7 +46,7 @@ class PathDrawer(Drawer):
         end_y = start_y + self.path_width
         end_x = start_x + self.path_width + self.cell_size
 
-        self.pixels[start_y:end_y, start_x:end_x] = DARK_BLUE
+        self.pixels[start_y:end_y, start_x:end_x] = PATH_COLOR
 
     def connect_cells(
             self, cell1: tuple[int, int], cell2: tuple[int, int]) -> None:

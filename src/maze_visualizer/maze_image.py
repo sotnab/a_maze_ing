@@ -3,29 +3,24 @@
 #                                                      :::      ::::::::    #
 #  maze_image.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 12:57:40 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 14:32:56 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from mlx import Mlx
-from typing import Any, Final
+from typing import Any
 import numpy
 
 from src.maze_generator import Maze
 from .mlx_image import MlxImage
 from .wall_drawer import WallDrawer
 from .path_drawer import PathDrawer
-
-
-DARK_BLUE: Final[int] = 0xFF0D1B2A
-BLUE: Final[int] = 0xFF1B263B
-GREEN: Final[int] = 0xFF386641
-
-CELL_SIZE: Final[int] = 40
-ENTRY_PADDING: Final[int] = 12
+from .constants import (
+    BACKGROUND_COLOR, CELL_SIZE
+)
 
 
 class MazeImage(MlxImage):
@@ -46,7 +41,7 @@ class MazeImage(MlxImage):
 
     def init_maze(self) -> None:
         buffer = numpy.frombuffer(self.addr, dtype=numpy.uint32)
-        buffer.fill(BLUE)
+        buffer.fill(BACKGROUND_COLOR)
 
         self.pixels = buffer.reshape((self.height, self.width))
 

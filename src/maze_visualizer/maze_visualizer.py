@@ -3,24 +3,21 @@
 #                                                      :::      ::::::::    #
 #  maze_visualizer.py                                :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 12:36:35 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 14:33:05 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from typing import Any, Final
+from typing import Any
 
 from src.maze_generator import MazeGen
 from .maze_image import MazeImage, CELL_SIZE
 from .mlx_window import MlxWindow
-
-KEY_ESC: Final[int] = 65307
-KEY_R: Final[int] = 114
-KEY_P: Final[int] = 112
-KEY_S: Final[int] = 115
-EVENT_DESTROY: Final[int] = 33
+from .constants import (
+    KEY_R, KEY_P, KEY_S,
+)
 
 
 class MazeVisualizer(MlxWindow):

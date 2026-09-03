@@ -3,21 +3,22 @@
 #                                                      :::      ::::::::    #
 #  mlx_window.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 10:12:42 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 14:27:13 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from mlx import Mlx
-from typing import Final, Any
+from typing import Any
 from time import sleep, time
 
-
-KEY_ESC: Final[int] = 65307
-EVENT_DESTROY: Final[int] = 33
-FRAMERATE: Final[int] = 60
+from .constants import (
+    KEY_ESC,
+    EVENT_DESTROY,
+    FRAMERATE
+)
 
 
 def sync_frame(last_frame_time: float, framerate: int) -> None:

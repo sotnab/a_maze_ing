@@ -12,13 +12,7 @@
 
 from sys import stderr
 
-PATTERN_42 = (
-    "X.X.XXX",
-    "X.X...X",
-    "XXX.XXX",
-    "..X.X..",
-    "..X.XXX",
-)
+from .constants import PATTERN_42
 
 
 def get_42_cells(
