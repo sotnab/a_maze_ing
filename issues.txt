@@ -1,0 +1,10 @@
+Maze is not saved to file
+
+Instructions on screen disappear for some reason when
+regenerating maze with different maze size
+
+Config validation is missing checks for valid entry/exit
+in this case program runs for no reason just to find that later
+
+Solver is not working for not perfect maze. Its designed
+to just find path using bfs, not the shortest one.
