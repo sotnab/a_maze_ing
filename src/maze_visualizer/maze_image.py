@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 00:10:42 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 12:57:40 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,6 +17,7 @@ import numpy
 from src.maze_generator import Maze
 from .mlx_image import MlxImage
 from .wall_drawer import WallDrawer
+from .path_drawer import PathDrawer
 
 
 DARK_BLUE: Final[int] = 0xFF0D1B2A
@@ -24,7 +25,6 @@ BLUE: Final[int] = 0xFF1B263B
 GREEN: Final[int] = 0xFF386641
 
 CELL_SIZE: Final[int] = 40
-WALL_WIDTH: Final[int] = 2
 ENTRY_PADDING: Final[int] = 12
 
 
@@ -50,18 +50,22 @@ class MazeImage(MlxImage):
 
         self.pixels = buffer.reshape((self.height, self.width))
 
-        self.wall_drawer = WallDrawer(self.pixels, CELL_SIZE, WALL_WIDTH)
+        self.wall_drawer = WallDrawer(self.pixels, CELL_SIZE)
+        self.path_drawer = PathDrawer(self.pixels, CELL_SIZE)
 
     def render_step(self, step: tuple[int, int, int]) -> None:
-        x, y, walls = step
+        col, row, walls = step
 
-        self.wall_drawer.clear_cell(x, y)
-        self.wall_drawer.draw_walls(walls, y, x, False)
+        self.wall_drawer.clear_cell((col, row))
+        self.wall_drawer.draw_walls(walls, (col, row),  False)
+
+    def render_path(self) -> None:
+        self.path_drawer.draw_path(self.maze.solution)
 
     def render_complete(self) -> None:
 
-        for row in range(self.maze.height):
-            for col in range(self.maze.width):
+        for col in range(self.maze.width):
+            for row in range(self.maze.height):
 
                 walls = int(self.maze.data[row][col], 16)
-                self.wall_drawer.draw_walls(walls, row, col, True)
+                self.wall_drawer.draw_walls(walls, (col, row), True)
