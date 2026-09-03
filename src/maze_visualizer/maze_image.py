@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 19:51:36 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 20:41:58 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -18,22 +18,20 @@ from src.maze_generator import Maze
 from .mlx_image import MlxImage
 from .wall_drawer import WallDrawer
 from .path_drawer import PathDrawer
-from .constants import (
-    BACKGROUND_COLOR, CELL_SIZE
-)
+from .constants import BACKGROUND_COLOR, CELL_SIZE
 
 
 class MazeImage(MlxImage):
     pixels: numpy.ndarray
 
     def __init__(
-        self,
-        mlx: Mlx,
+        self, mlx: Mlx,
         mlx_ptr: Any,
         width: int,
         height: int,
         maze: Maze
     ) -> None:
+
         super().__init__(mlx, mlx_ptr, width, height)
         self.maze = maze
 
@@ -42,18 +40,18 @@ class MazeImage(MlxImage):
         self.maze_animation = False
         self.path_animation = False
 
-        self.maze_animation_index = 0
-        self.path_animation_index = 0
-
         self.init_maze()
 
     def set_maze(self, maze: Maze) -> None:
+
         self.skip_maze_animation()
         self.skip_path_animation()
 
+        self.clear_path()
         self.maze = maze
 
     def init_maze(self) -> None:
+
         buffer = numpy.frombuffer(self.addr, dtype=numpy.uint32)
         buffer.fill(BACKGROUND_COLOR)
 
@@ -85,7 +83,7 @@ class MazeImage(MlxImage):
         self.path_animation = False
         self.render_path()
 
-    def render_step(self) -> None:
+    def render_gen_step(self) -> None:
 
         if len(self.maze.steps) == self.maze_animation_index:
             self.maze_animation = False
@@ -100,15 +98,24 @@ class MazeImage(MlxImage):
         self.maze_animation_index += 1
 
     def render_complete(self) -> None:
+
         self.pixels.fill(BACKGROUND_COLOR)
 
         for col in range(self.maze.width):
             for row in range(self.maze.height):
 
                 walls = int(self.maze.data[row][col], 16)
-                self.wall_drawer.draw_walls(walls, (col, row), True)
 
-    def render_move(self) -> None:
+                if (col, row) == self.maze.entry:
+                    ...
+
+                elif (col, row) == self.maze.exit:
+                    ...
+
+                else:
+                    self.wall_drawer.draw_walls(walls, (col, row), True)
+
+    def render_path_step(self) -> None:
 
         if len(self.maze.solution) == self.path_animation_index:
             self.path_animation = False
@@ -116,7 +123,7 @@ class MazeImage(MlxImage):
             self.render_path()
             return
 
-        move = self.maze.solution[-1 - self.path_animation_index]
+        move = self.maze.solution[self.path_animation_index]
 
         self.path_drawer.connect_cells(self.last_move, move)
 
@@ -124,9 +131,20 @@ class MazeImage(MlxImage):
         self.path_animation_index += 1
 
     def render_path(self) -> None:
+
         self.path_drawer.draw_path(self.maze.solution)
         self.path_visible = True
 
     def clear_path(self) -> None:
+
         self.render_complete()
         self.path_visible = False
+
+    def switch_colors(self) -> None:
+
+        if not self.maze_animation and not self.path_animation:
+            self.wall_drawer.switch_colors()
+            self.render_complete()
+
+            if self.path_visible:
+                self.render_path()

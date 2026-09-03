@@ -3,21 +3,21 @@
 #                                                      :::      ::::::::    #
 #  wall_drawer.py                                    :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/14 00:39:51 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 14:31:18 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 20:48:25 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from numpy import ndarray
+from itertools import cycle
 
 from .drawer import Drawer
 from .constants import (
-    PATTERN_COLOR,
-    WALL_COLOR,
     BACKGROUND_COLOR,
-    WALL_WIDTH
+    WALL_WIDTH,
+    COLORS
 )
 
 
@@ -27,15 +27,25 @@ class WallDrawer(Drawer):
 
         self.wall_width = WALL_WIDTH
 
+        self.wall_colors = cycle(COLORS)
+        self.pattern_colors = cycle(COLORS)
+        next(self.pattern_colors)
+
+        self.wall_color = next(self.wall_colors)
+        self.pattern_color = next(self.pattern_colors)
+
     def draw_walls(
-            self, walls: int, cell: tuple[int, int], finish: bool) -> None:
+            self, walls: int,
+            cell: tuple[int, int],
+            complete: bool = False
+            ) -> None:
 
         x, y = self.cell_coords(cell)
 
-        if not finish and walls == 15:
+        if not complete and walls == 15:
             return
 
-        if finish and walls == 15:
+        if complete and walls == 15:
             return self.draw_closed_cell(x, y)
 
         if walls & 1 == 1:
@@ -54,33 +64,33 @@ class WallDrawer(Drawer):
         end_y = y + self.wall_width
         end_x = x + self.cell_size
 
-        self.pixels[y:end_y, x:end_x] = WALL_COLOR
+        self.pixels[y:end_y, x:end_x] = self.wall_color
 
     def draw_right_wall(self, x: int, y: int) -> None:
         end_y = y + self.cell_size
         start_x = x + self.cell_size - self.wall_width
         end_x = x + self.cell_size
 
-        self.pixels[y:end_y, start_x:end_x] = WALL_COLOR
+        self.pixels[y:end_y, start_x:end_x] = self.wall_color
 
     def draw_bottom_wall(self, x: int, y: int) -> None:
         start_y = y + self.cell_size - self.wall_width
         end_y = y + self.cell_size
         end_x = x + self.cell_size
 
-        self.pixels[start_y:end_y, x:end_x] = WALL_COLOR
+        self.pixels[start_y:end_y, x:end_x] = self.wall_color
 
     def draw_left_wall(self, x: int, y: int) -> None:
         end_y = y + self.cell_size
         end_x = x + self.wall_width
 
-        self.pixels[y:end_y, x:end_x] = WALL_COLOR
+        self.pixels[y:end_y, x:end_x] = self.wall_color
 
     def draw_closed_cell(self, x: int, y: int) -> None:
         end_y = y + self.cell_size
         end_x = x + self.cell_size
 
-        self.pixels[y:end_y, x:end_x] = PATTERN_COLOR
+        self.pixels[y:end_y, x:end_x] = self.pattern_color
 
     def clear_cell(self, cell: tuple[int, int]) -> None:
         x, y = self.cell_coords(cell)
@@ -89,3 +99,7 @@ class WallDrawer(Drawer):
         end_x = x + self.cell_size
 
         self.pixels[y:end_y, x:end_x] = BACKGROUND_COLOR
+
+    def switch_colors(self) -> None:
+        self.wall_color = next(self.wall_colors)
+        self.pattern_color = next(self.pattern_colors)

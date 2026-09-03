@@ -83,4 +83,6 @@ def solve_maze(
         current = parent[current]
         path.append(current)
 
+    path.reverse()
+
     return path

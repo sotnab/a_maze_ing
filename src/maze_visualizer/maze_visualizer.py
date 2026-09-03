@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 19:51:53 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 20:42:26 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -16,7 +16,7 @@ from src.maze_generator import MazeGen
 from .maze_image import MazeImage, CELL_SIZE
 from .mlx_window import MlxWindow
 from .constants import (
-    KEY_R, KEY_P, KEY_S,
+    KEY_1, KEY_2, KEY_3, KEY_4, KEY_5
 )
 
 
@@ -48,6 +48,7 @@ class MazeVisualizer(MlxWindow):
         self.run()
 
     def regenerate_maze(self) -> None:
+
         prev_width = self.maze.width
         prev_height = self.maze.height
 
@@ -59,28 +60,28 @@ class MazeVisualizer(MlxWindow):
 
         self.maze_image.set_maze(self.maze)
 
-        self.maze_image.skip_path_animation()
         self.maze_image.start_maze_animation()
 
     def loop(self, _: Any) -> None:
 
         if self.maze_image.maze_animation:
-            self.maze_image.render_step()
+            self.maze_image.render_gen_step()
 
         if self.maze_image.path_animation and self.loop_counter % 2 == 0:
-            self.maze_image.render_move()
+            self.maze_image.render_path_step()
 
         self.put_maze_image()
 
         super().loop(_)
 
     def key_handler(self, keycode: int, _: Any) -> None:
-        super().key_handler(keycode, _)
 
-        if keycode == KEY_R:
+        super().key_handler(keycode, _)
+        print(keycode)
+        if keycode == KEY_1:
             self.regenerate_maze()
 
-        if keycode == KEY_P:
+        if keycode == KEY_2:
 
             if not self.maze_image.maze_animation \
                     and not self.maze_image.path_visible:
@@ -89,7 +90,7 @@ class MazeVisualizer(MlxWindow):
             if self.maze_image.path_visible:
                 self.maze_image.clear_path()
 
-        if keycode == KEY_S:
+        if keycode == KEY_3:
 
             if self.maze_image.maze_animation:
                 self.maze_image.skip_maze_animation()
@@ -97,11 +98,16 @@ class MazeVisualizer(MlxWindow):
             if self.maze_image.path_animation:
                 self.maze_image.skip_path_animation()
 
+        if keycode == KEY_4:
+            self.maze_image.switch_colors()
+
     def put_maze_image(self) -> None:
+
         self.put_image(self.maze_image.image, 0, 0)
 
         str_pos_y = self.win_height - CELL_SIZE + (CELL_SIZE // 4)
 
-        self.put_string("Generate new: R", 10, str_pos_y)
-        self.put_string("Show path: P", 190, str_pos_y)
-        self.put_string("Skip animation: S", 340, str_pos_y)
+        self.put_string("Regenerate: 1", 10, str_pos_y)
+        self.put_string("Show path: 2", 170, str_pos_y)
+        self.put_string("Skip: 3", 310, str_pos_y)
+        self.put_string("Switch colors: 4", 400, str_pos_y)
