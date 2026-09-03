@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  a_maze_ing.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 00:31:04 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/02 21:47:05 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 17:24:44 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -22,7 +22,7 @@ def main() -> None:
 
     try:
         visualizer = MazeVisualizer(argv[1])
-        visualizer.generate_maze()
+        visualizer.display_window()
 
     except (ValidationError) as e:
         errors = e.errors()

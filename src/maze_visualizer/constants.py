@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 14:21:39 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 14:31:53 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 15:24:15 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -20,10 +20,10 @@ CELL_SIZE: Final[int] = 40
 WALL_WIDTH: Final[int] = 2
 
 # Colors
-PATTERN_COLOR: Final[int] = 0xFF778DA9
-WALL_COLOR: Final[int] = 0xFF415A77
-BACKGROUND_COLOR: Final[int] = 0xFF1B263B
-PATH_COLOR: Final[int] = 0x88386641
+BACKGROUND_COLOR: Final[int] = 0xFF222b36
+WALL_COLOR: Final[int] = 0xFF445c87
+PATTERN_COLOR: Final[int] = 0xFFc3c7d4
+PATH_COLOR: Final[int] = 0xFF286655
 
 # Keycodes
 KEY_ESC: Final[int] = 65307

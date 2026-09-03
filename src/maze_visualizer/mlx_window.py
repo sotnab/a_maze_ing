@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 14:27:13 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 17:42:02 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -28,9 +28,6 @@ def sync_frame(last_frame_time: float, framerate: int) -> None:
 
     if time_delta < time_per_frame:
         sleep(time_per_frame - time_delta)
-
-    since_last_frame = (time() - last_frame_time) * 1000
-    print("Since last frame:", round(since_last_frame, 2), "ms")
 
 
 class MlxWindow:

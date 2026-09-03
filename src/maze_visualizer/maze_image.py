@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 14:32:56 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 17:46:40 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -37,6 +37,14 @@ class MazeImage(MlxImage):
         super().__init__(mlx, mlx_ptr, width, height)
         self.maze = maze
 
+        self.maze_animation = False
+        self.path_animation = False
+
+        self.maze_animation_index = 0
+
+        self.path_animation_index = 0
+        self.last_move = self.maze.entry
+
         self.init_maze()
 
     def init_maze(self) -> None:
@@ -48,19 +56,64 @@ class MazeImage(MlxImage):
         self.wall_drawer = WallDrawer(self.pixels, CELL_SIZE)
         self.path_drawer = PathDrawer(self.pixels, CELL_SIZE)
 
-    def render_step(self, step: tuple[int, int, int]) -> None:
-        col, row, walls = step
+    def start_maze_animation(self) -> None:
+
+        self.pixels.fill(BACKGROUND_COLOR)
+        self.maze_animation_index = 0
+        self.maze_animation = True
+
+    def skip_maze_animation(self) -> None:
+
+        self.maze_animation = False
+        self.render_complete()
+
+    def start_path_animation(self) -> None:
+
+        self.render_complete()
+        self.path_animation_index = 0
+        self.path_animation = True
+
+    def skip_path_animation(self) -> None:
+
+        self.path_animation = False
+        self.render_path()
+
+    def render_step(self) -> None:
+
+        if len(self.maze.steps) == self.maze_animation_index:
+            self.maze_animation = False
+            self.render_complete()
+            return
+
+        col, row, walls = self.maze.steps[-1 - self.maze_animation_index]
 
         self.wall_drawer.clear_cell((col, row))
         self.wall_drawer.draw_walls(walls, (col, row),  False)
 
-    def render_path(self) -> None:
-        self.path_drawer.draw_path(self.maze.solution)
+        self.maze_animation_index += 1
 
     def render_complete(self) -> None:
+        self.pixels.fill(BACKGROUND_COLOR)
 
         for col in range(self.maze.width):
             for row in range(self.maze.height):
 
                 walls = int(self.maze.data[row][col], 16)
                 self.wall_drawer.draw_walls(walls, (col, row), True)
+
+    def render_move(self) -> None:
+
+        if len(self.maze.solution) == self.path_animation_index:
+            self.path_animation = False
+            self.render_path()
+            return
+
+        move = self.maze.solution[-1 - self.path_animation_index]
+
+        self.path_drawer.connect_cells(self.last_move, move)
+
+        self.last_move = move
+        self.path_animation_index += 1
+
+    def render_path(self) -> None:
+        self.path_drawer.draw_path(self.maze.solution)

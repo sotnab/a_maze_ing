@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 14:33:05 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 18:31:22 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -23,20 +23,15 @@ from .constants import (
 class MazeVisualizer(MlxWindow):
     def __init__(self, config_file: str) -> None:
         self.generator = MazeGen(config_file)
-        self.finished_animation = False
-        self.skip_animation = False
-
-        super().__init__("A Maze Ing")
-
-    def generate_maze(self) -> None:
 
         self.maze = self.generator.generate()
 
-        width = self.maze.width * CELL_SIZE
-        height = self.maze.height * CELL_SIZE
+        super().__init__("A Maze Ing")
 
-        self.finished_animation = False
-        self.skip_animation = False
+    def display_window(self) -> None:
+
+        width = self.maze.width * CELL_SIZE
+        height = (self.maze.height + 1) * CELL_SIZE
 
         self.create_window(width, height)
 
@@ -48,22 +43,34 @@ class MazeVisualizer(MlxWindow):
             self.maze
         )
 
+        self.maze_image.start_maze_animation()
+
         self.run()
+
+    def regenerate_maze(self) -> None:
+        prev_width = self.maze.width
+        prev_height = self.maze.height
+
+        self.maze = self.generator.generate()
+
+        if prev_width != self.maze.width or prev_height != self.maze.height:
+            self.close()
+            self.display_window()
+
+        self.maze_image.maze = self.maze
+
+        self.maze_image.skip_path_animation()
+        self.maze_image.start_maze_animation()
 
     def loop(self, _: Any) -> None:
 
-        if not self.finished_animation:
+        if self.maze_image.maze_animation:
+            self.maze_image.render_step()
 
-            if len(self.maze.steps) > 0 and not self.skip_animation:
-                step = self.maze.steps.pop()
+        if self.maze_image.path_animation:
+            self.maze_image.render_move()
 
-                self.maze_image.render_step(step)
-            else:
-                self.maze_image.render_complete()
-
-                self.finished_animation = True
-
-            self.put_maze_image()
+        self.put_maze_image()
 
         super().loop(_)
 
@@ -71,15 +78,25 @@ class MazeVisualizer(MlxWindow):
         super().key_handler(keycode, _)
 
         if keycode == KEY_R:
-            self.close()
-            self.generate_maze()
+            self.regenerate_maze()
 
-        if keycode == KEY_P and self.finished_animation:
-            self.maze_image.render_path()
-            self.put_maze_image()
+        if keycode == KEY_P and not self.maze_image.maze_animation:
+            self.maze_image.start_path_animation()
 
-        if keycode == KEY_S:
-            self.skip_animation = True
+        if keycode == KEY_S and self.maze_image.maze_animation:
+            self.maze_image.skip_maze_animation()
+
+        if keycode == KEY_S and self.maze_image.path_animation:
+            self.maze_image.skip_path_animation()
 
     def put_maze_image(self) -> None:
         self.put_image(self.maze_image.image, 0, 0)
+
+        self.mlx.mlx_string_put(
+            self.mlx_ptr,
+            self.mlx_win,
+            CELL_SIZE,
+            self.win_height - CELL_SIZE,
+            0xFFFFFFFF,
+            "Regenerate: R"
+        )
