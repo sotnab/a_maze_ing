@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_visualizer.py                                :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 18:31:22 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 19:51:53 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -57,7 +57,7 @@ class MazeVisualizer(MlxWindow):
             self.close()
             self.display_window()
 
-        self.maze_image.maze = self.maze
+        self.maze_image.set_maze(self.maze)
 
         self.maze_image.skip_path_animation()
         self.maze_image.start_maze_animation()
@@ -67,7 +67,7 @@ class MazeVisualizer(MlxWindow):
         if self.maze_image.maze_animation:
             self.maze_image.render_step()
 
-        if self.maze_image.path_animation:
+        if self.maze_image.path_animation and self.loop_counter % 2 == 0:
             self.maze_image.render_move()
 
         self.put_maze_image()
@@ -80,23 +80,28 @@ class MazeVisualizer(MlxWindow):
         if keycode == KEY_R:
             self.regenerate_maze()
 
-        if keycode == KEY_P and not self.maze_image.maze_animation:
-            self.maze_image.start_path_animation()
+        if keycode == KEY_P:
 
-        if keycode == KEY_S and self.maze_image.maze_animation:
-            self.maze_image.skip_maze_animation()
+            if not self.maze_image.maze_animation \
+                    and not self.maze_image.path_visible:
+                self.maze_image.start_path_animation()
 
-        if keycode == KEY_S and self.maze_image.path_animation:
-            self.maze_image.skip_path_animation()
+            if self.maze_image.path_visible:
+                self.maze_image.clear_path()
+
+        if keycode == KEY_S:
+
+            if self.maze_image.maze_animation:
+                self.maze_image.skip_maze_animation()
+
+            if self.maze_image.path_animation:
+                self.maze_image.skip_path_animation()
 
     def put_maze_image(self) -> None:
         self.put_image(self.maze_image.image, 0, 0)
 
-        self.mlx.mlx_string_put(
-            self.mlx_ptr,
-            self.mlx_win,
-            CELL_SIZE,
-            self.win_height - CELL_SIZE,
-            0xFFFFFFFF,
-            "Regenerate: R"
-        )
+        str_pos_y = self.win_height - CELL_SIZE + (CELL_SIZE // 4)
+
+        self.put_string("Generate new: R", 10, str_pos_y)
+        self.put_string("Show path: P", 190, str_pos_y)
+        self.put_string("Skip animation: S", 340, str_pos_y)

@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  constants.py                                      :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 14:21:39 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 15:24:15 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 19:22:22 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -24,6 +24,7 @@ BACKGROUND_COLOR: Final[int] = 0xFF222b36
 WALL_COLOR: Final[int] = 0xFF445c87
 PATTERN_COLOR: Final[int] = 0xFFc3c7d4
 PATH_COLOR: Final[int] = 0xFF286655
+TEXT_COLOR: Final[int] = 0xFFFFFFFF
 
 # Keycodes
 KEY_ESC: Final[int] = 65307

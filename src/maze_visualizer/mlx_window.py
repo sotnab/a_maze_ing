@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  mlx_window.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 17:42:02 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 19:41:52 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,7 +17,8 @@ from time import sleep, time
 from .constants import (
     KEY_ESC,
     EVENT_DESTROY,
-    FRAMERATE
+    FRAMERATE,
+    TEXT_COLOR
 )
 
 
@@ -35,6 +36,8 @@ class MlxWindow:
         self.mlx = Mlx()
         self.name = name
 
+        self.loop_counter = 0
+
     def create_window(self, width: int, height: int) -> None:
         self.win_width = width
         self.win_height = height
@@ -47,10 +50,8 @@ class MlxWindow:
         self.mlx_ptr = self.mlx.mlx_init()
 
         self.mlx_win = self.mlx.mlx_new_window(
-            self.mlx_ptr,
-            self.win_width,
-            self.win_height,
-            self.name
+            self.mlx_ptr, self.win_width,
+            self.win_height, self.name
         )
 
     def init_hooks(self) -> None:
@@ -68,6 +69,8 @@ class MlxWindow:
         sync_frame(self.time, FRAMERATE)
         self.time = time()
 
+        self.loop_counter += 1
+
     def put_image(self, image: Any, x: int, y: int) -> None:
 
         self.mlx.mlx_put_image_to_window(
@@ -78,6 +81,16 @@ class MlxWindow:
 
     def clear_window(self) -> None:
         self.mlx.mlx_clear_window(self.mlx_ptr, self.mlx_win)
+
+    def put_string(self, text: str, x: int, y: int) -> None:
+
+        self.mlx.mlx_string_put(
+            self.mlx_ptr,
+            self.mlx_win,
+            x, y,
+            TEXT_COLOR,
+            text
+        )
 
     def close(self) -> None:
         self.mlx.mlx_destroy_window(self.mlx_ptr, self.mlx_win)

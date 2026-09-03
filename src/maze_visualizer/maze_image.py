@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_image.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 17:46:40 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 19:51:36 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -37,15 +37,21 @@ class MazeImage(MlxImage):
         super().__init__(mlx, mlx_ptr, width, height)
         self.maze = maze
 
+        self.path_visible = False
+
         self.maze_animation = False
         self.path_animation = False
 
         self.maze_animation_index = 0
-
         self.path_animation_index = 0
-        self.last_move = self.maze.entry
 
         self.init_maze()
+
+    def set_maze(self, maze: Maze) -> None:
+        self.skip_maze_animation()
+        self.skip_path_animation()
+
+        self.maze = maze
 
     def init_maze(self) -> None:
         buffer = numpy.frombuffer(self.addr, dtype=numpy.uint32)
@@ -72,6 +78,7 @@ class MazeImage(MlxImage):
         self.render_complete()
         self.path_animation_index = 0
         self.path_animation = True
+        self.last_move = self.maze.entry
 
     def skip_path_animation(self) -> None:
 
@@ -105,6 +112,7 @@ class MazeImage(MlxImage):
 
         if len(self.maze.solution) == self.path_animation_index:
             self.path_animation = False
+            self.path_visible = True
             self.render_path()
             return
 
@@ -117,3 +125,8 @@ class MazeImage(MlxImage):
 
     def render_path(self) -> None:
         self.path_drawer.draw_path(self.maze.solution)
+        self.path_visible = True
+
+    def clear_path(self) -> None:
+        self.render_complete()
+        self.path_visible = False
