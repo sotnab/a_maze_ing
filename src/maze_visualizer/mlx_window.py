@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 00:24:25 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 10:12:42 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,7 +17,7 @@ from time import sleep, time
 
 KEY_ESC: Final[int] = 65307
 EVENT_DESTROY: Final[int] = 33
-FRAMERATE: Final[int] = 200
+FRAMERATE: Final[int] = 60
 
 
 def sync_frame(last_frame_time: float, framerate: int) -> None:
@@ -45,9 +45,6 @@ class MlxWindow:
         self.init_mlx()
         self.init_hooks()
 
-    def run(self) -> None:
-        self.mlx.mlx_loop(self.mlx_ptr)
-
     def init_mlx(self) -> None:
         self.mlx_ptr = self.mlx.mlx_init()
 
@@ -66,9 +63,20 @@ class MlxWindow:
 
         self.mlx.mlx_loop_hook(self.mlx_ptr, self.loop, None)
 
+    def run(self) -> None:
+        self.mlx.mlx_loop(self.mlx_ptr)
+
     def loop(self, _: Any) -> None:
         sync_frame(self.time, FRAMERATE)
         self.time = time()
+
+    def put_image(self, image: Any, x: int, y: int) -> None:
+
+        self.mlx.mlx_put_image_to_window(
+            self.mlx_ptr,
+            self.mlx_win,
+            image, x, y
+        )
 
     def clear_window(self) -> None:
         self.mlx.mlx_clear_window(self.mlx_ptr, self.mlx_win)
