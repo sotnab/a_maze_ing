@@ -6,14 +6,14 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 21:39:08 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 23:56:06 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from random import Random
 
 from .maze import Maze
-from .maze_grid import create_grid, grid_to_hex, open_wall
+from .maze_grid import create_grid, grid_to_hex, open_wall, number_of_walls
 from .maze_solver import solve_maze
 from .pattern_42 import get_42_cells
 from src.maze_config import MazeConfig
@@ -130,7 +130,46 @@ def generate_dfs(
 
         stack.append(next_cell)
 
-    steps.reverse()
+    return steps
+
+
+def remove_dead_ends(
+    grid: list[list[int]],
+    blocked: list[tuple[int, int]]
+) -> list[tuple[int, int, int]]:
+
+    width = len(grid[0])
+    height = len(grid)
+
+    visited = [[False] * width] * height
+
+    dead_ends = []
+    steps = []
+
+    for y, row in enumerate(grid):
+        for x, walls in enumerate(row):
+            cell = (x, y)
+
+            if number_of_walls(walls) == 3:
+                dead_ends.append(cell)
+
+    while len(dead_ends):
+        cell = dead_ends.pop()
+
+        neighbours = get_unvisited_neighbours(
+            cell, visited, blocked, width, height
+        )
+
+        for neighbour in neighbours:
+            x1, y1 = cell
+            x2, y2 = neighbour
+
+            if number_of_walls(grid[y1][x1]) == 3:
+
+                open_wall(grid, cell, neighbour)
+
+                steps.append((x1, y1, grid[y1][x1]))
+                steps.append((x2, y2, grid[y2][x2]))
 
     return steps
 
@@ -153,6 +192,11 @@ class MazeGen:
         )
 
         steps = generate_dfs(grid, self.config.entry, blocked, self.random)
+
+        if not self.config.perfect:
+            steps.extend(remove_dead_ends(grid, blocked))
+
+        steps.reverse()
 
         solution = solve_maze(grid, self.config.entry, self.config.exit)
 

@@ -6,16 +6,18 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/13 12:37:47 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 00:29:15 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from pydantic import BaseModel, field_validator, ValidationError
+from pydantic import (
+    BaseModel, field_validator, ValidationError, Field
+)
 
 
 class MazeConfig(BaseModel):
-    width: int
-    height: int
+    width: int = Field(ge=2, le=120)
+    height: int = Field(ge=2, le=80)
     entry: tuple[int, int]
     exit: tuple[int, int]
     output_file: str
@@ -26,6 +28,7 @@ class MazeConfig(BaseModel):
     @classmethod
     def validate_coords(cls, value: str) -> tuple[int, int]:
         splitted = value.split(",")
+
         if len(splitted) != 2:
             raise ValidationError("Entry and exit should be formatted: x,y")
 
@@ -37,6 +40,7 @@ class MazeConfig(BaseModel):
 
         with open(filename, encoding="utf-8") as file:
             for line in file:
+
                 if line.startswith(("#", "\n")):
                     continue
 
@@ -45,6 +49,7 @@ class MazeConfig(BaseModel):
                     raise ValueError("Config file is in invalid format")
 
                 key, value = splitted
+
                 config[key.lower()] = value
 
         return cls.model_validate(config)

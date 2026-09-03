@@ -110,3 +110,13 @@ def get_reachable_neighbours(
             neighbours.append((x - 1, y))
 
     return neighbours
+
+
+def number_of_walls(walls: int) -> int:
+    count = 0
+
+    for direction in [NORTH, EAST, SOUTH, WEST]:
+        if walls & direction > 0:
+            count += 1
+
+    return count

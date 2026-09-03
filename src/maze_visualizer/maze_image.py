@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 21:35:58 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 01:31:00 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -18,7 +18,7 @@ from src.maze_generator import Maze
 from .mlx_image import MlxImage
 from .wall_drawer import WallDrawer
 from .path_drawer import PathDrawer
-from .constants import BACKGROUND_COLOR, CELL_SIZE
+from .constants import BACKGROUND_COLOR
 
 
 class MazeImage(MlxImage):
@@ -29,6 +29,7 @@ class MazeImage(MlxImage):
         mlx_ptr: Any,
         width: int,
         height: int,
+        cell_size: tuple[int, int],
         maze: Maze
     ) -> None:
 
@@ -40,6 +41,8 @@ class MazeImage(MlxImage):
         self.maze_animation = False
         self.path_animation = False
 
+        self.cell_size = cell_size
+
         self.init_maze()
 
     def init_maze(self) -> None:
@@ -49,8 +52,8 @@ class MazeImage(MlxImage):
 
         self.pixels = buffer.reshape((self.height, self.width))
 
-        self.wall_drawer = WallDrawer(self.pixels, CELL_SIZE)
-        self.path_drawer = PathDrawer(self.pixels, CELL_SIZE)
+        self.wall_drawer = WallDrawer(self.pixels, self.cell_size)
+        self.path_drawer = PathDrawer(self.pixels, self.cell_size)
 
     def set_maze(self, maze: Maze) -> None:
 

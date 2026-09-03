@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 21:41:22 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 01:22:58 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -16,7 +16,13 @@ from src.maze_generator import MazeGen
 from .maze_image import MazeImage
 from .mlx_window import MlxWindow
 from .constants import (
-    CELL_SIZE, KEY_1, KEY_2, KEY_3, KEY_4
+    KEY_1, KEY_2, KEY_3, KEY_4,
+    WINDOW_WIDTH, WINDOW_HEIGHT,
+    INSTRUCTIONS_HEIGHT,
+    REGENERATE_OFFSET,
+    SHOW_PATH_OFFSET,
+    SKIP_OFFSET,
+    SWITCH_COLORS_OFFSET
 )
 
 
@@ -30,8 +36,13 @@ class MazeVisualizer(MlxWindow):
 
     def display_window(self) -> None:
 
-        width = self.maze.width * CELL_SIZE
-        height = (self.maze.height + 1) * CELL_SIZE
+        cell_width = WINDOW_WIDTH // self.maze.width
+        cell_height = WINDOW_HEIGHT // self.maze.height
+
+        self.cell_size = (cell_width, cell_height)
+
+        width = self.maze.width * cell_width
+        height = self.maze.height * cell_height + INSTRUCTIONS_HEIGHT
 
         self.create_window(width, height)
 
@@ -40,6 +51,7 @@ class MazeVisualizer(MlxWindow):
             self.mlx_ptr,
             self.win_width,
             self.win_height,
+            self.cell_size,
             self.maze
         )
 
@@ -105,9 +117,9 @@ class MazeVisualizer(MlxWindow):
 
         self.put_image(self.maze_image.image, 0, 0)
 
-        str_pos_y = self.win_height - CELL_SIZE + (CELL_SIZE // 4)
+        str_pos_y = self.win_height - INSTRUCTIONS_HEIGHT + 5
 
-        self.put_string("Regenerate: 1", 10, str_pos_y)
-        self.put_string("Show path: 2", 170, str_pos_y)
-        self.put_string("Skip: 3", 310, str_pos_y)
-        self.put_string("Switch colors: 4", 400, str_pos_y)
+        self.put_string("Regenerate: 1", REGENERATE_OFFSET, str_pos_y)
+        self.put_string("Show path: 2", SHOW_PATH_OFFSET, str_pos_y)
+        self.put_string("Skip animation: 3", SKIP_OFFSET, str_pos_y)
+        self.put_string("Switch colors: 4", SWITCH_COLORS_OFFSET, str_pos_y)

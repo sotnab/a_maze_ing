@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 14:21:39 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 21:30:48 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 01:22:02 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -16,17 +16,25 @@ from typing import Final
 FRAMERATE: Final[int] = 60
 
 # Sizes
-CELL_SIZE: Final[int] = 40
-WALL_WIDTH: Final[int] = 1
+WALL_WIDTH: Final[int] = 2
+WINDOW_WIDTH: Final[int] = 1200
+WINDOW_HEIGHT: Final[int] = 800
+INSTRUCTIONS_HEIGHT: Final[int] = 30
 
 # Colors
 BACKGROUND_COLOR: Final[int] = 0xFF222b36
 TEXT_COLOR: Final[int] = 0xFFe1e5f2
 
 PATH_COLOR: Final[int] = 0xFF286655
-ENTRY_COLOR: Final[int] = 0xFF588157
-EXIT_COLOR: Final[int] = 0xFF9b2226
-PATTERN_COLOR: Final[int] = 0xFFc3c7d4
+ENTRY_COLOR: Final[int] = 0x10588157
+EXIT_COLOR: Final[int] = 0x109b2226
+PATTERN_COLOR: Final[int] = 0x10c3c7d4
+
+# Offsets for instructions
+REGENERATE_OFFSET: Final[int] = 200
+SHOW_PATH_OFFSET: Final[int] = 390
+SKIP_OFFSET: Final[int] = 570
+SWITCH_COLORS_OFFSET: Final[int] = 800
 
 # Wall colors
 WALL_COLORS: Final[tuple[int, ...]] = (
