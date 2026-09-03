@@ -72,15 +72,15 @@ debug: install
 # Lint
 lint: install
 	@echo "$(CYAN)[🐒 LINT]$(RESET) Running flake8 and mypy"
-	@$(VENV_PYTHON) -m flake8 .
-	@$(VENV_PYTHON) -m mypy . $(MYPY_FLAGS)
+	@$(VENV_PYTHON) -m flake8 . --extend-exclude=$(VENV)
+	@$(VENV_PYTHON) -m mypy . $(MYPY_FLAGS) --exclude $(VENV)
 
 
 # Optional strict lint
 lint-strict: install
 	@echo "$(RED)[🦍 LINT STRICT]$(RESET) Running strict checks"
-	@$(VENV_PYTHON) -m flake8 .
-	@$(VENV_PYTHON) -m mypy . --strict
+	@$(VENV_PYTHON) -m flake8 . --extend-exclude=$(VENV)
+	@$(VENV_PYTHON) -m mypy . --strict --exclude $(VENV)
 
 
 # Remove temporary files

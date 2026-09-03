@@ -8,7 +8,7 @@ HEIGHT=15
 ENTRY=1,1
 
 # Exit coordinates (x,y)
-EXIT=9,9
+EXIT=17, 10
 
 # Output filename
 OUTPUT_FILE=maze.txt

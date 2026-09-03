@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 20:41:58 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 21:35:58 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -42,14 +42,6 @@ class MazeImage(MlxImage):
 
         self.init_maze()
 
-    def set_maze(self, maze: Maze) -> None:
-
-        self.skip_maze_animation()
-        self.skip_path_animation()
-
-        self.clear_path()
-        self.maze = maze
-
     def init_maze(self) -> None:
 
         buffer = numpy.frombuffer(self.addr, dtype=numpy.uint32)
@@ -59,6 +51,14 @@ class MazeImage(MlxImage):
 
         self.wall_drawer = WallDrawer(self.pixels, CELL_SIZE)
         self.path_drawer = PathDrawer(self.pixels, CELL_SIZE)
+
+    def set_maze(self, maze: Maze) -> None:
+
+        self.skip_maze_animation()
+        self.skip_path_animation()
+
+        self.clear_path()
+        self.maze = maze
 
     def start_maze_animation(self) -> None:
 
@@ -105,15 +105,16 @@ class MazeImage(MlxImage):
             for row in range(self.maze.height):
 
                 walls = int(self.maze.data[row][col], 16)
+                pos = (col, row)
 
-                if (col, row) == self.maze.entry:
-                    ...
+                if pos == self.maze.entry:
+                    self.wall_drawer.draw_walls(walls, pos, True, entry=True)
 
-                elif (col, row) == self.maze.exit:
-                    ...
+                elif pos == self.maze.exit:
+                    self.wall_drawer.draw_walls(walls, pos, True, exit=True)
 
                 else:
-                    self.wall_drawer.draw_walls(walls, (col, row), True)
+                    self.wall_drawer.draw_walls(walls, pos, True)
 
     def render_path_step(self) -> None:
 

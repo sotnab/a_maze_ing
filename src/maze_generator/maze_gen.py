@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 12:55:22 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 21:39:08 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -167,11 +167,5 @@ class MazeGen:
             solution,
             steps
         )
-
-        # TODO: Remove when drawing will be added
-        print(maze.solution)
-        print("Entry:", maze.solution[0])
-        print("Exit:", maze.solution[-1])
-        print("Path length:", len(maze.solution))
 
         return maze

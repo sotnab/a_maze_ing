@@ -6,17 +6,17 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 20:42:26 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 21:41:22 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from typing import Any
 
 from src.maze_generator import MazeGen
-from .maze_image import MazeImage, CELL_SIZE
+from .maze_image import MazeImage
 from .mlx_window import MlxWindow
 from .constants import (
-    KEY_1, KEY_2, KEY_3, KEY_4, KEY_5
+    CELL_SIZE, KEY_1, KEY_2, KEY_3, KEY_4
 )
 
 
@@ -77,7 +77,7 @@ class MazeVisualizer(MlxWindow):
     def key_handler(self, keycode: int, _: Any) -> None:
 
         super().key_handler(keycode, _)
-        print(keycode)
+
         if keycode == KEY_1:
             self.regenerate_maze()
 

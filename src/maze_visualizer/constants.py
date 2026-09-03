@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 14:21:39 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 20:49:00 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/03 21:30:48 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,21 +17,24 @@ FRAMERATE: Final[int] = 60
 
 # Sizes
 CELL_SIZE: Final[int] = 40
-WALL_WIDTH: Final[int] = 2
+WALL_WIDTH: Final[int] = 1
 
 # Colors
 BACKGROUND_COLOR: Final[int] = 0xFF222b36
-PATH_COLOR: Final[int] = 0xFF286655
 TEXT_COLOR: Final[int] = 0xFFe1e5f2
 
+PATH_COLOR: Final[int] = 0xFF286655
+ENTRY_COLOR: Final[int] = 0xFF588157
+EXIT_COLOR: Final[int] = 0xFF9b2226
+PATTERN_COLOR: Final[int] = 0xFFc3c7d4
+
 # Wall colors
-COLORS: Final[tuple[int, ...]] = (
+WALL_COLORS: Final[tuple[int, ...]] = (
     0xFF445c87,
-    0xFFc3c7d4,
-    0xFFffb703,
-    0xFFe76f51,
     0xFF000000,
-    0xFFadc178
+    0xFF9d4edd,
+    0xFF4f772d,
+    0xFFc97c5d,
 )
 # Keycodes
 KEY_ESC: Final[int] = 65307
