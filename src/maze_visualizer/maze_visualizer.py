@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 11:38:06 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 12:57:45 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -42,24 +42,29 @@ class MazeVisualizer(MlxWindow):
 
         self.cell_size = (cell_width, cell_height)
 
-        width = self.maze.width * cell_width
-        height = self.maze.height * cell_height + INSTRUCTIONS_HEIGHT
+        maze_width = self.maze.width * cell_width
+        maze_height = self.maze.height * cell_height
+
+        win_width = maze_width
+        win_height = maze_height + INSTRUCTIONS_HEIGHT
 
         area = self.maze.width * self.maze.height
         root = floor(sqrt(area)) // 10
 
         self.animation_speed = max((root, 1))
 
-        self.create_window(width, height)
+        self.create_window(win_width, win_height)
 
         self.maze_image = MazeImage(
             self.mlx,
             self.mlx_ptr,
-            self.win_width,
-            self.win_height,
+            maze_width,
+            maze_height,
             self.cell_size,
             self.maze
         )
+
+        self.put_instructions()
 
         self.maze_image.start_maze_animation()
 
@@ -125,9 +130,11 @@ class MazeVisualizer(MlxWindow):
 
         self.put_image(self.maze_image.image, 0, 0)
 
-        str_pos_y = self.win_height - INSTRUCTIONS_HEIGHT + 5
+    def put_instructions(self) -> None:
 
-        self.put_string("Regenerate: 1", REGENERATE_OFFSET, str_pos_y)
+        str_pos_y = self.win_height - INSTRUCTIONS_HEIGHT + 10
+
+        self.put_string(" Regenerate: 1", REGENERATE_OFFSET, str_pos_y)
         self.put_string("Show path: 2", SHOW_PATH_OFFSET, str_pos_y)
         self.put_string("Skip animation: 3", SKIP_OFFSET, str_pos_y)
         self.put_string("Switch colors: 4", SWITCH_COLORS_OFFSET, str_pos_y)

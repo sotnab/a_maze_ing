@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 19:41:52 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 13:00:50 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -34,6 +34,7 @@ def sync_frame(last_frame_time: float, framerate: int) -> None:
 class MlxWindow:
     def __init__(self, name: str) -> None:
         self.mlx = Mlx()
+        self.mlx_ptr = self.mlx.mlx_init()
         self.name = name
 
         self.loop_counter = 0
@@ -43,12 +44,10 @@ class MlxWindow:
         self.win_height = height
         self.time = time()
 
-        self.init_mlx()
+        self.init_window()
         self.init_hooks()
 
-    def init_mlx(self) -> None:
-        self.mlx_ptr = self.mlx.mlx_init()
-
+    def init_window(self) -> None:
         self.mlx_win = self.mlx.mlx_new_window(
             self.mlx_ptr, self.win_width,
             self.win_height, self.name

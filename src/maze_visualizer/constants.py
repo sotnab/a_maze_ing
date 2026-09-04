@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 14:21:39 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 01:22:02 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 12:53:47 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -19,7 +19,7 @@ FRAMERATE: Final[int] = 60
 WALL_WIDTH: Final[int] = 2
 WINDOW_WIDTH: Final[int] = 1200
 WINDOW_HEIGHT: Final[int] = 800
-INSTRUCTIONS_HEIGHT: Final[int] = 30
+INSTRUCTIONS_HEIGHT: Final[int] = 40
 
 # Colors
 BACKGROUND_COLOR: Final[int] = 0xFF222b36
