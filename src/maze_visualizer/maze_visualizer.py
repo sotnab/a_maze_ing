@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 02:11:11 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 11:38:06 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -46,7 +46,7 @@ class MazeVisualizer(MlxWindow):
         height = self.maze.height * cell_height + INSTRUCTIONS_HEIGHT
 
         area = self.maze.width * self.maze.height
-        root = floor(sqrt(area)) // 4
+        root = floor(sqrt(area)) // 10
 
         self.animation_speed = max((root, 1))
 

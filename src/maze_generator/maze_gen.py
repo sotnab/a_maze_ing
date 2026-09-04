@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/03 23:56:06 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 12:23:41 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -212,4 +212,46 @@ class MazeGen:
             steps
         )
 
+        self.save_to_file(maze, self.config.output_file)
+
         return maze
+
+    def save_to_file(self, maze: Maze, filename: str) -> None:
+
+        with open(filename, "w") as out_file:
+
+            for line in maze.data:
+                out_file.write(line + "\n")
+
+            out_file.write("\n")
+
+            x1, y1 = self.config.entry
+            x2, y2 = self.config.exit
+
+            out_file.write(str(x1) + "," + str(y1) + "\n")
+            out_file.write(str(x2) + "," + str(y2) + "\n")
+
+            out_file.write(self.path_directed(maze.solution) + "\n")
+
+    def path_directed(self, path: list[tuple[int, int]]) -> str:
+
+        directed_path = ""
+        last_cell = path[0]
+
+        for cell in path[1:]:
+
+            x1, y1 = last_cell
+            x2, y2 = cell
+
+            if y1 > y2:
+                directed_path += "N"
+            elif y1 < y2:
+                directed_path += "S"
+            elif x1 > x2:
+                directed_path += "W"
+            elif x1 < x2:
+                directed_path += "E"
+
+            last_cell = cell
+
+        return directed_path
