@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 00:31:04 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 23:23:22 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 00:11:30 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,6 +14,7 @@ from pydantic import ValidationError
 from sys import stderr, argv
 
 from src.maze_visualizer import MazeVisualizer
+from src.maze_generator import MazeConfig
 
 
 def main() -> None:
@@ -25,9 +26,7 @@ def main() -> None:
         visualizer.display_window()
 
     except (ValidationError) as e:
-        errors = e.errors()
-        for item in errors:
-            print(item, file=stderr)
+        MazeConfig.handle_validation_error(e)
 
     except (ValueError, PermissionError, UnicodeDecodeError) as e:
         print(e, file=stderr)

@@ -6,14 +6,16 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 13:12:09 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 00:14:42 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
+from sys import stderr
 from typing import Any
 from math import sqrt, floor
+from pydantic import ValidationError
 
-from src.maze_generator import MazeGen
+from src.maze_generator import MazeGen, MazeConfig
 from .maze_image import MazeImage
 from .mlx_window import MlxWindow
 from .constants import (
@@ -100,7 +102,14 @@ class MazeVisualizer(MlxWindow):
         super().key_handler(keycode, _)
 
         if keycode == KEY_1:
-            self.regenerate_maze()
+            try:
+                self.regenerate_maze()
+
+            except (ValidationError) as e:
+                MazeConfig.handle_validation_error(e)
+
+            except (ValueError, PermissionError, UnicodeDecodeError) as e:
+                print(e, file=stderr)
 
         if keycode == KEY_2:
 

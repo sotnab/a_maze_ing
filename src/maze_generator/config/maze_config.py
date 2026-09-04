@@ -6,11 +6,12 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 23:24:23 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 00:09:01 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from enum import Enum
+from sys import stderr
 
 from pydantic import (
     BaseModel, field_validator,
@@ -92,3 +93,15 @@ class MazeConfig(BaseModel):
         key, value = splitted
 
         config[key.lower()] = value
+
+    @staticmethod
+    def handle_validation_error(error: ValidationError) -> None:
+        errors = error.errors()
+
+        for item in errors:
+            loc = item["loc"]
+
+            if len(loc):
+                print(str(loc[0]).capitalize(), end=": ", file=stderr)
+
+            print(item["msg"], file=stderr)
