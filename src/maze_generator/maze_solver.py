@@ -10,7 +10,7 @@
 #                                                                             #
 # *************************************************************************** #
 
-from .maze_grid import get_reachable_neighbours
+from .utils.maze_grid import get_reachable_neighbours
 
 
 def create_visited(width: int, height: int) -> list[list[bool]]:

@@ -10,7 +10,7 @@
 #                                                                             #
 # *************************************************************************** #
 
-from .constants import (
+from ..constants import (
     NORTH, EAST,
     SOUTH, WEST,
     ALL_WALLS,
