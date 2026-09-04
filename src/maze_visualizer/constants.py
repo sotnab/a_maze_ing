@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 14:21:39 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 12:53:47 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 00:45:55 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -39,10 +39,12 @@ SWITCH_COLORS_OFFSET: Final[int] = 800
 # Wall colors
 WALL_COLORS: Final[tuple[int, ...]] = (
     0xFF445c87,
-    0xFF000000,
-    0xFF9d4edd,
-    0xFF4f772d,
-    0xFFc97c5d,
+    0xFF52796F,
+    0xFF8E7D5B,
+    0xFF8C6B73,
+    0xFF5B7B88,
+    0xFF9E6B60,
+    0xFF756980
 )
 # Keycodes
 KEY_ESC: Final[int] = 65307
