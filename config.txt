@@ -1,14 +1,14 @@
 # Maze width (number of cells)
-WIDTH=60
+WIDTH=20
 
 # Maze height
-HEIGHT=40
+HEIGHT=20
 
 # Entry coordinates (x,y)
-ENTRY=30,30
+ENTRY=1,1
 
 # Exit coordinates (x,y)
-EXIT=1, 1
+EXIT=19,19
 
 # Output filename
 OUTPUT_FILE=maze.txt

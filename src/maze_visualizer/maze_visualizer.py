@@ -6,11 +6,12 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 01:22:58 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 02:11:11 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from typing import Any
+from math import sqrt, floor
 
 from src.maze_generator import MazeGen
 from .maze_image import MazeImage
@@ -43,6 +44,11 @@ class MazeVisualizer(MlxWindow):
 
         width = self.maze.width * cell_width
         height = self.maze.height * cell_height + INSTRUCTIONS_HEIGHT
+
+        area = self.maze.width * self.maze.height
+        root = floor(sqrt(area)) // 4
+
+        self.animation_speed = max((root, 1))
 
         self.create_window(width, height)
 
@@ -77,10 +83,12 @@ class MazeVisualizer(MlxWindow):
     def loop(self, _: Any) -> None:
 
         if self.maze_image.maze_animation:
-            self.maze_image.render_gen_step()
+            for _ in range(self.animation_speed):
+                self.maze_image.render_gen_step()
 
         if self.maze_image.path_animation and self.loop_counter % 2 == 0:
-            self.maze_image.render_path_step()
+            for _ in range(self.animation_speed):
+                self.maze_image.render_path_step()
 
         self.put_maze_image()
 

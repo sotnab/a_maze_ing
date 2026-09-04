@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 01:31:00 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 02:00:31 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -87,6 +87,8 @@ class MazeImage(MlxImage):
         self.render_path()
 
     def render_gen_step(self) -> None:
+        if not self.maze_animation:
+            return
 
         if len(self.maze.steps) == self.maze_animation_index:
             self.maze_animation = False
@@ -120,6 +122,8 @@ class MazeImage(MlxImage):
                     self.wall_drawer.draw_walls(walls, pos, True)
 
     def render_path_step(self) -> None:
+        if not self.path_animation:
+            return
 
         if len(self.maze.solution) == self.path_animation_index:
             self.path_animation = False
