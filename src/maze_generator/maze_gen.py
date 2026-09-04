@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 22:24:16 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 23:04:10 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -32,7 +32,8 @@ class MazeGen:
 
     def generate(self) -> Maze:
         self.config = MazeConfig.from_file(self.config_file)
-        self.random = Random(self.config.seed)
+
+        random = Random(self.config.seed)
 
         grid = create_grid(self.config.width, self.config.height)
 
@@ -46,19 +47,13 @@ class MazeGen:
         steps = []
 
         if self.config.algorithm == Algorithm.DFS:
-            steps.extend(
-                generate_dfs(grid, self.config.entry, blocked, self.random)
-            )
+            steps = generate_dfs(grid, self.config.entry, blocked, random)
 
         if self.config.algorithm == Algorithm.WILSON:
-            steps.extend(
-                generate_wilson(grid, self.config.exit, blocked, self.random)
-            )
+            steps = generate_wilson(grid, self.config.exit, blocked, random)
 
         if self.config.algorithm == Algorithm.PRIMS:
-            steps.extend(
-                generate_prims(grid, self.config.entry, blocked, self.random)
-            )
+            steps = generate_prims(grid, self.config.entry, blocked, random)
 
         if not self.config.perfect:
             steps.extend(remove_dead_ends(grid, blocked))
@@ -92,11 +87,8 @@ class MazeGen:
 
             out_file.write("\n")
 
-            x1, y1 = self.config.entry
-            x2, y2 = self.config.exit
-
-            out_file.write(str(x1) + "," + str(y1) + "\n")
-            out_file.write(str(x2) + "," + str(y2) + "\n")
+            out_file.write(",".join(map(str, self.config.entry)) + "\n")
+            out_file.write(",".join(map(str, self.config.entry)) + "\n")
 
             out_file.write(self.path_directed(maze.solution) + "\n")
 
