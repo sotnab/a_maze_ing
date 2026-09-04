@@ -63,6 +63,33 @@ def open_wall(
         raise ValueError("Cells are not neighbours")
 
 
+def close_wall(
+    grid: list[list[int]], first: tuple[int, int], second: tuple[int, int]
+) -> None:
+    """Open the wall between two neighbouring cells."""
+    x1, y1 = first
+    x2, y2 = second
+
+    if x2 == x1 + 1 and y2 == y1:
+        grid[y1][x1] |= EAST
+        grid[y2][x2] |= WEST
+
+    elif x2 == x1 - 1 and y2 == y1:
+        grid[y1][x1] |= WEST
+        grid[y2][x2] |= EAST
+
+    elif y2 == y1 + 1 and x2 == x1:
+        grid[y1][x1] |= SOUTH
+        grid[y2][x2] |= NORTH
+
+    elif y2 == y1 - 1 and x2 == x1:
+        grid[y1][x1] |= NORTH
+        grid[y2][x2] |= SOUTH
+
+    else:
+        raise ValueError("Cells are not neighbours")
+
+
 def grid_to_hex(grid: list[list[int]]) -> list[str]:
     """Convert the grid to hexadecimal rows."""
     result = []

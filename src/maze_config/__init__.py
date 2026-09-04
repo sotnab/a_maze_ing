@@ -6,10 +6,10 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:35:18 by wbaran          #+#    #+#               #
-#  Updated: 2026/08/12 23:30:02 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 20:06:34 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from .maze_config import MazeConfig
+from .maze_config import MazeConfig, Algorithm
 
-__all__ = ["MazeConfig"]
+__all__ = ["MazeConfig", "Algorithm"]

@@ -6,32 +6,47 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 12:23:41 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 20:32:40 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from random import Random
+from typing import TypeVar
 
 from .maze import Maze
-from .maze_grid import create_grid, grid_to_hex, open_wall, number_of_walls
 from .maze_solver import solve_maze
 from .pattern_42 import get_42_cells
-from src.maze_config import MazeConfig
+from src.maze_config import MazeConfig, Algorithm
+from .maze_grid import (
+    create_grid,
+    grid_to_hex,
+    open_wall,
+    close_wall,
+    number_of_walls
+)
+
+
+T = TypeVar("T")
+
+
+def add_steps(
+    steps: list[tuple[int, int, int]],
+    grid: list[list[int]],
+    cell1: tuple[int, int],
+    cell2: tuple[int, int]
+) -> None:
+
+    x1, y1 = cell1
+    x2, y2 = cell2
+
+    steps.append((x1, y1, grid[y1][x1]))
+    steps.append((x2, y2, grid[y2][x2]))
 
 
 def create_visited(width: int, height: int) -> list[list[bool]]:
     """Create visited grid initialized to False."""
-    visited = []
 
-    for y in range(height):
-        row = []
-
-        for x in range(width):
-            row.append(False)
-
-        visited.append(row)
-
-    return visited
+    return [[False for _ in range(width)] for _ in range(height)]
 
 
 def get_unvisited_neighbours(
@@ -80,6 +95,34 @@ def get_unvisited_neighbours(
     return neighbours
 
 
+def get_neighbours_excluding(
+    current: tuple[int, int],
+    excluded: tuple[int, int] | None,
+    blocked: list[tuple[int, int]],
+    width: int,
+    height: int,
+) -> list[tuple[int, int]]:
+    """Return unvisited and non-blocked neighbours."""
+    x, y = current
+    neighbours = []
+
+    possible_cells = [
+        (x, y - 1),
+        (x + 1, y),
+        (x, y + 1),
+        (x - 1, y)
+    ]
+
+    for cell in possible_cells:
+        x, y = cell
+
+        if 0 <= x < width and 0 <= y < height:
+            if cell not in blocked and cell != excluded:
+                neighbours.append(cell)
+
+    return neighbours
+
+
 def generate_dfs(
     grid: list[list[int]],
     start: tuple[int, int],
@@ -96,8 +139,8 @@ def generate_dfs(
     width = len(grid[0])
 
     visited = create_visited(width, height)
-    stack = []
-    steps = []
+    stack: list[tuple[int, int]] = []
+    steps: list[tuple[int, int, int]] = []
 
     start_x, start_y = start
 
@@ -119,16 +162,111 @@ def generate_dfs(
 
         open_wall(grid, current, next_cell)
 
-        x1, y1 = current
-        x2, y2 = next_cell
-
-        steps.append((x1, y1, grid[y1][x1]))
-        steps.append((x2, y2, grid[y2][x2]))
+        add_steps(steps, grid, current, next_cell)
 
         next_x, next_y = next_cell
         visited[next_y][next_x] = True
 
         stack.append(next_cell)
+
+    return steps
+
+
+def wilson_exit_dead_end(
+    path: list[tuple[int, int]],
+    blocked: list[tuple[int, int]],
+    width: int,
+    height: int,
+    steps: list[tuple[int, int, int]],
+    grid: list[list[int]]
+) -> None:
+
+    while len(path) > 1:
+
+        last = path.pop()
+        current = path[-1]
+
+        close_wall(grid, last, current)
+        add_steps(steps, grid, last, current)
+
+        neighbours = get_neighbours_excluding(
+            last, current, blocked, width, height)
+
+        if len(neighbours) > 1:
+            return
+
+
+def wilson_erase_loop(
+    path: list[tuple[int, int]],
+    cell: tuple[int, int],
+    steps: list[tuple[int, int, int]],
+    grid: list[list[int]]
+) -> None:
+
+    while True:
+        last = path.pop()
+        current = path[-1]
+
+        close_wall(grid, last, current)
+        add_steps(steps, grid, last, current)
+
+        if path[-1] == cell:
+            return
+
+
+def generate_wilson(
+    grid: list[list[int]],
+    exit: tuple[int, int],
+    blocked: list[tuple[int, int]],
+    random: Random,
+) -> list[tuple[int, int, int]]:
+
+    width = len(grid[0])
+    height = len(grid)
+
+    steps: list[tuple[int, int, int]] = []
+
+    empty_cells = [(x, y) for x in range(width) for y in range(height)]
+
+    for cell in blocked:
+        empty_cells.remove(cell)
+
+    empty_cells.remove(exit)
+
+    while len(empty_cells) > 0:
+
+        path = []
+
+        path.append(random.choice(empty_cells))
+
+        while True:
+            cell = path[-1]
+
+            previous_cell = path[-2] if len(path) > 1 else None
+
+            neighbours = get_neighbours_excluding(
+                cell, previous_cell, blocked, width, height)
+
+            if len(neighbours) == 0:
+                wilson_exit_dead_end(path, blocked, width, height, steps, grid)
+                continue
+
+            next_cell = random.choice(neighbours)
+
+            if next_cell in path:
+                wilson_erase_loop(path, next_cell, steps, grid)
+                continue
+
+            path.append(next_cell)
+            open_wall(grid, cell, next_cell)
+
+            add_steps(steps, grid, cell, next_cell)
+
+            if next_cell not in empty_cells:
+                break
+
+        for cell in path[:-1]:
+            empty_cells.remove(cell)
 
     return steps
 
@@ -143,8 +281,8 @@ def remove_dead_ends(
 
     visited = [[False] * width] * height
 
-    dead_ends = []
-    steps = []
+    dead_ends: list[tuple[int, int]] = []
+    steps: list[tuple[int, int, int]] = []
 
     for y, row in enumerate(grid):
         for x, walls in enumerate(row):
@@ -162,14 +300,11 @@ def remove_dead_ends(
 
         for neighbour in neighbours:
             x1, y1 = cell
-            x2, y2 = neighbour
 
             if number_of_walls(grid[y1][x1]) == 3:
-
                 open_wall(grid, cell, neighbour)
 
-                steps.append((x1, y1, grid[y1][x1]))
-                steps.append((x2, y2, grid[y2][x2]))
+                add_steps(steps, grid, cell, neighbour)
 
     return steps
 
@@ -191,7 +326,17 @@ class MazeGen:
             self.config.exit,
         )
 
-        steps = generate_dfs(grid, self.config.entry, blocked, self.random)
+        steps = []
+
+        if self.config.algorithm == Algorithm.DFS:
+            steps.extend(
+                generate_dfs(grid, self.config.entry, blocked, self.random)
+            )
+
+        if self.config.algorithm == Algorithm.WILSON:
+            steps.extend(
+                generate_wilson(grid, self.config.exit, blocked, self.random)
+            )
 
         if not self.config.perfect:
             steps.extend(remove_dead_ends(grid, blocked))

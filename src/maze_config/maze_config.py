@@ -6,13 +6,20 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 00:29:15 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 20:05:04 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
+
+from enum import Enum
 
 from pydantic import (
     BaseModel, field_validator, ValidationError, Field
 )
+
+
+class Algorithm(Enum):
+    DFS = "dfs"
+    WILSON = "wilson"
 
 
 class MazeConfig(BaseModel):
@@ -23,6 +30,7 @@ class MazeConfig(BaseModel):
     output_file: str
     perfect: bool = False
     seed: int | None = None
+    algorithm: Algorithm = Algorithm.DFS
 
     @field_validator("entry", "exit", mode="before")
     @classmethod
