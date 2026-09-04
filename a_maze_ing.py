@@ -6,14 +6,14 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 00:31:04 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 20:02:53 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 23:23:22 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from pydantic import ValidationError
 from sys import stderr, argv
 
-from src import MazeVisualizer
+from src.maze_visualizer import MazeVisualizer
 
 
 def main() -> None:

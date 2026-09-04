@@ -6,14 +6,16 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 21:07:13 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 23:24:23 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from enum import Enum
 
 from pydantic import (
-    BaseModel, field_validator, ValidationError, Field
+    BaseModel, field_validator,
+    ValidationError, Field,
+    model_validator
 )
 
 
@@ -33,9 +35,30 @@ class MazeConfig(BaseModel):
     seed: int | None = None
     algorithm: Algorithm = Algorithm.DFS
 
+    def validate_position(self, cell: tuple[int, int]) -> bool:
+
+        x, y = cell
+
+        return (0 <= x < self.width and 0 <= y < self.height)
+
+    @model_validator(mode="after")
+    def validate_bounds(self) -> "MazeConfig":
+
+        if self.entry == self.exit:
+            raise ValueError("Entry and exit are the same")
+
+        if not self.validate_position(self.entry):
+            raise ValueError("Entrance outside of maze bounds")
+
+        if not self.validate_position(self.exit):
+            raise ValueError("Exit outside of maze bounds")
+
+        return self
+
     @field_validator("entry", "exit", mode="before")
     @classmethod
     def validate_coords(cls, value: str) -> tuple[int, int]:
+
         splitted = value.split(",")
 
         if len(splitted) != 2:
@@ -45,20 +68,27 @@ class MazeConfig(BaseModel):
 
     @classmethod
     def from_file(cls, filename: str) -> "MazeConfig":
+
         config = {}
 
         with open(filename, encoding="utf-8") as file:
+
             for line in file:
-
-                if line.startswith(("#", "\n")):
-                    continue
-
-                splitted = line.strip().split("=")
-                if len(splitted) != 2:
-                    raise ValueError("Config file is in invalid format")
-
-                key, value = splitted
-
-                config[key.lower()] = value
+                cls.parse_line(config, line)
 
         return cls.model_validate(config)
+
+    @staticmethod
+    def parse_line(config: dict[str, str], line: str) -> None:
+
+        if line.startswith(("#", "\n")):
+            return
+
+        splitted = line.strip().split("=")
+
+        if len(splitted) != 2:
+            raise ValueError("Config file is in invalid format")
+
+        key, value = splitted
+
+        config[key.lower()] = value

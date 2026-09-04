@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 23:04:10 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 23:07:39 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -15,7 +15,7 @@ from random import Random
 from .maze import Maze
 from .maze_solver import solve_maze
 from .utils.pattern_42 import get_42_cells
-from src.maze_config import MazeConfig, Algorithm
+from .config.maze_config import MazeConfig, Algorithm
 from .algorithms.dfs import generate_dfs
 from .algorithms.wilson import generate_wilson
 from .algorithms.prims import generate_prims
