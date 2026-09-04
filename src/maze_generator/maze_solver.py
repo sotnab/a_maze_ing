@@ -74,7 +74,7 @@ def solve_maze(
     if not found:
         raise ValueError("No path from ENTRY to EXIT")
 
-    path = []
+    path = [entry]
     current = exit
 
     path.append(current)

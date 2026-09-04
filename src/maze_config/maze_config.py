@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 20:05:04 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 21:07:13 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -20,6 +20,7 @@ from pydantic import (
 class Algorithm(Enum):
     DFS = "dfs"
     WILSON = "wilson"
+    PRIMS = "prims"
 
 
 class MazeConfig(BaseModel):
