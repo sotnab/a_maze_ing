@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 12:57:45 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/04 13:12:09 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -42,11 +42,8 @@ class MazeVisualizer(MlxWindow):
 
         self.cell_size = (cell_width, cell_height)
 
-        maze_width = self.maze.width * cell_width
-        maze_height = self.maze.height * cell_height
-
-        win_width = maze_width
-        win_height = maze_height + INSTRUCTIONS_HEIGHT
+        win_width = self.maze.width * cell_width
+        win_height = self.maze.height * cell_height + INSTRUCTIONS_HEIGHT
 
         area = self.maze.width * self.maze.height
         root = floor(sqrt(area)) // 10
@@ -58,13 +55,11 @@ class MazeVisualizer(MlxWindow):
         self.maze_image = MazeImage(
             self.mlx,
             self.mlx_ptr,
-            maze_width,
-            maze_height,
+            win_width,
+            win_height,
             self.cell_size,
             self.maze
         )
-
-        self.put_instructions()
 
         self.maze_image.start_maze_animation()
 
@@ -96,6 +91,7 @@ class MazeVisualizer(MlxWindow):
                 self.maze_image.render_path_step()
 
         self.put_maze_image()
+        self.put_instructions()
 
         super().loop(_)
 
