@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/14 00:39:51 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 01:37:26 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 17:40:57 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -15,7 +15,6 @@ from itertools import cycle
 
 from .drawer import Drawer
 from .constants import (
-    BACKGROUND_COLOR,
     WALL_COLORS,
     PATTERN_COLOR,
     ENTRY_COLOR,
@@ -30,12 +29,17 @@ class WallDrawer(Drawer):
     ) -> None:
         super().__init__(pixels, cell_size)
 
-        self.wall_width = self.get_wall_width(cell_size)
+        self.set_cell_size(cell_size)
 
         self.wall_colors = cycle(WALL_COLORS)
 
         self.wall_color = next(self.wall_colors)
         self.pattern_color = PATTERN_COLOR
+
+    def set_cell_size(self, cell_size: tuple[int, int]) -> None:
+
+        self.cell_size = cell_size
+        self.wall_width = self.get_wall_width(cell_size)
 
     def draw_walls(
             self, walls: int,
@@ -126,7 +130,7 @@ class WallDrawer(Drawer):
         end_y = y + cell_height
         end_x = x + cell_width
 
-        self.pixels[y:end_y, x:end_x] = BACKGROUND_COLOR
+        self.pixels[y:end_y, x:end_x] = 0
 
     def switch_colors(self) -> None:
         self.wall_color = next(self.wall_colors)

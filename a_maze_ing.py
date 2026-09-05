@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 00:31:04 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 00:11:30 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 19:05:29 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -23,7 +23,7 @@ def main() -> None:
 
     try:
         visualizer = MazeVisualizer(argv[1])
-        visualizer.display_window()
+        visualizer.show_window()
 
     except (ValidationError) as e:
         MazeConfig.handle_validation_error(e)

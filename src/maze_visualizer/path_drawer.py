@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 10:37:47 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 00:57:19 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 17:40:40 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -20,10 +20,14 @@ class PathDrawer(Drawer):
     def __init__(self, pixels: ndarray, cell_size: tuple[int, int]) -> None:
         super().__init__(pixels, cell_size)
 
+        self.set_cell_size(cell_size)
+
+    def set_cell_size(self, cell_size: tuple[int, int]) -> None:
         cell_width, cell_height = cell_size
 
         min_dimension = min((cell_width, cell_height))
 
+        self.cell_size = cell_size
         self.path_width = min_dimension // 5
 
     def connect_down(self, cell: tuple[int, int]) -> None:

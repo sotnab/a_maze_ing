@@ -53,8 +53,8 @@ $(VENV_PYTHON):
 # Install dependencies
 install: $(VENV_PYTHON)
 	@echo "$(MAGENTA)[🔗 INSTALL]$(RESET) Installing dependencies"
-	@$(VENV_PYTHON) -m pip install -r $(REQUIREMENTS)
-	@$(VENV_PYTHON) -m pip install flake8 mypy
+	@$(VENV_PYTHON) -m pip install --quiet -r $(REQUIREMENTS)
+	@$(VENV_PYTHON) -m pip install --quiet flake8 mypy
 
 
 # Run project
@@ -85,7 +85,7 @@ lint-strict: install
 
 # Remove temporary files
 clean:
-	@echo "$(YELLOW)[🪣 CLEAN]$(RESET) Removing temporary files"
+	@echo "$(YELLOW)[🧹 CLEAN]$(RESET) Removing temporary files"
 	@find . -path "./$(VENV)" -prune -o \
 		-type d \( -name "__pycache__" -o -name ".mypy_cache" -o -name ".pytest_cache" \) \
 		-prune -exec rm -rf {} +
@@ -96,7 +96,7 @@ clean:
 
 # Remove temporary files and virtual environment
 fclean: clean
-	@echo "$(YELLOW)[🪣 FCLEAN]$(RESET) Removing virtual environment"
+	@echo "$(YELLOW)[🧹 FCLEAN]$(RESET) Removing virtual environment"
 	@rm -rf $(VENV)
 
 

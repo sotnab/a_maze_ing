@@ -18,9 +18,4 @@ PERFECT=True
 # PERFECT=False
 
 # Random seed
-SEED=42
-
-# Algorithm: (dfs, wilson, prims)
-ALGORITHM=dfs
-# ALGORITHM=wilson
-# ALGORITHM=prims
+# SEED=42

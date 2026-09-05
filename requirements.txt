@@ -1,3 +1,4 @@
 ./lib/mlx-2.2-py3-none-any.whl
-pydantic
-numpy
+pydantic==2.13.5
+numpy==2.2.6
+matplotlib==3.10.9

@@ -6,16 +6,17 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 23:07:39 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 01:24:27 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from random import Random
+from enum import Enum
 
 from .maze import Maze
 from .maze_solver import solve_maze
 from .utils.pattern_42 import get_42_cells
-from .config.maze_config import MazeConfig, Algorithm
+from .config.maze_config import MazeConfig
 from .algorithms.dfs import generate_dfs
 from .algorithms.wilson import generate_wilson
 from .algorithms.prims import generate_prims
@@ -26,11 +27,17 @@ from .utils.maze_grid import (
 )
 
 
+class MazeAlgorithm(Enum):
+    DFS = 0
+    WILSON = 1,
+    PRIMS = 2
+
+
 class MazeGen:
     def __init__(self, config_file: str) -> None:
         self.config_file = config_file
 
-    def generate(self) -> Maze:
+    def generate(self, algorithm: MazeAlgorithm) -> Maze:
         self.config = MazeConfig.from_file(self.config_file)
 
         random = Random(self.config.seed)
@@ -46,13 +53,13 @@ class MazeGen:
 
         steps = []
 
-        if self.config.algorithm == Algorithm.DFS:
+        if algorithm == MazeAlgorithm.DFS:
             steps = generate_dfs(grid, self.config.entry, blocked, random)
 
-        if self.config.algorithm == Algorithm.WILSON:
+        if algorithm == MazeAlgorithm.WILSON:
             steps = generate_wilson(grid, self.config.exit, blocked, random)
 
-        if self.config.algorithm == Algorithm.PRIMS:
+        if algorithm == MazeAlgorithm.PRIMS:
             steps = generate_prims(grid, self.config.entry, blocked, random)
 
         if not self.config.perfect:

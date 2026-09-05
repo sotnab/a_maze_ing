@@ -6,11 +6,10 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 00:09:01 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 01:22:07 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from enum import Enum
 from sys import stderr
 
 from pydantic import (
@@ -18,12 +17,6 @@ from pydantic import (
     ValidationError, Field,
     model_validator
 )
-
-
-class Algorithm(Enum):
-    DFS = "dfs"
-    WILSON = "wilson"
-    PRIMS = "prims"
 
 
 class MazeConfig(BaseModel):
@@ -34,7 +27,6 @@ class MazeConfig(BaseModel):
     output_file: str
     perfect: bool = False
     seed: int | None = None
-    algorithm: Algorithm = Algorithm.DFS
 
     def validate_position(self, cell: tuple[int, int]) -> bool:
 
