@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 19:03:02 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 19:21:51 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -73,7 +73,7 @@ class MazeVisualizer(MlxWindow):
         maze = self.generator.generate(algorithm)
 
         area = maze.width * maze.height
-        root = floor(sqrt(area)) // 8
+        root = floor(sqrt(area)) // 10
 
         self.animation_speed = max((root, 1))
 
@@ -87,12 +87,10 @@ class MazeVisualizer(MlxWindow):
         if self.maze_visible:
 
             if self.maze_image.maze_animation:
-                for _ in range(self.animation_speed):
-                    self.maze_image.render_gen_step()
+                self.maze_image.render_gen_step(self.animation_speed)
 
             if self.maze_image.path_animation:
-                for _ in range(self.animation_speed):
-                    self.maze_image.render_path_step()
+                self.maze_image.render_path_step(self.animation_speed)
 
         self.put_background()
 

@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 17:38:33 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 19:41:20 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -80,38 +80,38 @@ class MazeImage(MlxImage):
             self.path_animation = False
             self.render_path()
 
-    def render_gen_step(self) -> None:
+    def render_gen_step(self, speed: int) -> None:
         if not self.maze_animation:
             return
 
-        if len(self.maze.steps) == self.maze_animation_index:
-            self.maze_animation = False
-            self.render_complete()
-            return
+        for _ in range(speed):
+            if len(self.maze.steps) == self.maze_animation_index:
+                self.maze_animation = False
+                return self.render_complete()
 
-        col, row, walls = self.maze.steps[-1 - self.maze_animation_index]
+            col, row, walls = self.maze.steps[self.maze_animation_index]
 
-        self.wall_drawer.clear_cell((col, row))
-        self.wall_drawer.draw_walls(walls, (col, row),  False)
+            self.wall_drawer.clear_cell((col, row))
+            self.wall_drawer.draw_walls(walls, (col, row),  False)
 
-        self.maze_animation_index += 1
+            self.maze_animation_index += 1
 
-    def render_path_step(self) -> None:
+    def render_path_step(self, speed: int) -> None:
         if not self.path_animation:
             return
 
-        if len(self.maze.solution) == self.path_animation_index:
-            self.path_animation = False
-            self.path_visible = True
-            self.render_path()
-            return
+        for _ in range(max(speed // 5, 1)):
+            if len(self.maze.solution) == self.path_animation_index:
+                self.path_animation = False
+                self.path_visible = True
+                return self.render_path()
 
-        move = self.maze.solution[self.path_animation_index]
+            move = self.maze.solution[self.path_animation_index]
 
-        self.path_drawer.connect_cells(self.last_move, move)
+            self.path_drawer.connect_cells(self.last_move, move)
 
-        self.last_move = move
-        self.path_animation_index += 1
+            self.last_move = move
+            self.path_animation_index += 1
 
     def render_complete(self) -> None:
 

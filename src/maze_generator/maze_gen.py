@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 01:24:27 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 19:14:15 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -64,8 +64,6 @@ class MazeGen:
 
         if not self.config.perfect:
             steps.extend(remove_dead_ends(grid, blocked))
-
-        steps.reverse()
 
         solution = solve_maze(grid, self.config.entry, self.config.exit)
 

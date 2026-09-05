@@ -6,11 +6,13 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/04 22:16:07 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 22:45:48 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 20:02:55 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from ..utils.neighbours import get_unvisited_neighbours
+from random import Random
+
+from ..utils.neighbours import get_neighbours
 from ..utils.maze_grid import open_wall, number_of_walls
 from ..utils.steps import add_steps
 
@@ -22,8 +24,6 @@ def remove_dead_ends(
 
     width = len(grid[0])
     height = len(grid)
-
-    visited = [[False] * width] * height
 
     dead_ends: list[tuple[int, int]] = []
     steps: list[tuple[int, int, int]] = []
@@ -38,8 +38,8 @@ def remove_dead_ends(
     while len(dead_ends):
         cell = dead_ends.pop()
 
-        neighbours = get_unvisited_neighbours(
-            cell, visited, blocked, width, height
+        neighbours = get_neighbours(
+            cell, blocked, width, height
         )
 
         for neighbour in neighbours:

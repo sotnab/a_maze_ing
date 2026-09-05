@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 01:22:07 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 19:39:17 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -21,7 +21,7 @@ from pydantic import (
 
 class MazeConfig(BaseModel):
     width: int = Field(ge=2, le=120)
-    height: int = Field(ge=2, le=80)
+    height: int = Field(ge=2, le=86)
     entry: tuple[int, int]
     exit: tuple[int, int]
     output_file: str
