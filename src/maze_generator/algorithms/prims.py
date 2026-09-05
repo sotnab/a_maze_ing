@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/04 22:11:11 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 20:17:17 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 20:28:54 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -45,7 +45,7 @@ def generate_prims(
 
         x, y = cell
 
-        if number_of_walls(grid[y][x]) < 2:
+        if width == height == 3 and number_of_walls(grid[y][x]) < 2:
             continue
 
         next_cell = random.choice(neighbours)
