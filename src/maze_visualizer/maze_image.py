@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 19:41:20 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 23:01:57 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -33,8 +33,6 @@ class MazeImage(MlxImage):
         super().__init__(mlx, mlx_ptr, width, height)
 
         self.path_visible = False
-        self.maze_animation = False
-        self.path_animation = False
 
         self.wall_drawer = WallDrawer(self.pixels, (1, 1))
         self.path_drawer = PathDrawer(self.pixels, (1, 1))
@@ -51,43 +49,23 @@ class MazeImage(MlxImage):
         self.path_drawer.set_cell_size(cell_size)
 
         self.path_visible = False
-        self.maze_animation = False
-        self.path_animation = False
 
         self.pixels.fill(0)
 
     def start_maze_animation(self) -> None:
-
-        if hasattr(self, "maze"):
-            self.maze_animation_index = 0
-            self.maze_animation = True
+        self.maze_animation_index = 0
 
     def start_path_animation(self) -> None:
+        self.render_complete()
+        self.path_animation_index = 0
+        self.last_move = self.maze.entry
 
-        if not self.maze_animation and hasattr(self, "maze"):
-            self.render_complete()
-            self.path_animation_index = 0
-            self.path_animation = True
-            self.last_move = self.maze.entry
-
-    def skip_animation(self) -> None:
-
-        if self.maze_animation:
-            self.maze_animation = False
-            self.render_complete()
-
-        if self.path_animation:
-            self.path_animation = False
-            self.render_path()
-
-    def render_gen_step(self, speed: int) -> None:
-        if not self.maze_animation:
-            return
+    def render_maze_step(self, speed: int) -> bool:
 
         for _ in range(speed):
             if len(self.maze.steps) == self.maze_animation_index:
-                self.maze_animation = False
-                return self.render_complete()
+                self.render_complete()
+                return True
 
             col, row, walls = self.maze.steps[self.maze_animation_index]
 
@@ -96,15 +74,14 @@ class MazeImage(MlxImage):
 
             self.maze_animation_index += 1
 
-    def render_path_step(self, speed: int) -> None:
-        if not self.path_animation:
-            return
+        return False
+
+    def render_path_step(self, speed: int) -> bool:
 
         for _ in range(max(speed // 5, 1)):
             if len(self.maze.solution) == self.path_animation_index:
-                self.path_animation = False
-                self.path_visible = True
-                return self.render_path()
+                self.render_path()
+                return True
 
             move = self.maze.solution[self.path_animation_index]
 
@@ -112,6 +89,8 @@ class MazeImage(MlxImage):
 
             self.last_move = move
             self.path_animation_index += 1
+
+        return False
 
     def render_complete(self) -> None:
 
@@ -132,15 +111,19 @@ class MazeImage(MlxImage):
 
     def render_path(self) -> None:
 
-        if hasattr(self, "maze"):
-            self.path_drawer.draw_path(self.maze.solution)
-            self.path_visible = True
+        self.path_drawer.draw_path(self.maze.solution)
+        self.path_visible = True
+
+    def remove_path(self) -> None:
+
+        self.pixels.fill(0)
+        self.render_complete()
+        self.path_visible = False
 
     def switch_colors(self) -> None:
 
-        if not self.maze_animation and not self.path_animation:
-            self.wall_drawer.switch_colors()
-            self.render_complete()
+        self.wall_drawer.switch_colors()
+        self.render_complete()
 
-            if self.path_visible:
-                self.render_path()
+        if self.path_visible:
+            self.render_path()
