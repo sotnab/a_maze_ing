@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/04 22:14:06 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 19:44:14 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 20:48:50 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,7 +14,6 @@ from random import Random
 
 from ..utils.maze_grid import open_wall, close_wall
 from ..utils.neighbours import get_neighbours_excluding
-from ..utils.steps import add_steps
 
 
 def wilson_exit_dead_end(
@@ -31,8 +30,7 @@ def wilson_exit_dead_end(
         last = path.pop()
         current = path[-1]
 
-        close_wall(grid, last, current)
-        add_steps(steps, grid, last, current)
+        close_wall(grid, steps, last, current)
 
         neighbours = get_neighbours_excluding(
             last, current, blocked, width, height)
@@ -52,8 +50,7 @@ def wilson_erase_loop(
         last = path.pop()
         current = path[-1]
 
-        close_wall(grid, last, current)
-        add_steps(steps, grid, last, current)
+        close_wall(grid, steps, last, current)
 
         if path[-1] == cell:
             return
@@ -103,9 +100,7 @@ def generate_wilson(
                 continue
 
             path.append(next_cell)
-            open_wall(grid, cell, next_cell)
-
-            add_steps(steps, grid, cell, next_cell)
+            open_wall(grid, steps, cell, next_cell)
 
             if next_cell not in empty_cells:
                 break

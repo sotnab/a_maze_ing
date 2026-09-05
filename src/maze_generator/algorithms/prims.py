@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/04 22:11:11 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 20:28:54 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 20:48:22 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,7 +14,6 @@ from random import Random
 
 from ..utils.neighbours import get_neighbours_not_in_maze
 from ..utils.maze_grid import open_wall, number_of_walls
-from ..utils.steps import add_steps
 
 
 def generate_prims(
@@ -50,8 +49,7 @@ def generate_prims(
 
         next_cell = random.choice(neighbours)
 
-        open_wall(grid, cell, next_cell)
-        add_steps(steps, grid, cell, next_cell)
+        open_wall(grid, steps, cell, next_cell)
 
         unfinished_cells.append(next_cell)
         maze_cells.append(next_cell)

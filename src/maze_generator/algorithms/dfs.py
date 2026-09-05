@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/04 22:04:37 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 22:45:06 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 20:49:11 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,7 +14,6 @@ from random import Random
 
 from ..utils.maze_grid import open_wall
 from ..utils.neighbours import get_unvisited_neighbours
-from ..utils.steps import add_steps
 
 
 def generate_dfs(
@@ -55,9 +54,7 @@ def generate_dfs(
 
         next_cell = random.choice(neighbours)
 
-        open_wall(grid, current, next_cell)
-
-        add_steps(steps, grid, current, next_cell)
+        open_wall(grid, steps, current, next_cell)
 
         next_x, next_y = next_cell
         visited[next_y][next_x] = True

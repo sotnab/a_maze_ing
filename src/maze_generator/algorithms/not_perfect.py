@@ -6,15 +6,12 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/04 22:16:07 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 20:02:55 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 20:48:10 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from random import Random
-
 from ..utils.neighbours import get_neighbours
 from ..utils.maze_grid import open_wall, number_of_walls
-from ..utils.steps import add_steps
 
 
 def remove_dead_ends(
@@ -46,8 +43,6 @@ def remove_dead_ends(
             x1, y1 = cell
 
             if number_of_walls(grid[y1][x1]) == 3:
-                open_wall(grid, cell, neighbour)
-
-                add_steps(steps, grid, cell, neighbour)
+                open_wall(grid, steps, cell, neighbour)
 
     return steps

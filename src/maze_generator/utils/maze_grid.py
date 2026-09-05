@@ -23,21 +23,15 @@ from ..constants import (
 
 def create_grid(width: int, height: int) -> list[list[int]]:
     """Create a maze with all walls closed."""
-    grid = []
 
-    for y in range(height):
-        row = []
-
-        for x in range(width):
-            row.append(ALL_WALLS)
-
-        grid.append(row)
-
-    return grid
+    return [[ALL_WALLS for _ in range(width)] for _ in range(height)]
 
 
 def open_wall(
-    grid: list[list[int]], first: tuple[int, int], second: tuple[int, int]
+    grid: list[list[int]],
+    steps: list[tuple[int, int, int]],
+    first: tuple[int, int],
+    second: tuple[int, int]
 ) -> None:
     """Open the wall between two neighbouring cells."""
     x1, y1 = first
@@ -62,9 +56,15 @@ def open_wall(
     else:
         raise ValueError("Cells are not neighbours")
 
+    steps.append((x1, y1, grid[y1][x1]))
+    steps.append((x2, y2, grid[y2][x2]))
+
 
 def close_wall(
-    grid: list[list[int]], first: tuple[int, int], second: tuple[int, int]
+    grid: list[list[int]],
+    steps: list[tuple[int, int, int]],
+    first: tuple[int, int],
+    second: tuple[int, int]
 ) -> None:
     """Open the wall between two neighbouring cells."""
     x1, y1 = first
@@ -88,6 +88,9 @@ def close_wall(
 
     else:
         raise ValueError("Cells are not neighbours")
+
+    steps.append((x1, y1, grid[y1][x1]))
+    steps.append((x2, y2, grid[y2][x2]))
 
 
 def grid_to_hex(grid: list[list[int]]) -> list[str]:
