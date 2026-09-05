@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 14:21:39 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 22:51:48 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 23:29:00 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -20,6 +20,8 @@ WALL_WIDTH: Final[int] = 2
 
 MAZE_WIDTH: Final[int] = 1200
 MAZE_HEIGHT: Final[int] = 860
+
+WINDOW_TITLE: Final[str] = "A Maze Ing"
 
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 900

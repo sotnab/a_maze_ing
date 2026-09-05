@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 23:02:04 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/05 23:28:25 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -27,7 +27,8 @@ from .constants import (
     MAZE_WIDTH, MAZE_HEIGHT,
     WINDOW_HEIGHT, WINDOW_WIDTH,
     TITLE_SPRITE_HEIGHT,
-    TITLE_SPRITE_WIDTH
+    TITLE_SPRITE_WIDTH,
+    WINDOW_TITLE
 )
 
 
@@ -42,7 +43,7 @@ class State(Enum):
 class MazeVisualizer(MlxWindow):
     def __init__(self, config_file: str) -> None:
 
-        super().__init__("A Maze Ing")
+        super().__init__(WINDOW_TITLE)
 
         self.state = State.IDLE
 
