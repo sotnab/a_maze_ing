@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:12:18 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 15:39:22 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -16,10 +16,10 @@ from enum import Enum
 from math import sqrt, floor
 from pydantic import ValidationError
 
-from src.maze_gen import MazeGen, MazeConfig
-from .background_image import BackgroundImage
-from .title_image import TitleImage
-from .maze_image import MazeImage
+from maze_gen import MazeGen, MazeConfig
+from .images.background_image import BackgroundImage
+from .images.title_image import TitleImage
+from .images.maze_image import MazeImage
 from .mlx_window import MlxWindow
 from .constants import (
     KEY_1, KEY_2, KEY_3,

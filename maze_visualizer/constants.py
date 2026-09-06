@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  constants.py                                      :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 14:21:39 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 23:29:00 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 15:35:49 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -61,13 +61,13 @@ EVENT_DESTROY: Final[int] = 33
 # Sprites
 
 BG_SPRITE: Final[str] = \
-    "./src/maze_visualizer/sprites/background.bmp"
+    "./maze_visualizer/sprites/background.bmp"
 
 BG_SPRITE_WIDTH: Final[int] = 1200
 BG_SPRITE_HEIGHT: Final[int] = 900
 
 TITLE_SPRITE: Final[str] = \
-    "./src/maze_visualizer/sprites/title.bmp"
+    "./maze_visualizer/sprites/title.bmp"
 
 TITLE_SPRITE_WIDTH: Final[int] = 786
 TITLE_SPRITE_HEIGHT: Final[int] = 218

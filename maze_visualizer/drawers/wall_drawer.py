@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/14 00:39:51 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:12:05 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 15:38:10 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,14 +14,14 @@ from numpy import ndarray
 from itertools import cycle
 
 from .drawer import Drawer
-from .constants import (
+from ..constants import (
     WALL_COLORS,
     PATTERN_COLOR,
     ENTRY_COLOR,
     EXIT_COLOR
 )
 
-from src.maze_gen import Cell
+from maze_gen import Cell
 
 
 class WallDrawer(Drawer):
