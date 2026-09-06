@@ -34,6 +34,10 @@ ENTRY_POINT		:=	a_maze_ing.py
 CONFIG			?=	config.txt
 REQUIREMENTS	:=	requirements.txt
 
+MAZE_GEN_DIR	:=	maze_gen_build
+MAZE_GEN		:=	maze_gen
+LIB				:=	lib
+
 MYPY_FLAGS		:=	--warn-return-any \
 					--warn-unused-ignores \
 					--ignore-missing-imports \
@@ -61,6 +65,12 @@ install: $(VENV_PYTHON)
 run: install
 	@echo "$(GREEN)[🚀 RUNNING]$(RESET) Launching project"
 	@$(VENV_PYTHON) $(ENTRY_POINT) $(CONFIG)
+
+# Build maze_gen package
+build: install
+	@echo "$(Green)[🛠 BUILDING]$(RESET) Building $(MAZE_GEN) package"
+	@$(VENV_PYTHON) -m build $(MAZE_GEN_DIR) --quiet
+	@cp $(MAZE_GEN_DIR)/dist/*.whl $(LIB)/
 
 
 # Run with debugger
