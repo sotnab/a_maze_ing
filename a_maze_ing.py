@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  a_maze_ing.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 00:31:04 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 19:05:29 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 15:11:47 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,7 +14,7 @@ from pydantic import ValidationError
 from sys import stderr, argv
 
 from src.maze_visualizer import MazeVisualizer
-from src.maze_generator import MazeConfig
+from src.maze_gen import MazeConfig
 
 
 def main() -> None:

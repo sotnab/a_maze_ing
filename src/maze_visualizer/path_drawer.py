@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 10:37:47 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:07:16 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 15:12:10 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -15,7 +15,7 @@ from numpy import ndarray
 from .drawer import Drawer
 from .constants import PATH_COLOR
 
-from src.maze_generator import Cell
+from src.maze_gen import Cell
 
 
 class PathDrawer(Drawer):

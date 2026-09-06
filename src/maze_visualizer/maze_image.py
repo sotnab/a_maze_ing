@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_image.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 23:01:57 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 15:11:54 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,7 +14,7 @@ from mlx import Mlx
 from typing import Any
 import numpy
 
-from src.maze_generator import Maze
+from src.maze_gen import Maze
 from .mlx_image import MlxImage
 from .wall_drawer import WallDrawer
 from .path_drawer import PathDrawer
