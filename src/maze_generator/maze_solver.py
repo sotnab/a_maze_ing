@@ -10,7 +10,43 @@
 #                                                                             #
 # *************************************************************************** #
 
-from .utils.maze_grid import get_reachable_neighbours
+from .constants import (
+    NORTH, EAST, SOUTH, WEST
+)
+
+
+def get_reachable_neighbours(
+    grid: list[list[int]], cell: tuple[int, int]
+) -> list[tuple[int, int]]:
+    """Return cells reachable from the current cell."""
+    x, y = cell
+    height = len(grid)
+    width = len(grid[0])
+    walls = grid[y][x]
+
+    neighbours = []
+
+    # North
+    if y > 0:
+        if (walls & NORTH) == 0:
+            neighbours.append((x, y - 1))
+
+    # East
+    if x < width - 1:
+        if (walls & EAST) == 0:
+            neighbours.append((x + 1, y))
+
+    # South
+    if y < height - 1:
+        if (walls & SOUTH) == 0:
+            neighbours.append((x, y + 1))
+
+    # West
+    if x > 0:
+        if (walls & WEST) == 0:
+            neighbours.append((x - 1, y))
+
+    return neighbours
 
 
 def create_visited(width: int, height: int) -> list[list[bool]]:

@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 23:28:25 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 02:00:23 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -16,7 +16,7 @@ from enum import Enum
 from math import sqrt, floor
 from pydantic import ValidationError
 
-from src.maze_generator import MazeGen, MazeConfig, MazeAlgorithm
+from src.maze_generator import MazeGen, MazeConfig
 from .background_image import BackgroundImage
 from .title_image import TitleImage
 from .maze_image import MazeImage
@@ -69,8 +69,16 @@ class MazeVisualizer(MlxWindow):
         self.create_window(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.run()
 
-    def show_maze(self, algorithm: MazeAlgorithm) -> None:
-        maze = self.generator.generate(algorithm)
+    def show_maze(self, keycode: int) -> None:
+
+        if keycode == KEY_1:
+            maze = self.generator.dfs()
+
+        if keycode == KEY_2:
+            maze = self.generator.wilson()
+
+        if keycode == KEY_3:
+            maze = self.generator.prims()
 
         area = maze.width * maze.height
         speed = floor(sqrt(area)) // 10
@@ -86,6 +94,7 @@ class MazeVisualizer(MlxWindow):
 
         self.put_background()
 
+        print(self.state)
         if self.state == State.MAZE_ANIMATION:
 
             if self.maze_image.render_maze_step(self.animation_speed):
@@ -109,14 +118,8 @@ class MazeVisualizer(MlxWindow):
         super().key_handler(keycode, _)
 
         try:
-            if keycode == KEY_1:
-                self.show_maze(MazeAlgorithm.DFS)
-
-            if keycode == KEY_2:
-                self.show_maze(MazeAlgorithm.WILSON)
-
-            if keycode == KEY_3:
-                self.show_maze(MazeAlgorithm.PRIMS)
+            if keycode in (KEY_1, KEY_2, KEY_3):
+                self.show_maze(keycode)
 
         except (ValidationError) as e:
             MazeConfig.handle_validation_error(e)

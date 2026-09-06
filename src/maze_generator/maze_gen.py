@@ -6,80 +6,75 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 19:14:15 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 02:01:36 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from random import Random
-from enum import Enum
 
 from .maze import Maze
 from .maze_solver import solve_maze
-from .utils.pattern_42 import get_42_cells
+from .pattern_42 import get_42_cells
 from .config.maze_config import MazeConfig
-from .algorithms.dfs import generate_dfs
-from .algorithms.wilson import generate_wilson
-from .algorithms.prims import generate_prims
-from .algorithms.not_perfect import remove_dead_ends
-from .utils.maze_grid import (
-    create_grid,
-    grid_to_hex
-)
 
+from .algorithms.maze_algorithm import MazeAlgorithm
+from .algorithms.maze_dfs import MazeDfs
+from .algorithms.maze_wilson import MazeWilson
+from .algorithms.maze_prims import MazePrims
 
-class MazeAlgorithm(Enum):
-    DFS = 0
-    WILSON = 1,
-    PRIMS = 2
+from .types import Grid
+from .constants import NORTH, EAST, SOUTH, WEST, ALL_WALLS
 
 
 class MazeGen:
     def __init__(self, config_file: str) -> None:
         self.config_file = config_file
 
-    def generate(self, algorithm: MazeAlgorithm) -> Maze:
-        self.config = MazeConfig.from_file(self.config_file)
+    def dfs(self) -> Maze:
+        return self.generate(MazeDfs)
 
-        random = Random(self.config.seed)
+    def wilson(self) -> Maze:
+        return self.generate(MazeWilson)
 
-        grid = create_grid(self.config.width, self.config.height)
+    def prims(self) -> Maze:
+        return self.generate(MazePrims)
+
+    def generate(self, maze_algorithm: type[MazeAlgorithm]) -> Maze:
+        config = MazeConfig.from_file(self.config_file)
+
+        random = Random(config.seed)
+
+        grid = self.create_grid(config.width, config.height)
 
         blocked = get_42_cells(
-            self.config.width,
-            self.config.height,
-            self.config.entry,
-            self.config.exit,
+            config.width,
+            config.height,
+            config.entry,
+            config.exit,
         )
 
-        steps = []
+        algorithm = maze_algorithm(grid, blocked, random, config.entry)
 
-        if algorithm == MazeAlgorithm.DFS:
-            steps = generate_dfs(grid, self.config.entry, blocked, random)
+        steps = algorithm.generate()
 
-        if algorithm == MazeAlgorithm.WILSON:
-            steps = generate_wilson(grid, self.config.exit, blocked, random)
+        if not config.perfect:
+            steps = algorithm.remove_dead_ends()
 
-        if algorithm == MazeAlgorithm.PRIMS:
-            steps = generate_prims(grid, self.config.entry, blocked, random)
+        solution = solve_maze(grid, config.entry, config.exit)
 
-        if not self.config.perfect:
-            steps.extend(remove_dead_ends(grid, blocked))
-
-        solution = solve_maze(grid, self.config.entry, self.config.exit)
-
-        data = grid_to_hex(grid)
+        data = self.grid_to_hex(grid)
 
         maze = Maze(
             data,
-            self.config.width,
-            self.config.height,
-            self.config.entry,
-            self.config.exit,
+            config.width,
+            config.height,
+            config.entry,
+            config.exit,
             solution,
             steps
         )
 
-        self.save_to_file(maze, self.config.output_file)
+        self.save_to_file(maze, config.output_file)
 
         return maze
 
@@ -92,8 +87,8 @@ class MazeGen:
 
             out_file.write("\n")
 
-            out_file.write(",".join(map(str, self.config.entry)) + "\n")
-            out_file.write(",".join(map(str, self.config.entry)) + "\n")
+            out_file.write(",".join(map(str, maze.entry)) + "\n")
+            out_file.write(",".join(map(str, maze.exit)) + "\n")
 
             out_file.write(self.path_directed(maze.solution) + "\n")
 
@@ -119,3 +114,30 @@ class MazeGen:
             last_cell = cell
 
         return directed_path
+
+    def number_of_walls(self, walls: int) -> int:
+        count = 0
+
+        for direction in [NORTH, EAST, SOUTH, WEST]:
+            if walls & direction > 0:
+                count += 1
+
+        return count
+
+    def create_grid(self, width: int, height: int) -> list[list[int]]:
+
+        return [[ALL_WALLS for _ in range(width)] for _ in range(height)]
+
+    def grid_to_hex(self, grid: Grid) -> list[str]:
+        """Convert the grid to hexadecimal rows."""
+        result = []
+
+        for row in grid:
+            hex_row = ""
+
+            for cell in row:
+                hex_row += format(cell, "X")
+
+            result.append(hex_row)
+
+        return result

@@ -12,7 +12,7 @@
 
 from sys import stderr
 
-from ..constants import PATTERN_42
+from .constants import PATTERN_42
 
 
 def get_42_cells(

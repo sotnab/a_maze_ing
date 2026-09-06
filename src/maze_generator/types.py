@@ -1,17 +1,19 @@
 # ************************************************************************* #
 #                                                                           #
 #                                                      :::      ::::::::    #
-#  __init__.py                                       :+:      :+:    :+:    #
+#  types.py                                          :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
-#  Created: 2026/08/12 17:37:29 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 01:30:04 by wbaran          ###   ########.fr        #
+#  Created: 2026/09/06 00:30:16 by wbaran          #+#    #+#               #
+#  Updated: 2026/09/06 00:35:18 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from .maze import Maze
-from .maze_gen import MazeGen
-from .config.maze_config import MazeConfig
+from typing import TypeAlias
 
-__all__ = ["Maze", "MazeGen", "MazeConfig"]
+Cell: TypeAlias = tuple[int, int]
+
+Step: TypeAlias = tuple[int, int, int]
+
+Grid: TypeAlias = list[list[int]]
