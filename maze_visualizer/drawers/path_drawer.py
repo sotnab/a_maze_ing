@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 10:37:47 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:38:03 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 16:31:49 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -24,7 +24,7 @@ class PathDrawer(Drawer):
 
         self.set_cell_size(cell_size)
 
-    def set_cell_size(self, cell_size):
+    def set_cell_size(self, cell_size: tuple[int, int]) -> None:
 
         super().set_cell_size(cell_size)
         self.path_width = min((self.cell_width, self.cell_height)) // 5

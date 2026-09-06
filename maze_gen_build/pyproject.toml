@@ -16,3 +16,6 @@ authors = [
 dependencies = [
     "pydantic==2.13.5"
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]

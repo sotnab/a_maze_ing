@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:48:30 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 14:54:18 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 16:34:15 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -65,9 +65,9 @@ class MlxImage:
 
         sprite_buffer = numpy.frombuffer(data[138:], dtype=numpy.uint32)
         sprite_pixels = sprite_buffer.reshape((height, width))
-        sprite_pixels = sprite_pixels[::-1, ::]
+        reversed_pixels = sprite_pixels[::-1, ::]
 
         end_y = y + height
         end_x = x + width
 
-        self.pixels[y:end_y, x:end_x] = sprite_pixels
+        self.pixels[y:end_y, x:end_x] = reversed_pixels

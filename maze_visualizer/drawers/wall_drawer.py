@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/14 00:39:51 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:38:10 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 16:31:10 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -36,7 +36,7 @@ class WallDrawer(Drawer):
         self.wall_color = next(self.wall_colors)
         self.pattern_color = PATTERN_COLOR
 
-    def set_cell_size(self, cell_size) -> None:
+    def set_cell_size(self, cell_size: tuple[int, int]) -> None:
         super().set_cell_size(cell_size)
         self.wall_width = self.get_wall_width()
 
