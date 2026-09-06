@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "maze_gen"
+version = "0.1.0"
+description = "Maze generation package"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE.md"}
+authors = [
+  {name = "Wiktor Baran", email = "wbaran@student.42warsaw.pl"},
+  {name = " Jarosław Żurek", email = "jazurek@student.42warsaw.pl"}
+]
+dependencies = [
+    "pydantic==2.13.5"
+]

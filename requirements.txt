@@ -1,4 +1,5 @@
 ./lib/mlx-2.2-py3-none-any.whl
+./lib/maze_gen-0.1.0-py3-none-any.whl
 pydantic==2.13.5
 numpy==2.2.6
-matplotlib==3.10.9
+build==1.6.0
