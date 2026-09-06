@@ -3,27 +3,33 @@
 #                                                      :::      ::::::::    #
 #  drawer.py                                         :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 12:17:20 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/04 00:44:54 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 15:02:19 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from numpy import ndarray
 
+from src.maze_generator import Cell
+
 
 class Drawer:
     def __init__(self, pixels: ndarray, cell_size: tuple[int, int]) -> None:
         self.pixels = pixels
-        self.cell_size = cell_size
+        self.set_cell_size(cell_size)
 
-    def cell_coords(self, cell: tuple[int, int]) -> tuple[int, int]:
-        col, row = cell
+    def set_cell_size(self, cell_size: tuple[int, int]) -> None:
+        width, height = cell_size
 
-        cell_width, cell_height = self.cell_size
+        self.cell_width = width
+        self.cell_height = height
+
+    def cell_coords(self, cell: Cell) -> tuple[int, int]:
+        x, y = cell
 
         return (
-            col * cell_width,
-            row * cell_height
+            x * self.cell_width,
+            y * self.cell_height
         )

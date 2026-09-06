@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_visualizer.py                                :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 02:00:23 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 13:54:41 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -94,7 +94,6 @@ class MazeVisualizer(MlxWindow):
 
         self.put_background()
 
-        print(self.state)
         if self.state == State.MAZE_ANIMATION:
 
             if self.maze_image.render_maze_step(self.animation_speed):

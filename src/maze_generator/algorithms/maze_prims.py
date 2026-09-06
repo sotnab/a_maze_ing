@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_prims.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/06 01:12:57 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 01:57:13 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 14:56:12 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -22,7 +22,7 @@ class MazePrims(MazeAlgorithm):
         grid: Grid,
         blocked: list[Cell],
         random: Random,
-        entry: tuple[int, int],
+        entry: Cell,
     ) -> None:
 
         super().__init__(grid, blocked, random, entry)

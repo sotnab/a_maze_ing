@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_wilson.py                                    :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/06 00:43:27 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 01:57:54 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 14:19:57 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -40,12 +40,11 @@ class MazeWilson(MazeAlgorithm):
         while len(empty_cells) > 0:
 
             path = []
-
             path.append(self.random.choice(empty_cells))
 
             while True:
-                cell = path[-1]
 
+                cell = path[-1]
                 previous_cell = path[-2] if len(path) > 1 else None
 
                 neighbours = self.get_neighbours_excluding(cell, previous_cell)

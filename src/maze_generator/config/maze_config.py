@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_config.py                                    :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/05 19:39:17 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/06 14:40:00 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -18,18 +18,19 @@ from pydantic import (
     model_validator
 )
 
+from ..types import Cell
+
 
 class MazeConfig(BaseModel):
     width: int = Field(ge=2, le=120)
     height: int = Field(ge=2, le=86)
-    entry: tuple[int, int]
-    exit: tuple[int, int]
+    entry: Cell
+    exit: Cell
     output_file: str
     perfect: bool = False
     seed: int | None = None
 
-    def validate_position(self, cell: tuple[int, int]) -> bool:
-
+    def validate_position(self, cell: Cell) -> bool:
         x, y = cell
 
         return (0 <= x < self.width and 0 <= y < self.height)
@@ -50,7 +51,7 @@ class MazeConfig(BaseModel):
 
     @field_validator("entry", "exit", mode="before")
     @classmethod
-    def validate_coords(cls, value: str) -> tuple[int, int]:
+    def validate_coords(cls, value: str) -> Cell:
 
         splitted = value.split(",")
 
@@ -62,7 +63,7 @@ class MazeConfig(BaseModel):
     @classmethod
     def from_file(cls, filename: str) -> "MazeConfig":
 
-        config = {}
+        config: dict[str, str] = {}
 
         with open(filename, encoding="utf-8") as file:
 
