@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 16:21:04 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 20:27:49 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -128,11 +128,11 @@ class MazeGen:
             print("Maze is too small for the 42 pattern", file=stderr)
             return []
 
-        start_x = (config.width // 2) - (pattern_width // 2)
-        start_y = (config.height // 2) - (pattern_height // 2)
+        pattern_x = (config.width // 2) - (pattern_width // 2)
+        pattern_y = (config.height // 2) - (pattern_height // 2)
 
-        for y in range(start_y, config.height - pattern_height):
-            for x in range(start_x, config.width - pattern_width):
+        for start_y in range(pattern_y, config.height - pattern_height):
+            for start_x in range(pattern_x, config.width - pattern_width):
                 cells = []
                 valid_position = True
 

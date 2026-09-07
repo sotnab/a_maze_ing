@@ -71,7 +71,7 @@ build: install-mazegen
 # Install dependencies
 install: $(VENV_PYTHON) build
 	@echo "$(MAGENTA)[🔗 INSTALL]$(RESET) Installing dependencies"
-	@$(VENV_PYTHON) -m pip install --quiet -r $(REQUIREMENTS)
+	@$(VENV_PYTHON) -m pip install --quiet --force-reinstall -r $(REQUIREMENTS)
 
 
 # Run project
