@@ -1,5 +1,6 @@
 ./lib/mlx-2.2-py3-none-any.whl
 ./lib/maze_gen-0.1.0-py3-none-any.whl
-pydantic==2.13.5
 numpy==2.2.6
-build==1.6.0
+pydantic==2.13.5
+flake8==7.3.0
+mypy==2.3.1

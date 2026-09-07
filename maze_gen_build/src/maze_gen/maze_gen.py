@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_gen.py                                       :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 16:10:40 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 16:21:04 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -30,27 +30,24 @@ from .constants import (
 
 
 class MazeGen:
-    def __init__(self, config_file: str) -> None:
-        self.config_file = config_file
+    def dfs(self, config: MazeConfig) -> Maze:
+        return self.generate(MazeDfs, config)
 
-    def dfs(self) -> Maze:
-        return self.generate(MazeDfs)
+    def wilson(self, config: MazeConfig) -> Maze:
+        return self.generate(MazeWilson, config)
 
-    def wilson(self) -> Maze:
-        return self.generate(MazeWilson)
+    def prims(self, config: MazeConfig) -> Maze:
+        return self.generate(MazePrims, config)
 
-    def prims(self) -> Maze:
-        return self.generate(MazePrims)
-
-    def generate(self, maze_algorithm: type[MazeAlgorithm]) -> Maze:
-        config = MazeConfig.from_file(self.config_file)
+    def generate(
+        self,
+        maze_algorithm: type[MazeAlgorithm],
+        config: MazeConfig
+    ) -> Maze:
 
         random = Random(config.seed)
-
         grid = self.create_grid(config.width, config.height)
-
         blocked = self.get_42_cells(config)
-
         algorithm = maze_algorithm(grid, blocked, random, config.entry)
 
         steps = algorithm.generate()
@@ -73,8 +70,6 @@ class MazeGen:
             solution,
             steps
         )
-
-        self.save_to_file(maze, config.output_file)
 
         return maze
 

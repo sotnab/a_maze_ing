@@ -11,38 +11,39 @@
 # **************************************************************************** #
 
 # Escape characters
-ESC				:=	$(shell printf '\033')
-RESET			:=	$(ESC)[0m
-DIM				:=	$(ESC)[2m
+ESC						:=	$(shell printf '\033')
+RESET					:=	$(ESC)[0m
+DIM						:=	$(ESC)[2m
 
 # Colors
-BLACK			:=	$(ESC)[30m
-RED				:=	$(ESC)[31m
-GREEN			:=	$(ESC)[32m
-YELLOW			:=	$(ESC)[33m
-BLUE			:=	$(ESC)[34m
-MAGENTA			:=	$(ESC)[35m
-CYAN			:=	$(ESC)[36m
-WHITE			:=	$(ESC)[37m
+BLACK					:=	$(ESC)[30m
+RED						:=	$(ESC)[31m
+GREEN					:=	$(ESC)[32m
+YELLOW					:=	$(ESC)[33m
+BLUE					:=	$(ESC)[34m
+MAGENTA					:=	$(ESC)[35m
+CYAN					:=	$(ESC)[36m
+WHITE					:=	$(ESC)[37m
 
 # Project
-PYTHON			:=	python3
-VENV			:=	amz_venv
-VENV_PYTHON		:=	$(VENV)/bin/python
+PYTHON					:=	python3
+VENV					:=	amz_venv
+VENV_PYTHON				:=	$(VENV)/bin/python
 
-ENTRY_POINT		:=	a_maze_ing.py
-CONFIG			?=	config.txt
-REQUIREMENTS	:=	requirements.txt
+ENTRY_POINT				:=	a_maze_ing.py
+CONFIG					?=	config.txt
+REQUIREMENTS			:=	requirements.txt
+REQUIREMENTS_MAZE_GEN	:=	requirements_maze_gen.txt
 
-MAZE_GEN_DIR	:=	maze_gen_build
-MAZE_GEN		:=	maze_gen
-LIB				:=	lib
+MAZE_GEN_DIR			:=	maze_gen_build
+MAZE_GEN				:=	maze_gen
+LIB						:=	lib
 
-MYPY_FLAGS		:=	--warn-return-any \
-					--warn-unused-ignores \
-					--ignore-missing-imports \
-					--disallow-untyped-defs \
-					--check-untyped-defs
+MYPY_FLAGS				:=	--warn-return-any \
+							--warn-unused-ignores \
+							--ignore-missing-imports \
+							--disallow-untyped-defs \
+							--check-untyped-defs
 
 
 all: run
@@ -54,23 +55,29 @@ $(VENV_PYTHON):
 	@$(PYTHON) -m venv $(VENV)
 
 
+# Install dependencies for building mazegen package
+install-mazegen: $(VENV_PYTHON)
+	@echo "$(MAGENTA)[🔗 INSTALL]$(RESET) Installing mazegen dependencies"
+	@$(VENV_PYTHON) -m pip install --quiet -r $(REQUIREMENTS_MAZE_GEN)
+
+
+# Build maze_gen package
+build: install-mazegen
+	@echo "$(Green)[🛠 BUILDING]$(RESET) Building $(MAZE_GEN) package"
+	@$(VENV_PYTHON) -m build $(MAZE_GEN_DIR) --quiet
+	@cp -f $(MAZE_GEN_DIR)/dist/*.whl $(LIB)/
+
+
 # Install dependencies
-install: $(VENV_PYTHON)
+install: $(VENV_PYTHON) build
 	@echo "$(MAGENTA)[🔗 INSTALL]$(RESET) Installing dependencies"
 	@$(VENV_PYTHON) -m pip install --quiet -r $(REQUIREMENTS)
-	@$(VENV_PYTHON) -m pip install --quiet flake8 mypy
 
 
 # Run project
 run: install
 	@echo "$(GREEN)[🚀 RUNNING]$(RESET) Launching project"
 	@$(VENV_PYTHON) $(ENTRY_POINT) $(CONFIG)
-
-# Build maze_gen package
-build: install
-	@echo "$(Green)[🛠 BUILDING]$(RESET) Building $(MAZE_GEN) package"
-	@$(VENV_PYTHON) -m build $(MAZE_GEN_DIR) --quiet
-	@cp $(MAZE_GEN_DIR)/dist/*.whl $(LIB)/
 
 
 # Run with debugger
@@ -104,10 +111,11 @@ clean:
 		-exec rm -f {} +
 
 
-# Remove temporary files and virtual environment
+# Remove temporary files, mazegen package and virtual environment
 fclean: clean
 	@echo "$(YELLOW)[🧹 FCLEAN]$(RESET) Removing virtual environment"
 	@rm -rf $(VENV)
+	@rm -rf $(LIB)/$(MAZE_GEN)
 
 
 # Reinstall

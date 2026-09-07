@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_visualizer.py                                :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:39:22 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 16:22:54 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -47,7 +47,8 @@ class MazeVisualizer(MlxWindow):
 
         self.state = State.IDLE
 
-        self.generator = MazeGen(config_file)
+        self.generator = MazeGen()
+        self.config_file = config_file
 
         self.background_image = BackgroundImage(
             self.mlx, self.mlx_ptr,
@@ -70,15 +71,18 @@ class MazeVisualizer(MlxWindow):
         self.run()
 
     def show_maze(self, keycode: int) -> None:
+        config = MazeConfig.from_file(self.config_file)
 
         if keycode == KEY_1:
-            maze = self.generator.dfs()
+            maze = self.generator.dfs(config)
 
         if keycode == KEY_2:
-            maze = self.generator.wilson()
+            maze = self.generator.wilson(config)
 
         if keycode == KEY_3:
-            maze = self.generator.prims()
+            maze = self.generator.prims(config)
+
+        self.generator.save_to_file(maze, config.output_file)
 
         area = maze.width * maze.height
         speed = floor(sqrt(area)) // 10
