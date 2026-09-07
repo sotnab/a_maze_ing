@@ -33,13 +33,20 @@ This project is designed for a Linux environment and uses Python 3.10+ with a vi
 
 ### Install and run
 
+Before running project first you have to build maze_gen package.
 From the project root, run:
+
+```bash
+make build
+```
+
+After building run using:
 
 ```bash
 make
 ```
 
-This command creates the virtual environment, installs dependencies, builds the local maze package,  
+This command creates the virtual environment, installs dependencies,  
 and starts the program with the default config file.
 
 Other commands:
@@ -47,7 +54,6 @@ Other commands:
 ```bash
 make install          # install dependencies
 make install-mazegen  # install dependencies for the maze generator package
-make build            # build the maze_gen wheel
 make debug            # run with Python debugger
 make lint             # run flake8 and mypy
 make lint-strict      # stricter static checks
@@ -106,7 +112,8 @@ SEED=42
 
 Notes:
 
-- `WIDTH` and `HEIGHT` must be between 2 and the project limits.
+- `WIDTH` must be between 2 and 120.
+- `HEIGHT` must be between 2 and 86.
 - Entry and exit must stay inside the maze bounds.
 - Entry and exit cannot be the same cell.
 - Values are validated through Pydantic models before execution.
@@ -140,7 +147,7 @@ The `maze_gen` package contains:
 - `MazeGen`: entry point for generating mazes
 - Typealiases
 
-See maze_gen documentation below for more details
+See `maze_gen` documentation below for more details
 
 ## Project management and teamwork
 
@@ -149,17 +156,10 @@ The project was done by two students from the 42 curriculum:
 - **wbaran**: maze visualization, UI integration, Wilson and Prim algorithms
 - **jazurek**: project automation with `Makefile`, solver logic, DFS implementation
 
-### Planning and evolution
+### Planning
 
 At the beginning, we split the work between the maze generation library and the display layer.  
 The core idea was to keep generation logic independent from the graphics, which helped later when we had to add algorithms.
-
-As the project evolved, we adjusted the plan around the real constraints of the code:
-
-- we needed to validate config values early and clearly
-- animation timing had to be tuned for different maze sizes
-- the generation logic needed to be reusable
-- we had to keep compatibility between the library and the visualizer
 
 ### What worked well
 

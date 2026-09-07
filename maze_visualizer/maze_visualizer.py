@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 16:22:54 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:45:57 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -33,6 +33,8 @@ from .constants import (
 
 
 class State(Enum):
+    """Current animation state of the visualizer."""
+
     IDLE = 0
     MAZE_ANIMATION = 1
     MAZE = 2
@@ -41,6 +43,8 @@ class State(Enum):
 
 
 class MazeVisualizer(MlxWindow):
+    """Display the maze and animate generation and solving."""
+
     def __init__(self, config_file: str) -> None:
 
         super().__init__(WINDOW_TITLE)
@@ -66,11 +70,13 @@ class MazeVisualizer(MlxWindow):
         )
 
     def show_window(self) -> None:
+        """Open the window and start the loop."""
 
         self.create_window(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.run()
 
     def show_maze(self, keycode: int) -> None:
+        """Generate a maze based on the selected key."""
         config = MazeConfig.from_file(self.config_file)
 
         if keycode == KEY_1:
@@ -95,6 +101,7 @@ class MazeVisualizer(MlxWindow):
         self.state = State.MAZE_ANIMATION
 
     def loop(self, _: Any) -> None:
+        """Update the animation state and redraw the frame."""
 
         self.put_background()
 
@@ -117,6 +124,7 @@ class MazeVisualizer(MlxWindow):
         super().loop(_)
 
     def key_handler(self, keycode: int, _: Any) -> None:
+        """Handle keyboard input for maze generation and controls."""
 
         super().key_handler(keycode, _)
 
@@ -143,12 +151,15 @@ class MazeVisualizer(MlxWindow):
             self.switch_color()
 
     def put_maze(self) -> None:
+        """Draw the current maze image on the screen."""
         self.put_image(self.maze_image.image, 0, 0)
 
     def put_background(self) -> None:
+        """Draw the background image on the screen."""
         self.put_image(self.background_image.image, 0, 0)
 
     def put_title(self) -> None:
+        """Draw the title image in the middle of the screen."""
 
         pos_x = (MAZE_WIDTH // 2) - (TITLE_SPRITE_WIDTH // 2)
         pos_y = (MAZE_HEIGHT // 2) - (TITLE_SPRITE_HEIGHT // 2)
@@ -156,6 +167,7 @@ class MazeVisualizer(MlxWindow):
         self.put_image(self.title_image.image, pos_x, pos_y)
 
     def switch_path(self) -> None:
+        """Toggle the display of the solved path."""
 
         if self.state == State.MAZE:
             self.state = State.PATH_ANIMATION
@@ -166,6 +178,7 @@ class MazeVisualizer(MlxWindow):
             self.maze_image.remove_path()
 
     def skip_animation(self) -> None:
+        """Finish the current animation immediately."""
 
         if self.state == State.MAZE_ANIMATION:
             self.maze_image.render_complete()
@@ -173,9 +186,10 @@ class MazeVisualizer(MlxWindow):
 
         if self.state == State.PATH_ANIMATION:
             self.maze_image.render_path()
-            self.state = State.MAZE
+            self.state = State.MAZE_AND_PATH
 
     def switch_color(self) -> None:
+        """Switch the maze drawing palette."""
 
         if self.state != State.MAZE_ANIMATION:
             if self.state != State.PATH_ANIMATION:

@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_wilson.py                                    :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/06 00:43:27 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:33:47 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,6 +17,8 @@ from ..types import Cell, Grid, Step
 
 
 class MazeWilson(MazeAlgorithm):
+    """Generate a maze using Wilson's loop-erased random walk."""
+
     def __init__(
         self,
         grid: Grid,
@@ -24,10 +26,12 @@ class MazeWilson(MazeAlgorithm):
         random: Random,
         entry: Cell
     ) -> None:
+        """Initialize the Wilson maze generator."""
 
         super().__init__(grid, blocked, random, entry)
 
     def generate(self) -> list[Step]:
+        """Create a maze using Wilson's algorithm."""
 
         empty_cells = [(x, y) for x in range(self.width)
                        for y in range(self.height)]
@@ -71,6 +75,7 @@ class MazeWilson(MazeAlgorithm):
         return self.steps
 
     def exit_dead_end(self, path: list[Cell]) -> None:
+        """Backtrack and close a dead-end branch."""
 
         while len(path) > 1:
 
@@ -85,6 +90,7 @@ class MazeWilson(MazeAlgorithm):
                 return
 
     def erase_loop(self, path: list[Cell], cell: Cell) -> None:
+        """Remove a loop from the current random walk."""
 
         while True:
             last = path.pop()
@@ -97,6 +103,7 @@ class MazeWilson(MazeAlgorithm):
 
     def get_neighbours_excluding(
             self, cell: Cell, excluded: Cell | None) -> list[Cell]:
+        """Return neighbours excluding the previous path cell."""
 
         neighbours = self.get_neighbours(cell)
 

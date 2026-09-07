@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  path_drawer.py                                    :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 10:37:47 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 16:31:49 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -19,17 +19,22 @@ from maze_gen import Cell
 
 
 class PathDrawer(Drawer):
+    """Draw the maze solution as a line between cells."""
+
     def __init__(self, pixels: ndarray, cell_size: tuple[int, int]) -> None:
+        """Initialize the path drawer."""
         super().__init__(pixels, cell_size)
 
         self.set_cell_size(cell_size)
 
     def set_cell_size(self, cell_size: tuple[int, int]) -> None:
+        """Set the cell size and compute the path thickness."""
 
         super().set_cell_size(cell_size)
         self.path_width = min((self.cell_width, self.cell_height)) // 5
 
     def connect_down(self, cell: Cell) -> None:
+        """Draw a vertical path segment from a cell."""
         x, y = self.cell_coords(cell)
 
         offset_y = (self.cell_height // 2) - (self.path_width // 2)
@@ -44,6 +49,7 @@ class PathDrawer(Drawer):
         self.pixels[start_y:end_y, start_x:end_x] = PATH_COLOR
 
     def connect_right(self, cell: Cell) -> None:
+        """Draw a horizontal path segment from a cell."""
         x, y = self.cell_coords(cell)
 
         offset_y = (self.cell_height // 2) - (self.path_width // 2)
@@ -58,6 +64,7 @@ class PathDrawer(Drawer):
         self.pixels[start_y:end_y, start_x:end_x] = PATH_COLOR
 
     def connect_cells(self, cell1: Cell, cell2: Cell) -> None:
+        """Connect two neighbouring cells with a path segment."""
 
         col1, row1 = cell1
         col2, row2 = cell2
@@ -75,6 +82,7 @@ class PathDrawer(Drawer):
             self.connect_right(cell2)
 
     def draw_path(self, path: list[Cell]) -> None:
+        """Draw the whole path across the maze."""
 
         for index, cell in enumerate(path):
             if index > 0:

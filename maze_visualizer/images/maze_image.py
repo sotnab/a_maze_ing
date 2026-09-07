@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_image.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:39:12 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -21,6 +21,8 @@ from ..drawers.path_drawer import PathDrawer
 
 
 class MazeImage(MlxImage):
+    """Render the maze grid and path with animated drawing."""
+
     pixels: numpy.ndarray
 
     def __init__(
@@ -29,6 +31,7 @@ class MazeImage(MlxImage):
         width: int,
         height: int
     ) -> None:
+        """Initialize the maze drawing surface."""
 
         super().__init__(mlx, mlx_ptr, width, height)
 
@@ -38,6 +41,7 @@ class MazeImage(MlxImage):
         self.path_drawer = PathDrawer(self.pixels, (1, 1))
 
     def set_maze(self, maze: Maze) -> None:
+        """Assign the maze to draw and reset the display state."""
         self.maze = maze
 
         cell_width = self.width // maze.width
@@ -53,14 +57,17 @@ class MazeImage(MlxImage):
         self.pixels.fill(0)
 
     def start_maze_animation(self) -> None:
+        """Reset the generation animation progress."""
         self.maze_animation_index = 0
 
     def start_path_animation(self) -> None:
+        """Reset the path animation progress."""
         self.render_complete()
         self.path_animation_index = 0
         self.last_move = self.maze.entry
 
     def render_maze_step(self, speed: int) -> bool:
+        """Render one step of the maze generation animation."""
 
         for _ in range(speed):
             if len(self.maze.steps) == self.maze_animation_index:
@@ -77,6 +84,7 @@ class MazeImage(MlxImage):
         return False
 
     def render_path_step(self, speed: int) -> bool:
+        """Render one step of the path animation."""
 
         for _ in range(max(speed // 5, 1)):
             if len(self.maze.solution) == self.path_animation_index:
@@ -93,6 +101,7 @@ class MazeImage(MlxImage):
         return False
 
     def render_complete(self) -> None:
+        """Redraw the full maze without animation."""
 
         self.pixels.fill(0)
 
@@ -110,17 +119,20 @@ class MazeImage(MlxImage):
                     self.wall_drawer.draw_walls(walls, pos, True)
 
     def render_path(self) -> None:
+        """Draw the shortest solution path over the maze."""
 
         self.path_drawer.draw_path(self.maze.solution)
         self.path_visible = True
 
     def remove_path(self) -> None:
+        """Hide the current solution path from the maze."""
 
         self.pixels.fill(0)
         self.render_complete()
         self.path_visible = False
 
     def switch_colors(self) -> None:
+        """Switch the maze drawing colors."""
 
         self.wall_drawer.switch_colors()
         self.render_complete()

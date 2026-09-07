@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_config.py                                    :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:33:29 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -22,6 +22,8 @@ from ..types import Cell
 
 
 class MazeConfig(BaseModel):
+    """Validate and store maze configuration data."""
+
     width: int = Field(ge=2, le=120)
     height: int = Field(ge=2, le=86)
     entry: Cell
@@ -31,12 +33,14 @@ class MazeConfig(BaseModel):
     seed: int | None = None
 
     def validate_position(self, cell: Cell) -> bool:
+        """Check whether the cell is inside the maze bounds."""
         x, y = cell
 
         return (0 <= x < self.width and 0 <= y < self.height)
 
     @model_validator(mode="after")
     def validate_bounds(self) -> "MazeConfig":
+        """Ensure the entry and exit are valid and distinct."""
 
         if self.entry == self.exit:
             raise ValueError("Entry and exit are the same")
@@ -52,6 +56,7 @@ class MazeConfig(BaseModel):
     @field_validator("entry", "exit", mode="before")
     @classmethod
     def validate_coords(cls, value: str) -> Cell:
+        """Parse a coordinate string into a cell tuple."""
 
         splitted = value.split(",")
 
@@ -62,6 +67,7 @@ class MazeConfig(BaseModel):
 
     @classmethod
     def from_file(cls, filename: str) -> "MazeConfig":
+        """Load maze settings from a configuration file."""
 
         config: dict[str, str] = {}
 
@@ -74,6 +80,7 @@ class MazeConfig(BaseModel):
 
     @staticmethod
     def parse_line(config: dict[str, str], line: str) -> None:
+        """Add a key/value pair from a config line."""
 
         if line.startswith(("#", "\n")):
             return
@@ -89,6 +96,7 @@ class MazeConfig(BaseModel):
 
     @staticmethod
     def handle_validation_error(error: ValidationError) -> None:
+        """Print readable validation errors to stderr."""
         errors = error.errors()
 
         for item in errors:

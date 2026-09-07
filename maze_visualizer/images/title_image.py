@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  title_image.py                                    :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/05 10:03:03 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:39:24 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -22,12 +22,15 @@ from ..constants import (
 
 
 class TitleImage(MlxImage):
+    """Display the title image shown in the idle state."""
+
     def __init__(
             self, mlx: Mlx,
             mlx_ptr: Any,
             width: int,
             height: int
     ) -> None:
+        """Initialize the title sprite."""
 
         super().__init__(mlx, mlx_ptr, width, height)
 

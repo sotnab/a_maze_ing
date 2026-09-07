@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  a_maze_ing.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 00:31:04 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:35:25 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -18,6 +18,7 @@ from maze_gen import MazeConfig
 
 
 def main() -> None:
+    """Run the maze visualizer from the command line."""
     if len(argv) != 2:
         return print("Invalid arguments. Run: ./a_maze_ing <config_file>.")
 

@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_prims.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/06 01:12:57 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:33:43 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,6 +17,8 @@ from ..types import Cell, Grid, Step
 
 
 class MazePrims(MazeAlgorithm):
+    """Generate a maze using Prim's algorithm."""
+
     def __init__(
         self,
         grid: Grid,
@@ -24,10 +26,12 @@ class MazePrims(MazeAlgorithm):
         random: Random,
         entry: Cell,
     ) -> None:
+        """Initialize the Prim maze generator."""
 
         super().__init__(grid, blocked, random, entry)
 
     def generate(self) -> list[Step]:
+        """Build a maze using Prim's growing-tree approach."""
 
         maze_cells = [self.entry]
         unfinished_cells = [self.entry]
@@ -59,6 +63,7 @@ class MazePrims(MazeAlgorithm):
 
     def get_neighbours_excluding(
             self, cell: Cell, excluded: list[Cell]) -> list[Cell]:
+        """Return neighbours that are not already part of the maze."""
 
         neighbours = self.get_neighbours(cell)
 

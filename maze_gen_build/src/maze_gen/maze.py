@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze.py                                           :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 18:54:32 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:34:37 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -16,6 +16,8 @@ from .types import MazeData, Cell, Step
 
 @dataclass
 class Maze:
+    """Store generated maze data, the path, and animation steps."""
+
     data: MazeData
     width: int
     height: int

@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_solver.py                                    :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/06 13:55:18 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:33:40 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,7 +17,10 @@ from ..constants import (
 
 
 class MazeSolver():
+    """Find the shortest path from the maze entry to the exit."""
+
     def __init__(self, grid: Grid, entry: Cell, exit: Cell) -> None:
+        """Initialize the maze solver with its grid and endpoints."""
 
         self.width = len(grid[0])
         self.height = len(grid)
@@ -70,6 +73,7 @@ class MazeSolver():
         return self.create_path(parent)
 
     def create_path(self, parent: dict[Cell, Cell]) -> list[Cell]:
+        """Reconstruct the shortest path from the parent map."""
 
         path = []
         current = self.exit
@@ -85,6 +89,7 @@ class MazeSolver():
         return path
 
     def create_visited(self) -> list[list[bool]]:
+        """Create a visited matrix for BFS traversal."""
 
         return [[False for _ in range(self.width)]
                 for _ in range(self.height)]
@@ -120,6 +125,7 @@ class MazeSolver():
 
     @staticmethod
     def path_to_directed(path: list[Cell]) -> str:
+        """Convert a path into a string of directions."""
 
         directed_path = ""
         last_cell = path[0]

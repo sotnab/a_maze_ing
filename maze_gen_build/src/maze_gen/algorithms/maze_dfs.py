@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_dfs.py                                       :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/06 01:02:14 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:33:14 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,6 +17,8 @@ from ..types import Cell, Grid, Step
 
 
 class MazeDfs(MazeAlgorithm):
+    """Generate a maze using depth-first search."""
+
     def __init__(
         self,
         grid: Grid,
@@ -24,6 +26,7 @@ class MazeDfs(MazeAlgorithm):
         random: Random,
         entry: Cell
     ) -> None:
+        """Initialize the DFS maze generator."""
 
         super().__init__(grid, blocked, random, entry)
 
@@ -66,6 +69,7 @@ class MazeDfs(MazeAlgorithm):
         return self.steps
 
     def get_unvisited_neighbours(self, cell: Cell) -> list[Cell]:
+        """Return neighbours that have not been visited yet."""
         neighbours = self.get_neighbours(cell)
 
         def filter_not_visited(cell: Cell) -> bool:

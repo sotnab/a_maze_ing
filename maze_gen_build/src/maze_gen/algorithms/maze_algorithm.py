@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_algorithm.py                                 :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/05 23:45:16 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/06 15:33:07 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -28,6 +28,7 @@ from ..constants import (
 
 
 class MazeAlgorithm(ABC):
+    """Base class for maze generation algorithms."""
 
     def __init__(
             self,
@@ -36,6 +37,7 @@ class MazeAlgorithm(ABC):
             random: Random,
             entry: Cell
     ) -> None:
+        """Initialize the algorithm state."""
 
         self.grid = grid
         self.blocked = blocked
@@ -49,9 +51,11 @@ class MazeAlgorithm(ABC):
 
     @abstractmethod
     def generate(self) -> list[Step]:
+        """Generate the maze and return the step list."""
         ...
 
     def get_neighbours(self, cell: Cell) -> list[Cell]:
+        """Return valid cells adjacent to the current cell."""
 
         neighbours: list[Cell] = []
 
@@ -102,7 +106,7 @@ class MazeAlgorithm(ABC):
         self.steps.append((x2, y2, self.grid[y2][x2]))
 
     def close_wall(self, first: Cell, second: Cell) -> None:
-        """Open the wall between two neighbouring cells."""
+        """Close the wall between two neighbouring cells."""
         x1, y1 = first
         x2, y2 = second
 
@@ -129,6 +133,7 @@ class MazeAlgorithm(ABC):
         self.steps.append((x2, y2, self.grid[y2][x2]))
 
     def remove_dead_ends(self) -> list[Step]:
+        """Remove dead ends from the generated maze."""
 
         dead_ends: list[Cell] = []
 
@@ -152,6 +157,7 @@ class MazeAlgorithm(ABC):
         return self.steps
 
     def number_of_walls(self, cell: Cell) -> int:
+        """Count the number of walls still present in a cell."""
         count = 0
         x, y = cell
 

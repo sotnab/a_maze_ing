@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 20:27:49 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -30,13 +30,18 @@ from .constants import (
 
 
 class MazeGen:
+    """Generate mazes, solve them, and save them to disk."""
+
     def dfs(self, config: MazeConfig) -> Maze:
+        """Generate a maze with the DFS algorithm."""
         return self.generate(MazeDfs, config)
 
     def wilson(self, config: MazeConfig) -> Maze:
+        """Generate a maze with Wilson's algorithm."""
         return self.generate(MazeWilson, config)
 
     def prims(self, config: MazeConfig) -> Maze:
+        """Generate a maze with Prim's algorithm."""
         return self.generate(MazePrims, config)
 
     def generate(
@@ -44,6 +49,7 @@ class MazeGen:
         maze_algorithm: type[MazeAlgorithm],
         config: MazeConfig
     ) -> Maze:
+        """Run a generator and return the finished maze."""
 
         random = Random(config.seed)
         grid = self.create_grid(config.width, config.height)
@@ -74,6 +80,7 @@ class MazeGen:
         return maze
 
     def save_to_file(self, maze: Maze, filename: str) -> None:
+        """Write the maze data and solution to a text file."""
 
         with open(filename, "w") as out_file:
 
@@ -88,6 +95,7 @@ class MazeGen:
             out_file.write(MazeSolver.path_to_directed(maze.solution) + "\n")
 
     def number_of_walls(self, walls: int) -> int:
+        """Count active walls in a cell value."""
         count = 0
 
         for direction in [NORTH, EAST, SOUTH, WEST]:
@@ -97,6 +105,7 @@ class MazeGen:
         return count
 
     def create_grid(self, width: int, height: int) -> Grid:
+        """Create a fully blocked grid for maze generation."""
 
         return [[ALL_WALLS for _ in range(width)] for _ in range(height)]
 
