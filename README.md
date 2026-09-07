@@ -2,6 +2,8 @@
 
 # A-Maze-ing
 
+![Application main screen image](./screenshots/maze.png)
+
 ## Description
 
 This project creates mazes, solves them, and displays the result in a window.  
