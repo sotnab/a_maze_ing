@@ -1,118 +1,214 @@
 *This project has been created as part of the 42 curriculum by wbaran, jazurek.*
 
-# A Maze Ing
+# A-Maze-ing
 
 ## Description
 
-### Project overview
+This project creates mazes, solves them, and displays the result in a window.  
+The main goal is to generate a maze from a configuration file, find the shortest path from the entry to the exit,  
+and animate the building process with a visual interface.
 
-`A Maze Ing` is a project with a goal of generating mazes and visualizing them either using terminal ASCII  
-representation or 42's `minilibx` graphics library. Mazes are solved what means that the shortest path is found  
-and its displayed. Both maze generation and path drawing steps are animated.
+The project is divided into two parts:
 
-Our solution uses `minilibx` which is a wrapper library for `X-window server`. It provides basic utilities  
-for creating windows and images. Rendering is done on raw data using `numpy`'s ndarrays.
+- a reusable maze generation library called `maze_gen`
+- a visualizer built on top of Python and the MinilibX graphic system
 
-Logic for generating maze is separated from visualizer and is build into a package that can be reused  
-later for e. g. retro games.
+The program can generate mazes using different algorithms, save the result to a text file, and show the maze step by step.  
+It also lets the user view the solved path and switch colors or animations while the window is running.
 
-### Algorithms
+### Features
 
-- **Randomized Deep first search**  
-The fastest one. It creates mazes with long corridors.
-- **Wilson's maze algorithm**  
-It uses loop-erased random walk starting from a randomly selected cell.  
-Creates the most unique patterns.
-- **Prim's maze algorithm**  
-Very simple algorithm that creates mazes with short dead ends.
-
-### Configuration
-
-App provides ability to customize our mazes. Config file should
-be formatted like .env file with `KEY=VALUE` pairs followed by a new line.
-
-#### Available options
-
-```
-WIDTH=25                Maze width (number of cells)
-HEIGHT=20               Maze height (number of cells)
-ENTRY=0,0               Entry coordinates (x,y)
-EXIT=19,7               Exit coordinates (x,y)
-OUTPUT_FILE=maze.txt    Output filename
-PERFECT=True            Is the maze perfect?
-SEED=42                 Seed for reproducing mazes
-```
+- Maze generation with 3 algorithms: DFS, Wilson, and Prim
+- BFS Pathfinding to find the shortest route from entry to exit
+- Maze animation while it is being built
+- Path animation after the maze is ready
+- Configurable maze size, entry, exit, file output, and optional seed
+- Reusable generation logic separated from the drawing code
 
 ## Instructions
 
-- Run project
+### Requirements
+
+This project is designed for a Linux environment and uses Python 3.10+ with a virtual environment.
+
+### Install and run
+
+From the project root, run:
+
 ```bash
 make
 ```
 
-- Run project using python debugger `pdb`
+This command creates the virtual environment, installs dependencies, builds the local maze package,  
+and starts the program with the default config file.
+
+Other commands:
+
 ```bash
-make debug
+make install          # install dependencies
+make install-mazegen  # install dependencies for the maze generator package
+make build            # build the maze_gen wheel
+make debug            # run with Python debugger
+make lint             # run flake8 and mypy
+make lint-strict      # stricter static checks
+make clean            # remove cache files
+make fclean           # remove venv and generated package files
+make re               # clean and reinstall everything
 ```
 
-- Other make rules
+### How to run the visualizer
+
 ```bash
-# Run flake8 and mypy
-make lint               # Normal mode
-make lint-strict        # Strict mode
-
-# Install packages required for visualizer
-make install
-# Install packages required for building mazegen package
-make install-mazegen
-
-# Build mazegen package
-make build
-
-# Remove temporary and build files
-make clean              # Remove cache files
-make fclean             # Remove cache files, venv and mazegen packaeg
-
-# fclean and install
-make re
+./a_maze_ing.py config.txt
 ```
 
-## Team
+The visualizer accepts a config file as a parameter. The default project file is `config.txt`.
 
-Project has been created by **wbaran** **jazurek** a part of 42's core curriculum
+### Controls in the window
 
-### Roles
+- `1` : generate a maze with DFS
+- `2` : generate a maze with Wilson's algorithm
+- `3` : generate a maze with Prim's algorithm
+- `4` : show or hide the path
+- `5` : skip the current animation
+- `6` : return to the title screen
+- `7` : switch wall colors
 
-- **wbaran** - Maze visualizer, Wilson's algorithm and Prim's algorithm
-- **jazurek** - `Makefile`, Pathfinding algorithm, DFS algorithm
+## Config file structure
 
+The config file is plain text and follows a simple `KEY=VALUE` format.  
+One option per line. Empty lines and lines starting with `#` are ignored.
+
+Example from the project:
+
+```ini
+# Maze width (number of cells)
+WIDTH=25
+
+# Maze height
+HEIGHT=20
+
+# Entry coordinates (x,y)
+ENTRY=1,1
+
+# Exit coordinates (x,y)
+EXIT=19,14
+
+# Output filename
+OUTPUT_FILE=maze.txt
+
+# Is the maze perfect?(no dead ends if False)
+PERFECT=False
+
+# Random seed for reproducible mazes
+SEED=42
+```
+
+Notes:
+
+- `WIDTH` and `HEIGHT` must be between 2 and the project limits.
+- Entry and exit must stay inside the maze bounds.
+- Entry and exit cannot be the same cell.
+- Values are validated through Pydantic models before execution.
+
+## Chosen maze generation algorithm
+
+We chose the iterative Depth-First Search algorithm for the default one.
+
+### Why this algorithm?
+
+- It is fast and easy to implement.
+- It produces a maze with long corridors and a clear path structure.
+- It is reliable for animation because it builds the maze step by step.
+
+In the project, the full implementation is not the classic recursive version.  
+It is an iterative version that keeps the same logic but avoids recursion depth issues on larger mazes.
+
+### Other algorithms included
+
+- `Wilson's algorithm`: good for more random and unique structures, but slower.
+- `Prim's algorithm`: creates mazes with shorter branches and a different visual style.
+
+## Reusable code
+
+A large part of the project is designed to be reused outside the graphic window.
+
+The `maze_gen` package contains:
+
+- `MazeConfig`: validation and configuration management
+- `Maze`: generated maze data, solution, and animation steps
+- `MazeGen`: entry point for generating mazes
+- Typealiases
+
+See maze_gen documentation below for more details
+
+## Project management and teamwork
+
+The project was done by two students from the 42 curriculum:
+
+- **wbaran**: maze visualization, UI integration, Wilson and Prim algorithms
+- **jazurek**: project automation with `Makefile`, solver logic, DFS implementation
+
+### Planning and evolution
+
+At the beginning, we split the work between the maze generation library and the display layer.  
+The core idea was to keep generation logic independent from the graphics, which helped later when we had to add algorithms.
+
+As the project evolved, we adjusted the plan around the real constraints of the code:
+
+- we needed to validate config values early and clearly
+- animation timing had to be tuned for different maze sizes
+- the generation logic needed to be reusable
+- we had to keep compatibility between the library and the visualizer
+
+### What worked well
+
+- clear separation between logic and rendering
+- modular code structure
+- ability to animate generation and solution steps
+
+### What could be improved
+
+- more formal testing for edge cases
+- a better way of handling window and rendering errors
+
+### Tools used
+
+- Python 3
+- Pydantic for validation
+- NumPy for image data processing
+- MinilibX for the graphical interface
+- Makefile for project automation
+- Git and GitHub for version control
 
 ## Resources
 
-### Web pages
+### References
 
-- [Wikipedia's general maze generation article](https://en.wikipedia.org/wiki/Maze_generation_algorithm)
-- [Miklix randomized deep first search](https://www.miklix.com/mazes/maze-generators/recursive-backtracker)
-- [Red Blob Games pathfinding algorithms](https://www.redblobgames.com/pathfinding/a-star/introduction.html)
-- [Buckblog prim's maze algorithm](https://weblog.jamisbuck.org/2011/1/10/maze-generation-prim-s-algorithm)
-- [Buckblog wilson's maze algorithm](https://weblog.jamisbuck.org/2011/1/20/maze-generation-wilson-s-algorithm)
+- [Wikipedia: Maze generation algorithm](https://en.wikipedia.org/wiki/Maze_generation_algorithm)
+- [Miklix: Recursive backtracker maze generation](https://www.miklix.com/mazes/maze-generators/recursive-backtracker)
+- [Red Blob Games: A* and pathfinding](https://www.redblobgames.com/pathfinding/a-star/introduction.html)
+- [Jamis Buck: Prim's algorithm](https://weblog.jamisbuck.org/2011/1/10/maze-generation-prim-s-algorithm)
+- [Jamis Buck: Wilson's algorithm](https://weblog.jamisbuck.org/2011/1/20/maze-generation-wilson-s-algorithm)
 - [Python documentation](https://docs.python.org/3/library/pydoc.html)
-- [Pydantic documentation](https://pydantic.dev/docs/validation/latest/get-started/)
-- [Numpy documentation](https://numpy.org/doc/)
-- [Minilibx C docs](https://42-cursus.gitbook.io/guide/minilibx) - I couldn't find python version
+- [Pydantic documentation](https://docs.pydantic.dev/)
+- [NumPy documentation](https://numpy.org/doc/)
+- [MinilibX documentation](https://42-cursus.gitbook.io/guide/minilibx)
 
 ### AI usage
 
-- Helping with minilibx usage since there is no documentation of a python port
-- Finding good python practices
-- Help with displaying bitmap in mlx
+AI was useful for:
 
+- understanding how to work with MinilibX in Python
+- improving code structure and Python practices
+- helping with image rendering and display logic
+- checking for mistakes in algorithm and data flow 
 
 ## MazeGen Documentation
 
 ### Description
 
-MazeGen is a package that contains functionality to generate mazes. Generator class `MazeGen`
+maze_gen is a package that contains functionality to generate mazes. Generator class `MazeGen`
 provides methods to generate mazes based on config provided in file or as an argument
 of type `MazeConfig`(described below). `MazeConfig` is a `pydantic` class used to validate and store
 configuration. Generated `Maze` class contains hexadecimal representation of a maze,
@@ -222,3 +318,4 @@ One digit in hexadecimal format is 4 bits. Each bit represents a wall.
 
     and so on...
 ```
+
