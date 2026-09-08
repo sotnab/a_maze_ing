@@ -35,25 +35,23 @@ This project is designed for a Linux environment and uses Python 3.10+ with a vi
 
 ### Install and run
 
-Before running project first you have to build maze_gen package.
-From the project root, run:
+Before running project first you have to install required dependencies  
+and build the `maze_gen` package . From the project root, run:
 
 ```bash
-make build
+make install
 ```
 
-After building run using:
+And after run using:
 
 ```bash
 make
 ```
 
-This command creates the virtual environment, installs dependencies,  
-and starts the program with the default config file.
-
 Other commands:
 
 ```bash
+make build            # build mazegen package
 make install          # install dependencies
 make install-mazegen  # install dependencies for the maze generator package
 make debug            # run with Python debugger

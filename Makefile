@@ -69,32 +69,32 @@ build: install-mazegen
 
 
 # Install dependencies
-install: $(VENV_PYTHON)
+install: $(VENV_PYTHON) build
 	@echo "$(MAGENTA)[🔗 INSTALL]$(RESET) Installing dependencies"
 	@$(VENV_PYTHON) -m pip install --quiet --force-reinstall -r $(REQUIREMENTS)
 
 
 # Run project
-run: install
+run:
 	@echo "$(GREEN)[🚀 RUNNING]$(RESET) Launching project"
 	@$(VENV_PYTHON) $(ENTRY_POINT) $(CONFIG)
 
 
 # Run with debugger
-debug: install
+debug:
 	@echo "$(GREEN)[🦗 DEBUG]$(RESET) Launching debugger"
 	@$(VENV_PYTHON) -m pdb $(ENTRY_POINT) $(CONFIG)
 
 
 # Lint
-lint: install
+lint:
 	@echo "$(CYAN)[🐒 LINT]$(RESET) Running flake8 and mypy"
 	@$(VENV_PYTHON) -m flake8 . --extend-exclude=$(VENV)
 	@$(VENV_PYTHON) -m mypy . $(MYPY_FLAGS) --exclude $(VENV)
 
 
 # Optional strict lint
-lint-strict: install
+lint-strict:
 	@echo "$(RED)[🦍 LINT STRICT]$(RESET) Running strict checks"
 	@$(VENV_PYTHON) -m flake8 . --extend-exclude=$(VENV)
 	@$(VENV_PYTHON) -m mypy . --strict --exclude $(VENV)
