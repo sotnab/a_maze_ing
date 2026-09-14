@@ -1,5 +1,5 @@
 Metadata-Version: 2.4
-Name: maze_gen
+Name: mazegen
 Version: 0.1.0
 Summary: Maze generation package
 Author-email: Wiktor Baran <wbaran@student.42warsaw.pl>,  Jarosław Żurek <jazurek@student.42warsaw.pl>

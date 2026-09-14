@@ -6,7 +6,7 @@
 #    By: jazurek <jazurek@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/14 22:31:40 by jazurek           #+#    #+#              #
-#    Updated: 2026/08/14 22:43:08 by jazurek          ###   ########.fr        #
+#    Updated: 2026/09/14 21:05:25 by jazurek          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,8 +36,8 @@ REQUIREMENTS			:=	requirements.txt
 REQUIREMENTS_MAZE_GEN	:=	requirements_maze_gen.txt
 
 MAZE_GEN_DIR			:=	maze_gen_build
-MAZE_GEN				:=	maze_gen
-LIB						:=	lib
+MAZE_GEN_DIST			:=	mazegen
+MAZE_GEN_WHEEL			:=	$(MAZE_GEN_DIST)-0.1.0-py3-none-any.whl
 
 MYPY_FLAGS				:=	--warn-return-any \
 							--warn-unused-ignores \
@@ -63,9 +63,11 @@ install-mazegen: $(VENV_PYTHON)
 
 # Build maze_gen package
 build: install-mazegen
-	@echo "$(Green)[🛠 BUILDING]$(RESET) Building $(MAZE_GEN) package"
+	@echo "$(GREEN)[🛠 BUILDING]$(RESET) Building $(MAZE_GEN_DIST) package"
+	@rm -rf $(MAZE_GEN_DIR)/build $(MAZE_GEN_DIR)/dist
+	@rm -rf $(MAZE_GEN_DIR)/src/*.egg-info
 	@$(VENV_PYTHON) -m build $(MAZE_GEN_DIR) --quiet
-	@cp -f $(MAZE_GEN_DIR)/dist/*.whl $(LIB)/
+	@cp -f $(MAZE_GEN_DIR)/dist/$(MAZE_GEN_WHEEL) ./
 
 
 # Install dependencies
