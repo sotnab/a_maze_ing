@@ -1,5 +1,5 @@
+./mazegen-0.1.0-py3-none-any.whl
 ./lib/mlx-2.2-py3-none-any.whl
-./lib/mazegen-0.1.0-py3-none-any.whl
 numpy==2.2.6
 pydantic==2.13.5
 flake8==7.3.0

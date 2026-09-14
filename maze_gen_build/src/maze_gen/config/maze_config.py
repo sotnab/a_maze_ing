@@ -13,9 +13,11 @@
 from sys import stderr
 
 from pydantic import (
-    BaseModel, field_validator,
-    ValidationError, Field,
-    model_validator
+    BaseModel,
+    field_validator,
+    ValidationError,
+    Field,
+    model_validator,
 )
 
 from ..types import Cell
@@ -36,7 +38,7 @@ class MazeConfig(BaseModel):
         """Check whether the cell is inside the maze bounds."""
         x, y = cell
 
-        return (0 <= x < self.width and 0 <= y < self.height)
+        return 0 <= x < self.width and 0 <= y < self.height
 
     @model_validator(mode="after")
     def validate_bounds(self) -> "MazeConfig":
@@ -53,7 +55,6 @@ class MazeConfig(BaseModel):
 
         return self
 
-    @field_validator("entry", "exit", mode="before")
     @classmethod
     def validate_coords(cls, value: str) -> Cell:
         """Parse a coordinate string into a cell tuple."""
@@ -61,7 +62,7 @@ class MazeConfig(BaseModel):
         splitted = value.split(",")
 
         if len(splitted) != 2:
-            raise ValidationError("Entry and exit should be formatted: x,y")
+            raise ValueError("Entry and exit should be formatted: x,y")
 
         return (int(splitted[0]), int(splitted[1]))
 

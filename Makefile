@@ -6,7 +6,7 @@
 #    By: jazurek <jazurek@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/08/14 22:31:40 by jazurek           #+#    #+#              #
-#    Updated: 2026/09/14 21:05:25 by jazurek          ###   ########.fr        #
+#    Updated: 2026/09/14 21:56:18 by jazurek          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -113,11 +113,14 @@ clean:
 		-exec rm -f {} +
 
 
-# Remove temporary files, mazegen package and virtual environment
+# Remove temporary files, build files and virtual environment
 fclean: clean
-	@echo "$(YELLOW)[🧹 FCLEAN]$(RESET) Removing virtual environment"
-	@rm -rf $(VENV)
-	@rm -rf $(LIB)/$(MAZE_GEN)
+	@echo "$(YELLOW)[🧹 FCLEAN]$(RESET) Removing virtual environment and build files"
+	@rm -rf -- "$(VENV)"
+	@rm -rf -- "$(MAZE_GEN_DIR)/build"
+	@rm -rf -- "$(MAZE_GEN_DIR)/dist"
+	@rm -rf -- "$(MAZE_GEN_DIR)/src/"*.egg-info
+	@rm -f -- "$(MAZE_GEN_WHEEL)"
 
 
 # Reinstall
