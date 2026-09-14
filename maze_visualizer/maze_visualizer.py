@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_visualizer.py                                :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 21:45:57 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/14 17:00:13 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -191,7 +191,5 @@ class MazeVisualizer(MlxWindow):
     def switch_color(self) -> None:
         """Switch the maze drawing palette."""
 
-        if self.state != State.MAZE_ANIMATION:
-            if self.state != State.PATH_ANIMATION:
-
-                self.maze_image.switch_colors()
+        if self.state in (State.MAZE, State.MAZE_AND_PATH):
+            self.maze_image.switch_colors()
