@@ -135,7 +135,7 @@ class MazeVisualizer(MlxWindow):
         except (ValidationError) as e:
             MazeConfig.handle_validation_error(e)
 
-        except (ValueError, PermissionError, UnicodeDecodeError) as e:
+        except (ValueError, OSError, UnicodeDecodeError) as e:
             print(e, file=stderr)
 
         if keycode == KEY_4:

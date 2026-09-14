@@ -29,8 +29,7 @@ def main() -> None:
     except (ValidationError) as e:
         MazeConfig.handle_validation_error(e)
 
-    except (ValueError, PermissionError,
-            UnicodeDecodeError, FileNotFoundError) as e:
+    except (ValueError, OSError, UnicodeDecodeError) as e:
         print(e, file=stderr)
 
 
