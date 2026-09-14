@@ -20,11 +20,7 @@ class MazeDfs(MazeAlgorithm):
     """Generate a maze using depth-first search."""
 
     def __init__(
-        self,
-        grid: Grid,
-        blocked: list[Cell],
-        random: Random,
-        entry: Cell
+        self, grid: Grid, blocked: list[Cell], random: Random, entry: Cell
     ) -> None:
         """Initialize the DFS maze generator."""
 
@@ -38,8 +34,9 @@ class MazeDfs(MazeAlgorithm):
           - https://www.miklix.com/mazes/maze-generators/recursive-backtracker
         """
 
-        self.visited = [[False for _ in range(self.width)]
-                        for _ in range(self.height)]
+        self.visited = [
+            [False for _ in range(self.width)] for _ in range(self.height)
+        ]
 
         stack: list[Cell] = []
 
@@ -73,6 +70,7 @@ class MazeDfs(MazeAlgorithm):
         neighbours = self.get_neighbours(cell)
 
         def filter_not_visited(cell: Cell) -> bool:
+            """Return True when cell was not visited yet."""
             x, y = cell
             return not self.visited[y][x]
 

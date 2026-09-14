@@ -22,13 +22,20 @@ from .images.title_image import TitleImage
 from .images.maze_image import MazeImage
 from .mlx_window import MlxWindow
 from .constants import (
-    KEY_1, KEY_2, KEY_3,
-    KEY_4, KEY_5, KEY_6, KEY_7,
-    MAZE_WIDTH, MAZE_HEIGHT,
-    WINDOW_HEIGHT, WINDOW_WIDTH,
+    KEY_1,
+    KEY_2,
+    KEY_3,
+    KEY_4,
+    KEY_5,
+    KEY_6,
+    KEY_7,
+    MAZE_WIDTH,
+    MAZE_HEIGHT,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
     TITLE_SPRITE_HEIGHT,
     TITLE_SPRITE_WIDTH,
-    WINDOW_TITLE
+    WINDOW_TITLE,
 )
 
 
@@ -46,6 +53,7 @@ class MazeVisualizer(MlxWindow):
     """Display the maze and animate generation and solving."""
 
     def __init__(self, config_file: str) -> None:
+        """Initialize visualizer."""
 
         super().__init__(WINDOW_TITLE)
 
@@ -55,18 +63,15 @@ class MazeVisualizer(MlxWindow):
         self.config_file = config_file
 
         self.background_image = BackgroundImage(
-            self.mlx, self.mlx_ptr,
-            WINDOW_WIDTH, WINDOW_HEIGHT
+            self.mlx, self.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT
         )
 
         self.title_image = TitleImage(
-            self.mlx, self.mlx_ptr,
-            TITLE_SPRITE_WIDTH, TITLE_SPRITE_HEIGHT
+            self.mlx, self.mlx_ptr, TITLE_SPRITE_WIDTH, TITLE_SPRITE_HEIGHT
         )
 
         self.maze_image = MazeImage(
-            self.mlx, self.mlx_ptr,
-            MAZE_WIDTH, MAZE_HEIGHT
+            self.mlx, self.mlx_ptr, MAZE_WIDTH, MAZE_HEIGHT
         )
 
     def show_window(self) -> None:
@@ -132,7 +137,7 @@ class MazeVisualizer(MlxWindow):
             if keycode in (KEY_1, KEY_2, KEY_3):
                 self.show_maze(keycode)
 
-        except (ValidationError) as e:
+        except ValidationError as e:
             MazeConfig.handle_validation_error(e)
 
         except (ValueError, OSError, UnicodeDecodeError) as e:
