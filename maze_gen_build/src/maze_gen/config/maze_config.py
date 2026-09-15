@@ -55,9 +55,13 @@ class MazeConfig(BaseModel):
 
         return self
 
+    @field_validator("entry", "exit", mode="before")
     @classmethod
     def validate_coords(cls, value: str) -> Cell:
         """Parse a coordinate string into a cell tuple."""
+
+        if isinstance(value, tuple):
+            return value
 
         splitted = value.split(",")
 
