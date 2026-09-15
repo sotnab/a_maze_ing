@@ -26,10 +26,7 @@ class MazeImage(MlxImage):
     pixels: numpy.ndarray
 
     def __init__(
-        self, mlx: Mlx,
-        mlx_ptr: Any,
-        width: int,
-        height: int
+        self, mlx: Mlx, mlx_ptr: Any, width: int, height: int
     ) -> None:
         """Initialize the maze drawing surface."""
 
@@ -77,7 +74,7 @@ class MazeImage(MlxImage):
             col, row, walls = self.maze.steps[self.maze_animation_index]
 
             self.wall_drawer.clear_cell((col, row))
-            self.wall_drawer.draw_walls(walls, (col, row),  False)
+            self.wall_drawer.draw_walls(walls, (col, row), False)
 
             self.maze_animation_index += 1
 
@@ -86,7 +83,7 @@ class MazeImage(MlxImage):
     def render_path_step(self, speed: int) -> bool:
         """Render one step of the path animation."""
 
-        for _ in range(max(speed // 5, 1)):
+        for _ in range(max(speed // 2, 1)):
             if len(self.maze.solution) == self.path_animation_index:
                 self.render_path()
                 return True

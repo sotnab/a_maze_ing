@@ -96,7 +96,7 @@ class MazeVisualizer(MlxWindow):
         self.generator.save_to_file(maze, config.output_file)
 
         area = maze.width * maze.height
-        speed = floor(sqrt(area)) // 10
+        speed = floor(sqrt(area)) // 5
 
         self.animation_speed = max((speed, 1))
 
