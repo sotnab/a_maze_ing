@@ -23,10 +23,7 @@ from .algorithms.maze_prims import MazePrims
 from .algorithms.maze_solver import MazeSolver
 
 from .types import MazeData, Cell, Grid
-from .constants import (
-    NORTH, EAST, SOUTH, WEST, ALL_WALLS,
-    PATTERN_42
-)
+from .constants import NORTH, EAST, SOUTH, WEST, ALL_WALLS, PATTERN_42
 
 
 class MazeGen:
@@ -45,9 +42,7 @@ class MazeGen:
         return self.generate(MazePrims, config)
 
     def generate(
-        self,
-        maze_algorithm: type[MazeAlgorithm],
-        config: MazeConfig
+        self, maze_algorithm: type[MazeAlgorithm], config: MazeConfig
     ) -> Maze:
         """Run a generator and return the finished maze."""
 
@@ -74,7 +69,7 @@ class MazeGen:
             config.entry,
             config.exit,
             solution,
-            steps
+            steps,
         )
 
         return maze
@@ -137,30 +132,48 @@ class MazeGen:
             print("Maze is too small for the 42 pattern", file=stderr)
             return []
 
-        pattern_x = (config.width // 2) - (pattern_width // 2)
-        pattern_y = (config.height // 2) - (pattern_height // 2)
+        reserved = [config.entry, config.exit]
 
-        for start_y in range(pattern_y, config.height - pattern_height):
-            for start_x in range(pattern_x, config.width - pattern_width):
-                cells = []
-                valid_position = True
+        if not config.perfect:
+            reserved.append((config.width // 2, config.height // 2))
 
-                for row in range(pattern_height):
-                    for col in range(pattern_width):
-                        if PATTERN_42[row][col] != "X":
-                            continue
+        pattern_x = config.width // 2 - pattern_width // 2
+        pattern_y = config.height // 2 - pattern_height // 2
 
-                        x = start_x + col
-                        y = start_y + row
-                        cell = (x, y)
+        positions = [(pattern_x, pattern_y)]
 
-                        if cell == config.entry or cell == config.exit:
-                            valid_position = False
+        for start_y in range(1, config.height - pattern_height):
+            for start_x in range(1, config.width - pattern_width):
+                position = (start_x, start_y)
 
-                        cells.append(cell)
+                if position != (pattern_x, pattern_y):
+                    positions.append(position)
 
-                if valid_position:
-                    return cells
+        for start_x, start_y in positions:
+            cells = []
+            valid_position = True
+
+            for row in range(pattern_height):
+                for col in range(pattern_width):
+                    if PATTERN_42[row][col] != "X":
+                        continue
+
+                    x = start_x + col
+                    y = start_y + row
+                    cell = (x, y)
+
+                    if cell in reserved:
+                        valid_position = False
+                        break
+
+                    cells.append(cell)
+
+                if not valid_position:
+                    break
+
+            if valid_position:
+                return cells
 
         print("Cannot place the 42 pattern", file=stderr)
+
         return []

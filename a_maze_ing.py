@@ -26,7 +26,7 @@ def main() -> None:
         visualizer = MazeVisualizer(argv[1])
         visualizer.show_window()
 
-    except (ValidationError) as e:
+    except ValidationError as e:
         MazeConfig.handle_validation_error(e)
 
     except (ValueError, OSError, UnicodeDecodeError) as e:

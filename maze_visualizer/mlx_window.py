@@ -14,12 +14,7 @@ from mlx import Mlx
 from typing import Any
 from time import sleep, time
 
-from .constants import (
-    KEY_ESC,
-    EVENT_DESTROY,
-    FRAMERATE,
-    TEXT_COLOR
-)
+from .constants import KEY_ESC, EVENT_DESTROY, FRAMERATE, TEXT_COLOR
 
 
 def sync_frame(last_frame_time: float, framerate: int) -> None:
@@ -36,7 +31,7 @@ class MlxWindow:
     """Wrap MinilibX window creation and event handling."""
 
     def __init__(self, name: str) -> None:
-	    """Initialize MinilibX and store window name."""
+        """Initialize MinilibX and store window name."""
         self.mlx = Mlx()
         self.mlx_ptr = self.mlx.mlx_init()
         self.name = name
@@ -55,14 +50,14 @@ class MlxWindow:
     def init_window(self) -> None:
         """Create the MinilibX window instance."""
         self.mlx_win = self.mlx.mlx_new_window(
-            self.mlx_ptr, self.win_width,
-            self.win_height, self.name
+            self.mlx_ptr, self.win_width, self.win_height, self.name
         )
 
     def init_hooks(self) -> None:
         """Register the destroy, key, and loop hooks."""
-        self.mlx.mlx_hook(self.mlx_win,
-                          EVENT_DESTROY, 0, self.destroy_handler, None)
+        self.mlx.mlx_hook(
+            self.mlx_win, EVENT_DESTROY, 0, self.destroy_handler, None
+        )
 
         self.mlx.mlx_key_hook(self.mlx_win, self.key_handler, None)
 
@@ -83,9 +78,7 @@ class MlxWindow:
         """Draw an image at the specified position."""
 
         self.mlx.mlx_put_image_to_window(
-            self.mlx_ptr,
-            self.mlx_win,
-            image, x, y
+            self.mlx_ptr, self.mlx_win, image, x, y
         )
 
     def clear_window(self) -> None:
@@ -96,11 +89,7 @@ class MlxWindow:
         """Draw text on the current window."""
 
         self.mlx.mlx_string_put(
-            self.mlx_ptr,
-            self.mlx_win,
-            x, y,
-            TEXT_COLOR,
-            text
+            self.mlx_ptr, self.mlx_win, x, y, TEXT_COLOR, text
         )
 
     def close(self) -> None:
