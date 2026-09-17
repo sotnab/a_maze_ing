@@ -12,7 +12,7 @@ and animate the building process with a visual interface.
 
 The project is divided into two parts:
 
-- a reusable maze generation library called `maze_gen`
+- a reusable maze generation library called `mazegen`
 - a visualizer built on top of Python and the MinilibX graphic system
 
 The program can generate mazes using different algorithms, save the result to a text file, and show the maze step by step.  
@@ -36,7 +36,7 @@ This project is designed for a Linux environment and uses Python 3.10+ with a vi
 ### Install and run
 
 Before running project first you have to install required dependencies  
-and build the `maze_gen` package . From the project root, run:
+and build the `mazegen` package . From the project root, run:
 
 ```bash
 make install
@@ -140,14 +140,14 @@ It is an iterative version that keeps the same logic but avoids recursion depth 
 
 A large part of the project is designed to be reused outside the graphic window.
 
-The `maze_gen` package contains:
+The `mazegen` package contains:
 
 - `MazeConfig`: validation and configuration management
 - `Maze`: generated maze data, solution, and animation steps
 - `MazeGen`: entry point for generating mazes
 - Typealiases
 
-See `maze_gen` documentation below for more details
+See `mazegen` documentation below for more details
 
 ## Project management and teamwork
 
@@ -208,7 +208,7 @@ AI was useful for:
 
 ### Description
 
-maze_gen is a package that contains functionality to generate mazes. Generator class `MazeGen`
+mazegen is a package that contains functionality to generate mazes. Generator class `MazeGen`
 provides methods to generate mazes based on config provided in file or as an argument
 of type `MazeConfig`(described below). `MazeConfig` is a `pydantic` class used to validate and store
 configuration. Generated `Maze` class contains hexadecimal representation of a maze,
