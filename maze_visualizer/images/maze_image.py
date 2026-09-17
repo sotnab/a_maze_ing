@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 15:46:53 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 16:25:10 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -78,8 +78,7 @@ class MazeImage(MlxImage):
             self.wall_drawer.clear_cell(cell)
 
             self.wall_drawer.draw_walls(
-                walls, cell,
-                complete=False,
+                walls, cell, False,
                 entry=cell == self.maze.entry,
                 exit=cell == self.maze.exit
             )
@@ -110,18 +109,18 @@ class MazeImage(MlxImage):
 
         self.pixels.fill(0)
 
-        for col in range(self.maze.width):
-            for row in range(self.maze.height):
+        for y in range(self.maze.height):
+            for x in range(self.maze.width):
 
-                walls = int(self.maze.data[row][col], 16)
-                pos = (col, row)
+                walls = int(self.maze.data[y][x], 16)
+                cell = (x, y)
 
-                if pos == self.maze.entry:
-                    self.wall_drawer.draw_walls(walls, pos, True, entry=True)
-                elif pos == self.maze.exit:
-                    self.wall_drawer.draw_walls(walls, pos, True, exit=True)
-                else:
-                    self.wall_drawer.draw_walls(walls, pos, True)
+                self.wall_drawer.draw_walls(
+                    walls, cell,
+                    complete=True,
+                    entry=cell == self.maze.entry,
+                    exit=cell == self.maze.exit
+                )
 
     def render_path(self) -> None:
         """Draw the shortest solution path over the maze."""
