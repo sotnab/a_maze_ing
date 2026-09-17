@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 13:27:40 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,7 +14,7 @@ from mlx import Mlx
 from typing import Any
 import numpy
 
-from maze_gen import Maze
+from mazegen import Maze
 from ..mlx_image import MlxImage
 from ..drawers.wall_drawer import WallDrawer
 from ..drawers.path_drawer import PathDrawer

@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/06 01:12:57 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 12:45:21 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -33,36 +33,29 @@ class MazePrims(MazeAlgorithm):
     def generate(self) -> list[Step]:
         """Build a maze using Prim's growing-tree approach."""
 
-        maze_cells = [self.entry]
+        maze_cells = set([self.entry])
         unfinished_cells = [self.entry]
 
         while len(unfinished_cells) > 0:
 
             cell = self.random.choice(unfinished_cells)
-
             neighbours = self.get_neighbours_excluding(cell, maze_cells)
 
             if len(neighbours) == 0:
                 unfinished_cells.remove(cell)
                 continue
 
-            if self.width == self.height == 3:
-                walls = self.number_of_walls(cell)
-
-                if walls < 2:
-                    continue
-
             next_cell = self.random.choice(neighbours)
 
             self.open_wall(cell, next_cell)
 
             unfinished_cells.append(next_cell)
-            maze_cells.append(next_cell)
+            maze_cells.add(next_cell)
 
         return self.steps
 
     def get_neighbours_excluding(
-            self, cell: Cell, excluded: list[Cell]) -> list[Cell]:
+            self, cell: Cell, excluded: set[Cell]) -> list[Cell]:
         """Return neighbours that are not already part of the maze."""
 
         neighbours = self.get_neighbours(cell)

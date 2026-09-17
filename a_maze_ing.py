@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 00:31:04 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 13:29:04 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,7 +14,7 @@ from pydantic import ValidationError
 from sys import stderr, argv
 
 from maze_visualizer import MazeVisualizer
-from maze_gen import MazeConfig
+from mazegen import MazeConfig
 
 
 def main() -> None:

@@ -33,11 +33,11 @@ VENV_PYTHON				:=	$(VENV)/bin/python
 ENTRY_POINT				:=	a_maze_ing.py
 CONFIG					?=	config.txt
 REQUIREMENTS			:=	requirements.txt
-REQUIREMENTS_MAZE_GEN	:=	requirements_maze_gen.txt
+REQUIREMENTS_MAZEGEN	:=	requirements_mazegen.txt
 
-MAZE_GEN_DIR			:=	maze_gen_build
-MAZE_GEN_DIST			:=	mazegen
-MAZE_GEN_WHEEL			:=	$(MAZE_GEN_DIST)-0.1.0-py3-none-any.whl
+MAZEGEN_DIR				:=	mazegen_src
+MAZEGEN_DIST			:=	mazegen
+MAZEGEN_WHEEL			:=	$(MAZEGEN_DIST)-0.1.0-py3-none-any.whl
 
 MYPY_FLAGS				:=	--warn-return-any \
 							--warn-unused-ignores \
@@ -58,16 +58,16 @@ $(VENV_PYTHON):
 # Install dependencies for building mazegen package
 install-mazegen: $(VENV_PYTHON)
 	@echo "$(MAGENTA)[🔗 INSTALL]$(RESET) Installing mazegen dependencies"
-	@$(VENV_PYTHON) -m pip install --quiet -r $(REQUIREMENTS_MAZE_GEN)
+	@$(VENV_PYTHON) -m pip install --quiet -r $(REQUIREMENTS_MAZEGEN)
 
 
-# Build maze_gen package
+# Build mazegen package
 build: install-mazegen
-	@echo "$(GREEN)[🛠 BUILDING]$(RESET) Building $(MAZE_GEN_DIST) package"
-	@rm -rf $(MAZE_GEN_DIR)/build $(MAZE_GEN_DIR)/dist
-	@rm -rf $(MAZE_GEN_DIR)/src/*.egg-info
-	@$(VENV_PYTHON) -m build $(MAZE_GEN_DIR) --quiet
-	@cp -f $(MAZE_GEN_DIR)/dist/$(MAZE_GEN_WHEEL) ./
+	@echo "$(GREEN)[🛠 BUILDING]$(RESET) Building $(MAZEGEN_DIST) package"
+	@rm -rf $(MAZEGEN_DIR)/build $(MAZEGEN_DIR)/dist
+	@rm -rf $(MAZEGEN_DIR)/src/*.egg-info
+	@$(VENV_PYTHON) -m build $(MAZEGEN_DIR) --quiet
+	@cp -f $(MAZEGEN_DIR)/dist/$(MAZEGEN_WHEEL) ./
 
 
 # Install dependencies
@@ -117,10 +117,10 @@ clean:
 fclean: clean
 	@echo "$(YELLOW)[🧹 FCLEAN]$(RESET) Removing virtual environment and build files"
 	@rm -rf -- "$(VENV)"
-	@rm -rf -- "$(MAZE_GEN_DIR)/build"
-	@rm -rf -- "$(MAZE_GEN_DIR)/dist"
-	@rm -rf -- "$(MAZE_GEN_DIR)/src/"*.egg-info
-	@rm -f -- "$(MAZE_GEN_WHEEL)"
+	@rm -rf -- "$(MAZEGEN_DIR)/build"
+	@rm -rf -- "$(MAZEGEN_DIR)/dist"
+	@rm -rf -- "$(MAZEGEN_DIR)/src/"*.egg-info
+	@rm -f -- "$(MAZEGEN_WHEEL)"
 
 
 # Reinstall

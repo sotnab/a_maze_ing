@@ -1,20 +1,20 @@
 # Maze width (number of cells)
-WIDTH=25
+WIDTH=4
 
 # Maze height
-HEIGHT=20
+HEIGHT=3
 
 # Entry coordinates (x,y)
-ENTRY=1,1
+ENTRY=0,0
 
 # Exit coordinates (x,y)
-EXIT=19,14
+EXIT=2,2
 
 # Output filename
 OUTPUT_FILE=maze.txt
 
 # Is the maze perfect?
-PERFECT=True
+PERFECT=False
 # PERFECT=False
 
 # Random seed

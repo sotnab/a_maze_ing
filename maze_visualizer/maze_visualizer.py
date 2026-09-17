@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_visualizer.py                                :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: wbaran <wbaran@student.42.fr>             +#+  +:+       +#+         #
+#  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/14 17:00:13 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 13:27:26 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -16,7 +16,7 @@ from enum import Enum
 from math import sqrt, floor
 from pydantic import ValidationError
 
-from maze_gen import MazeGen, MazeConfig
+from mazegen import MazeGen, MazeConfig
 from .images.background_image import BackgroundImage
 from .images.title_image import TitleImage
 from .images.maze_image import MazeImage

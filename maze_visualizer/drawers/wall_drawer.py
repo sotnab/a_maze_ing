@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/14 00:39:51 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 13:27:57 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -21,7 +21,7 @@ from ..constants import (
     EXIT_COLOR
 )
 
-from maze_gen import Cell
+from mazegen import Cell
 
 
 class WallDrawer(Drawer):

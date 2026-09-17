@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/05 23:45:16 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 13:19:00 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -145,7 +145,9 @@ class MazeAlgorithm(ABC):
                     dead_ends.append(cell)
 
         while len(dead_ends):
-            cell = dead_ends.pop()
+            cell = self.random.choice(dead_ends)
+
+            dead_ends.remove(cell)
 
             neighbours = self.get_neighbours(cell)
 
@@ -154,7 +156,37 @@ class MazeAlgorithm(ABC):
                 if self.number_of_walls(cell) == 3:
                     self.open_wall(cell, neighbour)
 
+        self.fix_open_areas()
+
         return self.steps
+
+    def fix_open_areas(self) -> None:
+
+        for y in range(1, self.height - 1):
+            for x in range(1, self.width - 1):
+
+                if self.number_of_walls((x, y)) != 0:
+                    continue
+
+                neighbours = [
+                    (x, y - 1), (x + 1, y),
+                    (x, y + 1), (x - 1, y)
+                ]
+
+                neighbours_diagonally = [
+                    (x - 1, y - 1), (x + 1, y - 1),
+                    (x - 1, y + 1), (x + 1, y + 1)
+                ]
+
+                if any(self.number_of_walls(neighbour) != 1
+                        for neighbour in neighbours):
+                    continue
+
+                if any(self.number_of_walls(neighbour) != 2
+                        for neighbour in neighbours_diagonally):
+                    continue
+
+                self.close_wall((x, y), self.random.choice(neighbours))
 
     def number_of_walls(self, cell: Cell) -> int:
         """Count the number of walls still present in a cell."""

@@ -6,13 +6,13 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 12:17:20 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 13:27:48 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from numpy import ndarray
 
-from maze_gen import Cell
+from mazegen import Cell
 
 
 class Drawer:
