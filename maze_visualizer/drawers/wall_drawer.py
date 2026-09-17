@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/14 00:39:51 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 15:43:49 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 17:44:09 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -34,15 +34,11 @@ class WallDrawer(Drawer):
         """Initialize the wall drawer and palette."""
         super().__init__(pixels, cell_size)
 
+        self.wall_width = self.get_wall_width()
         self.wall_colors = cycle(WALL_COLORS)
 
         self.wall_color = next(self.wall_colors)
         self.pattern_color = PATTERN_COLOR
-
-    def set_cell_size(self, cell_size: tuple[int, int]) -> None:
-        """Set the cell size and compute the wall thickness."""
-        super().set_cell_size(cell_size)
-        self.wall_width = self.get_wall_width()
 
     def draw_walls(
             self, walls: int,

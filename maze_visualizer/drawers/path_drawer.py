@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 10:37:47 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 13:27:52 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 17:43:16 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -25,12 +25,6 @@ class PathDrawer(Drawer):
         """Initialize the path drawer."""
         super().__init__(pixels, cell_size)
 
-        self.set_cell_size(cell_size)
-
-    def set_cell_size(self, cell_size: tuple[int, int]) -> None:
-        """Set the cell size and compute the path thickness."""
-
-        super().set_cell_size(cell_size)
         self.path_width = min((self.cell_width, self.cell_height)) // 5
 
     def connect_down(self, cell: Cell) -> None:

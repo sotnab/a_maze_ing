@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 17:18:55 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 17:38:53 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -26,30 +26,26 @@ class MazeImage(MlxImage):
     pixels: numpy.ndarray
 
     def __init__(
-        self, mlx: Mlx, mlx_ptr: Any, width: int, height: int
+        self, mlx: Mlx, mlx_ptr: Any,
+        maze: Maze, cell_size: tuple[int, int]
     ) -> None:
         """Initialize the maze drawing surface."""
 
-        super().__init__(mlx, mlx_ptr, width, height)
+        cell_width, cell_height = cell_size
 
-        self.path_visible = False
+        super().__init__(
+            mlx, mlx_ptr,
+            cell_width * maze.width,
+            cell_height * maze.height
+        )
 
-        self.wall_drawer = WallDrawer(self.pixels, (1, 1))
-        self.path_drawer = PathDrawer(self.pixels, (1, 1))
-
-    def set_maze(self, maze: Maze) -> None:
-        """Assign the maze to draw and reset the display state."""
         self.maze = maze
-
-        cell_width = self.width // maze.width
-        cell_height = self.height // maze.height
-
-        cell_size = (cell_width, cell_height)
-
-        self.wall_drawer.set_cell_size(cell_size)
-        self.path_drawer.set_cell_size(cell_size)
+        self.cell_size = cell_size
 
         self.path_visible = False
+
+        self.wall_drawer = WallDrawer(self.pixels, cell_size)
+        self.path_drawer = PathDrawer(self.pixels, cell_size)
 
         self.pixels.fill(0)
 

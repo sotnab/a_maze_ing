@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/03 12:17:20 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 13:27:48 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 17:42:45 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -20,13 +20,10 @@ class Drawer:
 
     def __init__(self, pixels: ndarray, cell_size: tuple[int, int]) -> None:
         """Initialize the drawer with pixel data and a cell size."""
-        self.pixels = pixels
-        self.set_cell_size(cell_size)
 
-    def set_cell_size(self, cell_size: tuple[int, int]) -> None:
-        """Set the size used for each maze cell."""
         width, height = cell_size
 
+        self.pixels = pixels
         self.cell_width = width
         self.cell_height = height
 

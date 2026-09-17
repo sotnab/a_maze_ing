@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 17:19:24 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 17:48:51 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -56,16 +56,10 @@ class MazeVisualizer(MlxWindow):
         self.config_file = config_file
 
         self.background_image = BackgroundImage(
-            self.mlx, self.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT
-        )
+            self.mlx, self.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT)
 
         self.title_image = TitleImage(
-            self.mlx, self.mlx_ptr, TITLE_SPRITE_WIDTH, TITLE_SPRITE_HEIGHT
-        )
-
-        self.maze_image = MazeImage(
-            self.mlx, self.mlx_ptr, MAZE_WIDTH, MAZE_HEIGHT
-        )
+            self.mlx, self.mlx_ptr, TITLE_SPRITE_WIDTH, TITLE_SPRITE_HEIGHT)
 
     def show_window(self) -> None:
         """Open the window and start the loop."""
@@ -90,13 +84,17 @@ class MazeVisualizer(MlxWindow):
 
         self.generator.save_to_file(maze, config.output_file)
 
+        self.cell_size = (MAZE_WIDTH // maze.width, MAZE_HEIGHT // maze.height)
+
+        self.maze_image = MazeImage(
+            self.mlx, self.mlx_ptr, maze, self.cell_size)
+
         maze_animation_speed = len(maze.steps) / (6 * FRAMERATE)
         path_animation_speed = len(maze.solution) / (6 * FRAMERATE)
 
         self.maze_animation_speed = max((1, round(maze_animation_speed)))
         self.path_animation_speed = max((1, round(path_animation_speed)))
 
-        self.maze_image.set_maze(maze)
         self.maze_image.start_maze_animation()
 
         self.state = State.MAZE_ANIMATION
@@ -153,7 +151,13 @@ class MazeVisualizer(MlxWindow):
 
     def put_maze(self) -> None:
         """Draw the current maze image on the screen."""
-        self.put_image(self.maze_image.image, 0, 0)
+
+        cell_width, cell_height = self.cell_size
+
+        offset_x = (MAZE_WIDTH - self.maze_image.width) // 2
+        offset_y = (MAZE_HEIGHT - self.maze_image.height) // 2
+
+        self.put_image(self.maze_image.image, offset_x, offset_y)
 
     def put_background(self) -> None:
         """Draw the background image on the screen."""
