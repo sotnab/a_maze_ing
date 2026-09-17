@@ -6,36 +6,30 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 13:27:26 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 16:35:00 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from sys import stderr
 from typing import Any
 from enum import Enum
-from math import sqrt, floor
+from math import floor
 from pydantic import ValidationError
 
-from mazegen import MazeGen, MazeConfig
+from mazegen import Maze, MazeGen, MazeConfig
 from .images.background_image import BackgroundImage
 from .images.title_image import TitleImage
 from .images.maze_image import MazeImage
 from .mlx_window import MlxWindow
 from .constants import (
-    KEY_1,
-    KEY_2,
-    KEY_3,
-    KEY_4,
-    KEY_5,
-    KEY_6,
-    KEY_7,
-    MAZE_WIDTH,
-    MAZE_HEIGHT,
-    WINDOW_HEIGHT,
-    WINDOW_WIDTH,
+    KEY_1, KEY_2, KEY_3, KEY_4,
+    KEY_5, KEY_6, KEY_7,
+    MAZE_WIDTH, MAZE_HEIGHT,
+    WINDOW_HEIGHT, WINDOW_WIDTH,
     TITLE_SPRITE_HEIGHT,
     TITLE_SPRITE_WIDTH,
     WINDOW_TITLE,
+    FRAMERATE
 )
 
 
@@ -84,6 +78,8 @@ class MazeVisualizer(MlxWindow):
         """Generate a maze based on the selected key."""
         config = MazeConfig.from_file(self.config_file)
 
+        maze: Maze
+
         if keycode == KEY_1:
             maze = self.generator.dfs(config)
 
@@ -95,10 +91,9 @@ class MazeVisualizer(MlxWindow):
 
         self.generator.save_to_file(maze, config.output_file)
 
-        area = maze.width * maze.height
-        speed = floor(sqrt(area)) // 5
+        speed = len(maze.steps) / (6 * FRAMERATE)
 
-        self.animation_speed = max((speed, 1))
+        self.animation_speed = max((1, floor(speed)))
 
         self.maze_image.set_maze(maze)
         self.maze_image.start_maze_animation()
