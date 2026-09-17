@@ -2,13 +2,13 @@
 WIDTH=4
 
 # Maze height
-HEIGHT=3
+HEIGHT=4
 
 # Entry coordinates (x,y)
 ENTRY=0,0
 
 # Exit coordinates (x,y)
-EXIT=2,2
+EXIT=3,3
 
 # Output filename
 OUTPUT_FILE=maze.txt
@@ -18,4 +18,4 @@ PERFECT=False
 # PERFECT=False
 
 # Random seed
-# SEED=42
+# SEED=6

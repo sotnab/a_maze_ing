@@ -6,11 +6,12 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/05 23:45:16 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 13:19:00 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 15:06:27 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from random import Random
+from queue import Queue
 from abc import ABC, abstractmethod
 
 from ..types import (
@@ -75,6 +76,35 @@ class MazeAlgorithm(ABC):
 
                 if 0 <= x < self.width and 0 <= y < self.height:
                     neighbours.append(item)
+
+        return neighbours
+
+    def get_reachable_neighbours(self, cell: Cell) -> list[Cell]:
+        """Return cells reachable from the current cell."""
+        x, y = cell
+        walls = self.grid[y][x]
+
+        neighbours = []
+
+        # North
+        if y > 0:
+            if (walls & NORTH) == 0:
+                neighbours.append((x, y - 1))
+
+        # East
+        if x < self.width - 1:
+            if (walls & EAST) == 0:
+                neighbours.append((x + 1, y))
+
+        # South
+        if y < self.height - 1:
+            if (walls & SOUTH) == 0:
+                neighbours.append((x, y + 1))
+
+        # West
+        if x > 0:
+            if (walls & WEST) == 0:
+                neighbours.append((x - 1, y))
 
         return neighbours
 
@@ -187,6 +217,35 @@ class MazeAlgorithm(ABC):
                     continue
 
                 self.close_wall((x, y), self.random.choice(neighbours))
+
+    def independent_loops(self) -> int:
+
+        visited = set()
+        connections = set()
+
+        queue = Queue(0)
+        queue.put(self.entry)
+
+        while queue.qsize() > 0:
+
+            cell = queue.get()
+            visited.add(cell)
+
+            neighbours = self.get_reachable_neighbours(cell)
+
+            for neighbour in neighbours:
+
+                connection = frozenset((cell, neighbour))
+
+                if connection not in connections:
+                    connections.add(connection)
+
+                if neighbour not in visited:
+                    queue.put(neighbour)
+
+        independent_loops = len(connections) - len(visited) + 1
+
+        return independent_loops
 
     def number_of_walls(self, cell: Cell) -> int:
         """Count the number of walls still present in a cell."""

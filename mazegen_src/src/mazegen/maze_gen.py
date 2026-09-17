@@ -6,14 +6,14 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 15:39:41 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from random import Random
 from sys import stderr
 
-from .maze import Maze
+from .maze import Maze, Step
 from .config.maze_config import MazeConfig
 
 from .algorithms.maze_algorithm import MazeAlgorithm
@@ -47,14 +47,26 @@ class MazeGen:
         """Run a generator and return the finished maze."""
 
         random = Random(config.seed)
-        grid = self.create_grid(config.width, config.height)
         blocked = self.get_42_cells(config)
+
+        grid = self.create_grid(config.width, config.height)
         algorithm = maze_algorithm(grid, blocked, random, config.entry)
 
-        steps = algorithm.generate()
+        steps: list[Step]
+
+        if config.perfect:
+            steps = algorithm.generate()
 
         if not config.perfect:
-            steps = algorithm.remove_dead_ends()
+            while True:
+                algorithm.generate()
+                steps = algorithm.remove_dead_ends()
+
+                if algorithm.independent_loops() > 1:
+                    break
+
+                grid = self.create_grid(config.width, config.height)
+                algorithm = maze_algorithm(grid, blocked, random, config.entry)
 
         solver = MazeSolver(grid, config.entry, config.exit)
 
