@@ -6,14 +6,13 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 17:38:02 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 16:35:00 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 17:19:24 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from sys import stderr
 from typing import Any
 from enum import Enum
-from math import floor
 from pydantic import ValidationError
 
 from mazegen import Maze, MazeGen, MazeConfig
@@ -91,9 +90,11 @@ class MazeVisualizer(MlxWindow):
 
         self.generator.save_to_file(maze, config.output_file)
 
-        speed = len(maze.steps) / (6 * FRAMERATE)
+        maze_animation_speed = len(maze.steps) / (6 * FRAMERATE)
+        path_animation_speed = len(maze.solution) / (6 * FRAMERATE)
 
-        self.animation_speed = max((1, floor(speed)))
+        self.maze_animation_speed = max((1, round(maze_animation_speed)))
+        self.path_animation_speed = max((1, round(path_animation_speed)))
 
         self.maze_image.set_maze(maze)
         self.maze_image.start_maze_animation()
@@ -107,12 +108,12 @@ class MazeVisualizer(MlxWindow):
 
         if self.state == State.MAZE_ANIMATION:
 
-            if self.maze_image.render_maze_step(self.animation_speed):
+            if self.maze_image.render_maze_step(self.maze_animation_speed):
                 self.state = State.MAZE
 
         if self.state == State.PATH_ANIMATION:
 
-            if self.maze_image.render_path_step(self.animation_speed):
+            if self.maze_image.render_path_step(self.path_animation_speed):
                 self.state = State.MAZE_AND_PATH
 
         if self.state == State.IDLE:

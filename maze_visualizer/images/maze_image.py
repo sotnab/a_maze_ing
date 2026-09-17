@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 16:25:10 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 17:18:55 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -90,7 +90,7 @@ class MazeImage(MlxImage):
     def render_path_step(self, speed: int) -> bool:
         """Render one step of the path animation."""
 
-        for _ in range(max(speed // 2, 1)):
+        for _ in range(speed):
             if len(self.maze.solution) == self.path_animation_index:
                 self.render_path()
                 return True
