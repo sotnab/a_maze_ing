@@ -1,0 +1,13 @@
+WIDTH=90
+
+HEIGHT=70
+
+ENTRY=0,0
+
+EXIT=89,69
+
+OUTPUT_FILE=maze.txt
+
+PERFECT=True
+
+SEED=42
