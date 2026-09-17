@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 20:35:12 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 13:27:40 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 15:46:53 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -73,8 +73,16 @@ class MazeImage(MlxImage):
 
             col, row, walls = self.maze.steps[self.maze_animation_index]
 
-            self.wall_drawer.clear_cell((col, row))
-            self.wall_drawer.draw_walls(walls, (col, row), False)
+            cell = (col, row)
+
+            self.wall_drawer.clear_cell(cell)
+
+            self.wall_drawer.draw_walls(
+                walls, cell,
+                complete=False,
+                entry=cell == self.maze.entry,
+                exit=cell == self.maze.exit
+            )
 
             self.maze_animation_index += 1
 

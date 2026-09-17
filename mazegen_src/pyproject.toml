@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Maze generation package"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {file = "LICENSE.md"}
+license-files = ["LICENSE.md"]
 authors = [
   {name = "Wiktor Baran", email = "wbaran@student.42warsaw.pl"},
   {name = " Jarosław Żurek", email = "jazurek@student.42warsaw.pl"}

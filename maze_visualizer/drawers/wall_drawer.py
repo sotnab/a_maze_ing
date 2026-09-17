@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/14 00:39:51 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 13:27:57 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 15:43:49 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -53,17 +53,17 @@ class WallDrawer(Drawer):
     ) -> None:
         """Draw the walls for one cell, plus optional colors."""
 
+        if entry:
+            self.draw_colored_cell(cell, ENTRY_COLOR)
+
+        if exit:
+            self.draw_colored_cell(cell, EXIT_COLOR)
+
         if not complete and walls == 15:
             return
 
         if complete and walls == 15:
             self.draw_colored_cell(cell, self.pattern_color)
-
-        if complete and entry:
-            self.draw_colored_cell(cell, ENTRY_COLOR)
-
-        if complete and exit:
-            self.draw_colored_cell(cell, EXIT_COLOR)
 
         if walls & 1 == 1:
             self.draw_top_wall(cell)

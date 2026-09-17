@@ -18,4 +18,4 @@ PERFECT=False
 # PERFECT=False
 
 # Random seed
-# SEED=6
+SEED=6

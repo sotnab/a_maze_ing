@@ -6,12 +6,11 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/05 23:45:16 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 15:06:27 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 16:14:05 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from random import Random
-from queue import Queue
 from abc import ABC, abstractmethod
 
 from ..types import (
@@ -186,7 +185,8 @@ class MazeAlgorithm(ABC):
                 if self.number_of_walls(cell) == 3:
                     self.open_wall(cell, neighbour)
 
-        self.fix_open_areas()
+        if self.width == 3 or self.height == 3:
+            self.fix_open_areas()
 
         return self.steps
 
@@ -220,30 +220,21 @@ class MazeAlgorithm(ABC):
 
     def independent_loops(self) -> int:
 
-        visited = set()
-        connections = set()
+        connections = 0
 
-        queue = Queue(0)
-        queue.put(self.entry)
+        for y in range(self.height):
+            for x in range(self.width):
+                cell = (x, y)
 
-        while queue.qsize() > 0:
+                neighbours = self.get_reachable_neighbours(cell)
 
-            cell = queue.get()
-            visited.add(cell)
+                for neighbour in neighbours:
+                    if neighbour > cell:
+                        connections += 1
 
-            neighbours = self.get_reachable_neighbours(cell)
+        total_cells = (self.height * self.width) - len(self.blocked)
 
-            for neighbour in neighbours:
-
-                connection = frozenset((cell, neighbour))
-
-                if connection not in connections:
-                    connections.add(connection)
-
-                if neighbour not in visited:
-                    queue.put(neighbour)
-
-        independent_loops = len(connections) - len(visited) + 1
+        independent_loops = connections - total_cells + 1
 
         return independent_loops
 
