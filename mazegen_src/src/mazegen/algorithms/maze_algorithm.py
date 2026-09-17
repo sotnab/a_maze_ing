@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/09/05 23:45:16 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 16:14:05 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 16:58:17 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -23,7 +23,8 @@ from ..constants import (
     REMOVE_SOUTH,
     REMOVE_EAST,
     NORTH, WEST,
-    SOUTH, EAST
+    SOUTH, EAST,
+    ALL_WALLS
 )
 
 
@@ -188,6 +189,14 @@ class MazeAlgorithm(ABC):
         if self.width == 3 or self.height == 3:
             self.fix_open_areas()
 
+        if self.width > 2 and self.height > 2:
+
+            if self.independent_loops() < 2:
+
+                self.clear_grid_and_steps()
+                self.generate()
+                return self.remove_dead_ends()
+
         return self.steps
 
     def fix_open_areas(self) -> None:
@@ -248,3 +257,11 @@ class MazeAlgorithm(ABC):
                 count += 1
 
         return count
+
+    def clear_grid_and_steps(self) -> None:
+
+        for y in range(self.height):
+            for x in range(self.width):
+                self.grid[y][x] = ALL_WALLS
+
+        self.steps = []

@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/22 15:14:13 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/17 16:09:46 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 16:51:28 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -58,15 +58,8 @@ class MazeGen:
             steps = algorithm.generate()
 
         if not config.perfect:
-            while True:
-                algorithm.generate()
-                steps = algorithm.remove_dead_ends()
-
-                if algorithm.independent_loops() > 1:
-                    break
-
-                grid = self.create_grid(config.width, config.height)
-                algorithm = maze_algorithm(grid, blocked, random, config.entry)
+            algorithm.generate()
+            steps = algorithm.remove_dead_ends()
 
         solver = MazeSolver(grid, config.entry, config.exit)
 

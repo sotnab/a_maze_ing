@@ -112,8 +112,8 @@ SEED=42
 
 Notes:
 
-- `WIDTH` must be between 2 and 120.
-- `HEIGHT` must be between 2 and 86.
+- `WIDTH` must be between 2 and 90.
+- `HEIGHT` must be between 2 and 70.
 - Entry and exit must stay inside the maze bounds.
 - Entry and exit cannot be the same cell.
 - Values are validated through Pydantic models before execution.
@@ -245,8 +245,8 @@ Class `MazeConfig` is a `pydantic` model used for configuration.
 
 ```python
 class MazeConfig(BaseModel):
-    width: int = Field(ge=2, le=120)    # Maze width <2, 120>
-    height: int = Field(ge=2, le=86)    # Maze height <2, 86>
+    width: int = Field(ge=2, le=90)    # Maze width <2, 90>
+    height: int = Field(ge=2, le=70)    # Maze height <2, 70>
     entry: Cell                         # Maze entrance
     exit: Cell                          # Maze exit
     output_file: str                    # Output file name

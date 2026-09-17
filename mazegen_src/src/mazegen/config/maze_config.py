@@ -6,7 +6,7 @@
 #  By: wbaran <wbaran@student.42warsaw.pl>       +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/08/12 15:47:40 by wbaran          #+#    #+#               #
-#  Updated: 2026/09/07 21:37:43 by wbaran          ###   ########.fr        #
+#  Updated: 2026/09/17 16:41:45 by wbaran          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -26,8 +26,8 @@ from ..types import Cell
 class MazeConfig(BaseModel):
     """Validate and store maze configuration data."""
 
-    width: int = Field(ge=2, le=120)
-    height: int = Field(ge=2, le=86)
+    width: int = Field(ge=2, le=90)
+    height: int = Field(ge=2, le=70)
     entry: Cell
     exit: Cell
     output_file: str
