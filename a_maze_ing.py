@@ -23,14 +23,17 @@ def main() -> None:
         return print("Invalid arguments. Run: ./a_maze_ing <config_file>.")
 
     try:
+        MazeConfig.from_file(argv[1])
         visualizer = MazeVisualizer(argv[1])
         visualizer.show_window()
 
     except ValidationError as e:
         MazeConfig.handle_validation_error(e)
+        raise SystemExit(1)
 
     except (ValueError, OSError, UnicodeDecodeError) as e:
         print(e, file=stderr)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

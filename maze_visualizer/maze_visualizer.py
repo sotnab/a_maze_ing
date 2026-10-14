@@ -21,14 +21,21 @@ from .images.title_image import TitleImage
 from .images.maze_image import MazeImage
 from .mlx_window import MlxWindow
 from .constants import (
-    KEY_1, KEY_2, KEY_3, KEY_4,
-    KEY_5, KEY_6, KEY_7,
-    MAZE_WIDTH, MAZE_HEIGHT,
-    WINDOW_HEIGHT, WINDOW_WIDTH,
+    KEY_1,
+    KEY_2,
+    KEY_3,
+    KEY_4,
+    KEY_5,
+    KEY_6,
+    KEY_7,
+    MAZE_WIDTH,
+    MAZE_HEIGHT,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
     TITLE_SPRITE_HEIGHT,
     TITLE_SPRITE_WIDTH,
     WINDOW_TITLE,
-    FRAMERATE
+    FRAMERATE,
 )
 
 
@@ -56,14 +63,17 @@ class MazeVisualizer(MlxWindow):
         self.config_file = config_file
 
         self.background_image = BackgroundImage(
-            self.mlx, self.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT)
+            self.mlx, self.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT
+        )
 
         self.title_image = TitleImage(
-            self.mlx, self.mlx_ptr, TITLE_SPRITE_WIDTH, TITLE_SPRITE_HEIGHT)
+            self.mlx, self.mlx_ptr, TITLE_SPRITE_WIDTH, TITLE_SPRITE_HEIGHT
+        )
 
     def show_window(self) -> None:
         """Open the window and start the loop."""
 
+        self.show_maze(KEY_1)
         self.create_window(WINDOW_WIDTH, WINDOW_HEIGHT)
         self.run()
 
@@ -87,7 +97,8 @@ class MazeVisualizer(MlxWindow):
         self.cell_size = (MAZE_WIDTH // maze.width, MAZE_HEIGHT // maze.height)
 
         self.maze_image = MazeImage(
-            self.mlx, self.mlx_ptr, maze, self.cell_size)
+            self.mlx, self.mlx_ptr, maze, self.cell_size
+        )
 
         maze_animation_speed = len(maze.steps) / (6 * FRAMERATE)
         path_animation_speed = len(maze.solution) / (6 * FRAMERATE)
