@@ -184,13 +184,22 @@ class MazeAlgorithm(ABC):
 
         self.fix_open_areas()
 
-        if self.width > 2 and self.height > 2:
-
-            if self.independent_loops() < 2:
-
-                self.clear_grid_and_steps()
-                self.generate()
-                return self.remove_dead_ends()
+        if self.independent_loops() < 2:
+            cells = [
+                (x, y)
+                for y in range(self.height)
+                for x in range(self.width)
+                if (x, y) not in self.blocked
+            ]
+            self.random.shuffle(cells)
+            for cell in cells:
+                for neighbour in self.get_neighbours(cell):
+                    if neighbour not in self.get_reachable_neighbours(cell):
+                        self.open_wall(cell, neighbour)
+                        self.fix_open_areas()
+                        if self.independent_loops() >= 2:
+                            return self.steps
+            raise ValueError("Cannot generate two independent loops")
 
         return self.steps
 
