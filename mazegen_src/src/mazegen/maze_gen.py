@@ -129,26 +129,33 @@ class MazeGen:
         pattern_height = len(PATTERN_42)
         pattern_width = len(PATTERN_42[0])
 
-        if config.width < pattern_width + 2:
+        if config.width < pattern_width:
             print("Maze is too small for the 42 pattern", file=stderr)
             return []
 
-        if config.height < pattern_height + 2:
+        if config.height < pattern_height:
             print("Maze is too small for the 42 pattern", file=stderr)
             return []
 
         reserved = [config.entry, config.exit]
 
         if not config.perfect:
-            reserved.append((config.width // 2, config.height // 2))
-
+            reserved.extend(
+                [
+                    (config.width // 2, config.height // 2),
+                    (0, 0),
+                    (config.width - 1, 0),
+                    (0, config.height - 1),
+                    (config.width - 1, config.height - 1),
+                ]
+            )
         pattern_x = config.width // 2 - pattern_width // 2
         pattern_y = config.height // 2 - pattern_height // 2
 
         positions = [(pattern_x, pattern_y)]
 
-        for start_y in range(1, config.height - pattern_height):
-            for start_x in range(1, config.width - pattern_width):
+        for start_y in range(config.height - pattern_height + 1):
+            for start_x in range(config.width - pattern_width + 1):
                 position = (start_x, start_y)
 
                 if position != (pattern_x, pattern_y):
@@ -177,8 +184,33 @@ class MazeGen:
                     break
 
             if valid_position:
-                return cells
+                blocked = set(cells)
+                visited = {config.entry}
+                pending = [config.entry]
 
-        print("Cannot place the 42 pattern", file=stderr)
+                while pending:
+                    x, y = pending.pop()
+
+                    for neighbour in (
+                        (x - 1, y),
+                        (x + 1, y),
+                        (x, y - 1),
+                        (x, y + 1),
+                    ):
+                        nx, ny = neighbour
+
+                        if (
+                            0 <= nx < config.width
+                            and 0 <= ny < config.height
+                            and neighbour not in blocked
+                            and neighbour not in visited
+                        ):
+                            visited.add(neighbour)
+                            pending.append(neighbour)
+
+                if len(visited) == config.width * config.height - len(cells):
+                    return cells
+
+        raise ValueError("Cannot place the 42 pattern with this ENTRY/EXIT")
 
         return []
