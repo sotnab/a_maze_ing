@@ -13,18 +13,18 @@
 from random import Random
 from abc import ABC, abstractmethod
 
-from ..types import (
-    Cell, Grid, Step
-)
+from ..types import Cell, Grid, Step
 
 from ..constants import (
     REMOVE_NORTH,
     REMOVE_WEST,
     REMOVE_SOUTH,
     REMOVE_EAST,
-    NORTH, WEST,
-    SOUTH, EAST,
-    ALL_WALLS
+    NORTH,
+    WEST,
+    SOUTH,
+    EAST,
+    ALL_WALLS,
 )
 
 
@@ -32,11 +32,7 @@ class MazeAlgorithm(ABC):
     """Base class for maze generation algorithms."""
 
     def __init__(
-            self,
-            grid: Grid,
-            blocked: list[Cell],
-            random: Random,
-            entry: Cell
+        self, grid: Grid, blocked: list[Cell], random: Random, entry: Cell
     ) -> None:
         """Initialize the algorithm state."""
 
@@ -186,8 +182,7 @@ class MazeAlgorithm(ABC):
                 if self.number_of_walls(cell) == 3:
                     self.open_wall(cell, neighbour)
 
-        if self.width == 3 or self.height == 3:
-            self.fix_open_areas()
+        self.fix_open_areas()
 
         if self.width > 2 and self.height > 2:
 
@@ -200,32 +195,27 @@ class MazeAlgorithm(ABC):
         return self.steps
 
     def fix_open_areas(self) -> None:
+        """Close one wall in every fully open 3x3 area."""
 
-        for y in range(1, self.height - 1):
-            for x in range(1, self.width - 1):
+        for start_y in range(self.height - 2):
+            for start_x in range(self.width - 2):
+                open_area = True
 
-                if self.number_of_walls((x, y)) != 0:
-                    continue
+                for y in range(start_y, start_y + 3):
+                    for x in range(start_x, start_x + 2):
+                        if self.grid[y][x] & EAST:
+                            open_area = False
 
-                neighbours = [
-                    (x, y - 1), (x + 1, y),
-                    (x, y + 1), (x - 1, y)
-                ]
+                for y in range(start_y, start_y + 2):
+                    for x in range(start_x, start_x + 3):
+                        if self.grid[y][x] & SOUTH:
+                            open_area = False
 
-                neighbours_diagonally = [
-                    (x - 1, y - 1), (x + 1, y - 1),
-                    (x - 1, y + 1), (x + 1, y + 1)
-                ]
+                if open_area:
+                    center = (start_x + 1, start_y + 1)
+                    right = (start_x + 2, start_y + 1)
 
-                if any(self.number_of_walls(neighbour) != 1
-                        for neighbour in neighbours):
-                    continue
-
-                if any(self.number_of_walls(neighbour) != 2
-                        for neighbour in neighbours_diagonally):
-                    continue
-
-                self.close_wall((x, y), self.random.choice(neighbours))
+                    self.close_wall(center, right)
 
     def independent_loops(self) -> int:
 
