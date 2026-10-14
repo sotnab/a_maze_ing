@@ -20,11 +20,7 @@ class MazeWilson(MazeAlgorithm):
     """Generate a maze using Wilson's loop-erased random walk."""
 
     def __init__(
-        self,
-        grid: Grid,
-        blocked: list[Cell],
-        random: Random,
-        entry: Cell
+        self, grid: Grid, blocked: list[Cell], random: Random, entry: Cell
     ) -> None:
         """Initialize the Wilson maze generator."""
 
@@ -33,8 +29,9 @@ class MazeWilson(MazeAlgorithm):
     def generate(self) -> list[Step]:
         """Create a maze using Wilson's algorithm."""
 
-        empty_cells = [(x, y) for x in range(self.width)
-                       for y in range(self.height)]
+        empty_cells = [
+            (x, y) for x in range(self.width) for y in range(self.height)
+        ]
 
         for cell in self.blocked:
             empty_cells.remove(cell)
@@ -49,9 +46,8 @@ class MazeWilson(MazeAlgorithm):
             while True:
 
                 cell = path[-1]
-                previous_cell = path[-2] if len(path) > 1 else None
 
-                neighbours = self.get_neighbours_excluding(cell, previous_cell)
+                neighbours = self.get_neighbours(cell)
 
                 if len(neighbours) == 0:
                     self.exit_dead_end(path)
@@ -102,7 +98,8 @@ class MazeWilson(MazeAlgorithm):
                 return
 
     def get_neighbours_excluding(
-            self, cell: Cell, excluded: Cell | None) -> list[Cell]:
+        self, cell: Cell, excluded: Cell | None
+    ) -> list[Cell]:
         """Return neighbours excluding the previous path cell."""
 
         neighbours = self.get_neighbours(cell)
