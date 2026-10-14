@@ -20,7 +20,10 @@ from mazegen import MazeConfig
 def main() -> None:
     """Run the maze visualizer from the command line."""
     if len(argv) != 2:
-        return print("Invalid arguments. Run: ./a_maze_ing <config_file>.")
+        return print(
+            "Invalid arguments. Run: ./a_maze_ing <config_file>.", file=stderr
+        )
+        raise SystemExit(1)
 
     try:
         MazeConfig.from_file(argv[1])
